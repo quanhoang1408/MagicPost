@@ -11,6 +11,7 @@ import 'tippy.js/dist/tippy.css';
 import Button from '~/components/Button';
 import Modal from '~/components/Modal';
 import StationForm from '~/components/Modal/components/StationForm';
+import * as stationService from '~/services/stationService';
 
 const cx = classNames.bind(styles);
 
@@ -34,9 +35,17 @@ const STATIONS = [
 ]
 
 function StationManagement() {
-    const [stations, setStations] = useState(STATIONS);
+    const [stations, setStations] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [station, setStation] = useState();
+
+    useEffect(() => {
+        stationService.getAllStation()
+            .then(data => {
+                console.log(data);
+                setStations(data);
+            })
+    }, []);
 
     const handleEdit = (id) => {
         setShowModal(true);
@@ -127,16 +136,16 @@ function StationManagement() {
                                     <tbody>
                                         {
                                             stations.map((station, index) => {
-                                                const address = `${station.address.street}, ${station.address.district}, ${station.address.city}`
+                                                // const address = `${station.address.street}, ${station.address.district}, ${station.address.city}`
                                                 return (
                                                     <tr className={cx('data-row')} key={station.id}>
                                                         <td>{index + 1}</td>
                                                         <td>{station.name}</td>
-                                                        <td>{station.leader.name}</td>
-                                                        <td>{station.mobile}</td>
-                                                        <td>{station.email}</td>
-                                                        <td>{station.create_date}</td>
-                                                        <td>{address}</td>
+                                                        {/* <td>{station.leader.name}</td> */}
+                                                        {/* <td>{station.mobile}</td> */}
+                                                        {/* <td>{station.email}</td> */}
+                                                        {/* <td>{station.create_date}</td> */}
+                                                        {/* <td>{address}</td> */}
                                                         <td>
                                                             <div className={cx('actions')}>
                                                                 <Tippy 
