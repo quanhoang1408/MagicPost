@@ -1,0 +1,21 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container {
+    margin-top: var(--default-layout-header-height);
+    width: 100%;
+    display: flex;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: var(--default-layout-sidebar-width);
+    width: calc(100% - var(--default-layout-sidebar-width));
+    min-height: calc(100vh - var(--default-layout-header-height));
+    background-color: var(--layout-color);
+}

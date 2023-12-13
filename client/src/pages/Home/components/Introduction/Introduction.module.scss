@@ -1,0 +1,44 @@
+.wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    margin-bottom: 60px;
+    width: 90%;
+    background-color: var(--white);
+}
+
+.header {
+    margin-bottom: -4px;
+    font-size: 2.4rem;
+    text-transform: uppercase;
+    color: var(--primary);
+}
+
+.content {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(50%, 1fr));
+}
+
+.content-section {
+    &:has(.content-info) {
+        margin-top: 16px;
+    }
+    &:has(.image) {
+        display: flex;
+        justify-content: end;
+    }
+}
+
+.content-info {
+    & ~ .content-info {
+        margin-top: 8px;
+    }
+}
+
+.image {
+    width: 64%;
+    aspect-ratio: 1 / 1;
+}
