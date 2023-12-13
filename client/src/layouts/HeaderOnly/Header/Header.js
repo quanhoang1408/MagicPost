@@ -17,7 +17,7 @@ const cx = classNames.bind(styles);
 function Header() {
     const navRef = useRef();
     const context = useContext(HeaderContext);
-    const [isUser, setIsUser] = useState(true);
+    const [isUser, setIsUser] = useState(false);
     const MENU_ITEMS = [
         {
             icon: <UserIcon />,
