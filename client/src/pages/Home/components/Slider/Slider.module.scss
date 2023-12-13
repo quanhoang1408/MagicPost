@@ -1,0 +1,16 @@
+.wrapper {
+    width: 100%;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    overflow: hidden;
+}
+
+.image {
+    width: 100%;
+    aspect-ratio: 5 / 2;
+}

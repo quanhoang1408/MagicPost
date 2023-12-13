@@ -1,0 +1,145 @@
+// Grid
+.grid-col-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(calc(50% - 20px), 1fr));
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+}
+
+.grid-col-4 {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(calc(25% - 20px), 1fr));
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+}
+
+// Content
+.wrapper {
+    width: 100%;
+}
+
+.content-section {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.card {
+    padding: 30px 28px;
+    border-radius: 10px;
+}
+
+// Info card
+.info-card {
+    position: relative;
+    padding: 20px;
+    background-color: var(--white);
+    color: var(--white);
+}
+
+.info-icon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    width: 70px;
+    height: 70px;
+    color: var(--black);
+    opacity: 0.1;
+}
+
+.info-header {
+    margin-bottom: 20px;
+}
+
+.info-header,
+.info-number {
+    font-size: 2rem;
+    line-height: 2rem;
+    font-weight: 700;
+}
+
+.bg-purple {
+    background: linear-gradient(135deg,#8e4cf1 0,#d877d0 100%);
+}
+
+.bg-orange {
+    background: linear-gradient(135deg,#f48665 0,#d6b341 100%)
+}
+
+.bg-blue {
+    background: linear-gradient(135deg,#289cf5 0,#80e0e6 100%)
+}
+
+.bg-green {
+    background: linear-gradient(135deg,#34be73 0,#c2e495 100%)
+}
+
+// Table card
+.table-card {
+    background-color: var(--white);
+    border: 1px solid var(--separate-color);
+}
+
+.table-wrapper {
+    margin-bottom: 20px;
+    width: 100%;
+    overflow-x: overlay;
+    
+    &::-webkit-scrollbar {
+        display: block;
+        height: 10px;
+    }
+}
+
+.table-header {
+    margin-bottom: 4px;
+    font-size: 1.8rem;
+    line-height: 1.8rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.table {
+    width: 100%;
+    text-align: center;
+    white-space: nowrap;
+    cursor: default;
+    
+    & tr {
+        height: 60px;
+        border-bottom: 1px solid var(--separate-color);
+    }
+
+    & th,
+    & td {
+        margin: 0 4px;
+        padding: 12px;
+    }
+    
+    & tr th:last-child,
+    & tr td:last-child {
+        position: sticky;
+        right: 0;
+        min-width: 120px;
+        background-color: var(--white);
+    }
+
+    & .data-row:hover,
+    & .data-row:hover th:last-child,
+    & .data-row:hover td:last-child {
+        background-color: #f6f6f6;
+    }
+}
+
+.actions {
+    display: inline-block;
+
+    & + .actions {
+        margin-left: 8px;
+    }
+}
+
+.actions-btn {
+    width: 32px;
+    height: 32px;
+}

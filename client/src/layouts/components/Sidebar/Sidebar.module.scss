@@ -1,0 +1,126 @@
+.wrapper {
+    position: fixed;
+    width: var(--default-layout-sidebar-width);
+    height: calc(100vh - var(--default-layout-header-height));
+    padding: 20px 10px 26px 10px;
+    background-color: var(--sidebar-color);
+    overflow-y: scroll;
+    overflow-x: hidden;
+    // border-right: 1px solid #e4e9f0;
+    z-index: 2;
+}
+
+.user-info {
+    margin-bottom: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    // border-bottom: 1px solid #e4e9f0;
+}
+
+.user-avatar {
+    margin: 14px 0;
+    width: 70px;
+    height: 70px;
+    border-radius: 20%;
+}
+
+.user-name {
+    color: var(--white);
+}
+
+.user-role {
+    font-size: 1rem;
+    color: #919aa3
+}
+
+// Menu
+.menu-item,
+.sub-menu-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    color: var(--white);
+    font-size: 1.4rem;
+    font-weight: 400;
+    transition: background-color ease-in-out 200ms;
+    cursor: pointer;
+    
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.2);
+    }
+}
+
+.menu-item {
+    padding: 8px 14px;
+
+    &.active, &.active:hover {
+        color: var(--primary);
+        font-weight: 700;
+        background-color: #212529;
+    }
+
+    &.toggle-sub-menu + .sub-menu {
+        display: block;
+    } 
+}
+
+.has-sub-menu {
+    &::after {
+        position: absolute;
+        right: 14px;
+        top: 6px;
+        content: '\002B';
+        display: block;
+        font-size: 2.4rem;
+        color: currentColor;
+    }
+    
+    &.toggle-sub-menu::after {
+        content: '\2212';
+    }
+}
+
+.sub-menu-item {
+    position: relative;
+    padding: 2px 14px;
+
+    &.active::before {
+        position: absolute;
+        left: 26px;
+        top: 50%;
+        transform: translateY(-50%);
+        content: '';
+        display: block;
+        width: 4px;
+        height: 4px;
+        background-color: var(--primary);
+        border-radius: 50%;
+    }
+}
+
+.icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 4px;
+    width: 32px;
+    height: 32px;
+}
+
+.title {
+    margin-left: 10px;
+}
+
+.right-icon {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.sub-menu {
+    display: none;
+}

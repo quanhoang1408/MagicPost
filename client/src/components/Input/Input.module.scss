@@ -1,0 +1,16 @@
+.wrapper {
+    display: flex;
+    padding: 12px;
+    height: var(--input-height);
+    background-color: rgba(22, 24, 35, 0.06);
+    border: 1px solid rgba(22, 24, 35, 0.12);
+    border-radius: 4px;
+}
+
+.input {
+    flex: 1;
+    width: 100%;
+    background-color: transparent;
+    font-size: 1.6rem;
+    caret-color: var(--primary);
+}
