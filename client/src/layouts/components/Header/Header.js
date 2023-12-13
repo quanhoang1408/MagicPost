@@ -9,6 +9,7 @@ import Button from "~/components/Button";
 import Image from '~/components/Image';
 import Menu from '~/components/Menu';
 import { UserIcon, LogOutIcon } from "~/components/Icon";
+import * as authService from '~/services/authService';
 
 const cx = classNames.bind(styles);
 
@@ -25,6 +26,7 @@ function Header() {
             icon: <LogOutIcon />,
             title: 'Đăng xuất',
             href: '/logout',
+            to:'/',
             className: 'separate',
         }
     ];
@@ -33,8 +35,8 @@ function Header() {
     const handleMenuChange = (menuItem) => {
         switch(menuItem.href) {
             case '/logout':
-                localStorage.removeItem('user');
-                window.location.reload();
+                authService.logout();
+                window.location.assign(config.routes.home);
                 break;
             case '/:nickname':
                 // window.location.href = `/:${authUser.data.nickname}`;

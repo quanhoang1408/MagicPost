@@ -1,13 +1,20 @@
-import { Fragment, createContext } from 'react';
+import { Fragment, createContext, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { publicRoutes } from '~/routes';
 import { DefaultLayout } from '~/layouts';
+import * as userService from '~/services/userService';
+import { useState } from 'react';
 
 export const authUserContext = createContext();
 
 function App() {
-  const authUser = JSON.parse(localStorage.getItem('user'));
-
+  const [authUser, setAuthUser] = useState({});
+  useEffect(() => {
+    userService.getUserById()
+      .then(data => {
+        setAuthUser(data);
+    })
+  }, []);
   return (
     <authUserContext.Provider value={authUser}>
       <Router>

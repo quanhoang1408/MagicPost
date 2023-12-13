@@ -1,7 +1,7 @@
 import classNames from "classnames/bind";
 import { useContext, useState } from "react";
 import styles from './Login.module.scss';
-
+import axios from "axios";
 import Button from '~/components/Button';
 import Input from '~/components/Input';
 import { EyeOpen, EyeClose } from "~/components/Icon";
@@ -18,18 +18,43 @@ function Login() {
     const [showPassword, setShowPassword] = useState(false);
     const context = useContext(ModalContext);
 
+    const validate = ()=> {
+        if(email == ""){
+            alert("Vui lòng nhập email");
+            return false;
+        }
+        if(password == ""){
+            alert("Vui lòng nhập mật khẩu");
+            return false;
+        }
+        return true;
+    }
     // Handle login
     const userLogin = () => {
+        // axios.post('http://localhost:8081/login', {email, password})
+        // .then(res => {
+        //     console.log(res);
+        // }).catch(err => {
+        //     console.log(err);
+        // })
         authService
             .login(email, password)
             .then(data => {
-                if (data === undefined) {
-                    alert('Email or password is invalid! Please try again');
-                } else {
-                    if (data.meta && data.meta.token) {
-                        localStorage.setItem('user', JSON.stringify(data));
-                        window.location.assign(config.routes.boss);
+                console.log(data);
+                if (data.success === true) {
+                    alert(data.message);
+                    console.log(data)
+                    if(data.user.role == "boss"){
+                        window.location.assign(config.routes.boss)
+                    }else if(data.user.role == "station_lead"|| data.user.role == "office_lead"){
+                        window.location.assign(config.routes.leader)
+                    }else{
+                        window.location.assign(config.routes.employee)
                     }
+                    //window.location.assign(config.routes.boss)
+                } else {
+                    alert(data.message);
+                    console.log(data);
                 }
                 
             })

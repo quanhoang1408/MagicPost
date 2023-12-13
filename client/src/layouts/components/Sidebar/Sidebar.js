@@ -1,8 +1,8 @@
 import classNames from "classnames/bind";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import styles from './Sidebar.module.scss';
 import config from '~/config';
-
+import { authUserContext } from '~/App';
 import Image from '~/components/Image';
 import Menu, { MenuItem } from "./Menu";
 import { faBox, faFilePen, faHouse, faLocationDot, faUserGroup } from "@fortawesome/free-solid-svg-icons";
@@ -11,11 +11,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const cx = classNames.bind(styles);
 
 function Sidebar() {
-    const [role, setRole] = useState('employee');
+    const authUser = useContext(authUserContext);
+    const [role, setRole] = useState('');
     const [subMenu, setSubMenu] = useState([]);
     const [menuItem, setMenuItem] = useState();
     const menuRef = useRef();
 
+    // Get role of user
+    useEffect(() => {
+        if (authUser) {
+            setRole(authUser.role);
+        }
+    }, [authUser]);
+    
     // Show menu item base on role
     const handleSetMenuItem = (role) => {
         switch(role) {
