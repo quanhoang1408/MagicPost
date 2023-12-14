@@ -8,3 +8,16 @@ export const getAllStation = async () => {
         console.log(error)
     }
 }
+
+export const updateStation = async (id, name, address, phone_number) => {
+    try {
+        const res = await httpRequest.put(`stations/update/${id}`, {
+            name,
+            address,
+            phone_number
+        });
+        return res;
+    } catch (error) {
+        console.log(error)
+    }
+}

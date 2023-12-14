@@ -12,9 +12,10 @@ const addUser = async (req, res) => {
         //check for station_lead
         if( role == "station_lead"){
             const station = await Station.findById(work_place);
-            if(!station.station_lead){
+            console.log(station.station_lead);
+            if(!station.station_lead.id){
                 const user = await User.create({ email, name, password, role, work_place });
-                await Station.updateOne({"_id" : user.work_place},{$set: {station_lead: user._id} });
+                await Station.updateOne({"_id" : user.work_place},{$set: {station_lead: {id:user._id, name:user.name}} });
                 console.log("Station updated");
                 return res.status(200).json({message: "Station lead created successfully", success: true, user});
             }else{

@@ -7,11 +7,25 @@ const stationSchema = new Schema({
         require: true,
     },
     station_lead: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        require: false,
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            require: false,
+        },
+        name: {
+            type: String,
+            require: false,
+        },
     },
     address: {
+        type: String,
+        require: false,
+    },
+    create_date: {
+        type: Date,
+        default: Date.now,
+    },
+    phone_number: {
         type: String,
         require: false,
     },
