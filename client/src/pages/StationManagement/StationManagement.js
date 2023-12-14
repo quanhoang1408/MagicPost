@@ -15,24 +15,24 @@ import * as stationService from '~/services/stationService';
 
 const cx = classNames.bind(styles);
 
-const STATIONS = [
-    {
-        id: 1,
-        name: 'Điểm tập kết A',
-        leader: {
-            leaderId: 1,
-            name: 'Nguyễn Văn B',
-        },
-        mobile: '0987654321',
-        email: 'A@gmail.com',
-        create_date: '06/04/2003',
-        address: {
-            city: 'Hà Nội',
-            district: 'Bắc Từ Liêm',
-            street: '234 Phạm Văn Đồng',
-        },
-    },
-]
+// const STATIONS = [
+//     {
+//         id: 1,
+//         name: 'Điểm tập kết A',
+//         leader: {
+//             leaderId: 1,
+//             name: 'Nguyễn Văn B',
+//         },
+//         mobile: '0987654321',
+//         email: 'A@gmail.com',
+//         create_date: '06/04/2003',
+//         address: {
+//             city: 'Hà Nội',
+//             district: 'Bắc Từ Liêm',
+//             street: '234 Phạm Văn Đồng',
+//         },
+//     },
+// ]
 
 function StationManagement() {
     const [stations, setStations] = useState([]);
@@ -42,7 +42,7 @@ function StationManagement() {
     useEffect(() => {
         stationService.getAllStation()
             .then(data => {
-                console.log(data);
+                // console.log(data);
                 setStations(data);
             })
     }, []);
@@ -127,7 +127,7 @@ function StationManagement() {
                                             <th>Tên</th>
                                             <th>Quản lý</th>
                                             <th>Số điện thoại</th>
-                                            <th>Email</th>
+                                            {/* <th>Email</th> */}
                                             <th>Ngày thêm</th>
                                             <th>Địa chỉ</th>
                                             <th>Hành động</th>
@@ -141,11 +141,11 @@ function StationManagement() {
                                                     <tr className={cx('data-row')} key={station.id}>
                                                         <td>{index + 1}</td>
                                                         <td>{station.name}</td>
-                                                        {/* <td>{station.leader.name}</td> */}
-                                                        {/* <td>{station.mobile}</td> */}
+                                                        <td>{station.station_lead.name}</td>
+                                                        <td>{station.phone_number}</td> 
                                                         {/* <td>{station.email}</td> */}
-                                                        {/* <td>{station.create_date}</td> */}
-                                                        {/* <td>{address}</td> */}
+                                                        <td>{station.create_date}</td>
+                                                        <td>{station.address}</td>
                                                         <td>
                                                             <div className={cx('actions')}>
                                                                 <Tippy 
