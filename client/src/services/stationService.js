@@ -21,3 +21,12 @@ export const updateStation = async (id, name, address, phone_number) => {
         console.log(error)
     }
 }
+
+export const deleteStation = async (id) => {
+    try {
+        const res = await httpRequest.del(`stations/delete/${id}`);
+        return res;
+    } catch (error) {
+        console.log(error)
+    }
+}

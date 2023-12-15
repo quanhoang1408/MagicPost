@@ -12,6 +12,7 @@ import Button from '~/components/Button';
 import Modal from '~/components/Modal';
 import StationForm from '~/components/Modal/components/StationForm';
 import * as stationService from '~/services/stationService';
+import formatDate from '../../utils/formatDate';
 
 const cx = classNames.bind(styles);
 
@@ -42,7 +43,10 @@ function StationManagement() {
     useEffect(() => {
         stationService.getAllStation()
             .then(data => {
-                // console.log(data);
+                for (let i = 0; i < data.length; i++) {
+                    data[i].create_date = new Date(data[i].create_date);
+                    data[i].create_date = formatDate(data[i].create_date.toString());
+                }
                 setStations(data);
             })
     }, []);
@@ -52,8 +56,17 @@ function StationManagement() {
         setStation(stations.find((station) => station.id === parseInt(id)));
     }
 
-    const handleDelete = () => {
-
+    const handleDelete = (id) => {
+        stationService.deleteStation(id)
+            .then(data => {
+                console.log(data);
+                if (data.success === true) {
+                    alert(data.message);
+                    window.location.reload();
+                } else {
+                    alert(data.message);
+                }
+            })
     }
 
     const handleAdd = () => {
@@ -152,7 +165,7 @@ function StationManagement() {
                                                                     content='Sửa'
                                                                     placement='bottom'
                                                                 >
-                                                                    <Button className={cx('actions-btn')} outline onClick={() => handleEdit(station.id)}>
+                                                                    <Button className={cx('actions-btn')} outline onClick={() => handleEdit(station._id)}>
                                                                         <FontAwesomeIcon className={cx('actions-icon')} icon={faPenToSquare} />
                                                                     </Button>
                                                                 </Tippy>
@@ -162,7 +175,7 @@ function StationManagement() {
                                                                     content='Xóa'
                                                                     placement='bottom'
                                                                 >
-                                                                    <Button className={cx('actions-btn')} outline onClick={handleDelete}>
+                                                                    <Button className={cx('actions-btn')} outline onClick= {()=> handleDelete(station._id)}>
                                                                         <FontAwesomeIcon className={cx('actions-icon')} icon={faTrash} />
                                                                     </Button>
                                                                 </Tippy>
