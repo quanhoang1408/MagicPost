@@ -25,22 +25,22 @@ function Header() {
         {
             icon: <LogOutIcon />,
             title: 'Đăng xuất',
-            href: '/logout',
-            to:'/',
+            // link: '/logout',
+            to: config.routes.home,
             className: 'separate',
         }
     ];
 
     // Handle logic
     const handleMenuChange = (menuItem) => {
-        switch(menuItem.href) {
-            case '/logout':
+        switch(menuItem.to) {
+            case config.routes.home:
                 authService.logout();
-                window.location.assign(config.routes.home);
+                // window.location.assign(config.routes.home);
                 break;
-            case '/:nickname':
+            // case '/:nickname':
                 // window.location.href = `/:${authUser.data.nickname}`;
-                break;
+                // break;
             default:
                 break;
         }

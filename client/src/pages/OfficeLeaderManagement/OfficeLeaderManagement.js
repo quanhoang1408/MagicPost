@@ -103,10 +103,11 @@ function OfficeLeaderManagement() {
                                             return (
                                                 <tr className={cx('data-row')} key={employee.id}>
                                                     <td>{index + 1}</td>
-                                                    <td>{employee.name}</td>
+                                                    <td className={cx('text-align-left')}>{employee.name}</td>
                                                     <td>{employee.role}</td>
                                                     <td>{employee.mobile}</td>
-                                                    <td>{employee.email}</td>
+                                                    <td className={cx('text-align-left')}>{employee.email}</td>
+                                                    <td className={cx('text-align-left')}>{employee.workPlace}</td>
                                                     <td>{employee.joiningDate}</td>
                                                     <td>
                                                         <div className={cx('actions')}>
