@@ -25,6 +25,7 @@ app.use(express.json())
 app.use('/users', require('./routes/user.route'))
 app.use('/stations', require('./routes/station.route'))
 app.use('/offices', require('./routes/office.route'))
+app.use('/orders', require('./routes/order.route'))
 app.use('/', require('./routes/auth.route'));
 
 connectDB().then(

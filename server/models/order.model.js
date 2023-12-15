@@ -1,76 +1,91 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const station = new Schema({
+    station_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Station',
+        require: true
+    },
+    is_received: {
+        type: Boolean,
+    },
+    time: {
+        type: Date
+    },
+    staff_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }
+}, {
+    _id: false
+})
+
+const office = new Schema({
+    office_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Office',
+        require: true
+    },
+    received_time: {
+        type: Date
+    },
+    send_time: {
+        type: Date
+    },
+    staff_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }
+}, {
+    _id: false
+
+})
+
+const client = new Schema({
+    name: String,
+    phone: String,
+    email: String,
+    address: String
+}, {
+    _id: false
+})
+
 const orderSchema = new Schema({
     code: {
         type: String,
         require: true,
+        unique: true,
     },
     start_office: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Office',
-        require: true,
+        type: office,
+        require: true
     },
     end_office: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Office',
-        require: true,
+        type: office
     },
-    status: {
-        type: String,
-        require: true,
-    },
-    start_station: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Station'
-    },
-    end_station: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Station'
-    },
-    creator : {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+    stations: {
+        type: [station]
     },
     sender : {
-        name: {
-            type: String,
-            require: true,
-        },
-        phone: {
-            type: String,
-            require: true,
-        },
-        email: {
-            type: String,
-            require: true,
-        },
-        address: {
-            type: String,
-            require: true,
-        }
+        type: client,
+        require: true
     },
     receiver : {
-        name: {
-            type: String,
-            require: true,
-        },
-        phone: {
-            type: String,
-            require: true,
-        },
-        email: {
-            type: String,
-            require: true,
-        },
-        address: {
-            type: String,
-            require: true,
-        }
+        type: client,
+        require: true
     },
-    logs: {
-        type: Array,
+    contents: {
+        type: String,
         require: false,
+    },
+    weight: {
+        type: Number,
+        require: true,
+    },
+    price: {
+        type: Number,
+        require: true,
     },
 })
 
