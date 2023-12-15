@@ -93,7 +93,7 @@ function OrderForm({ order }) {
                                     checked={type.toLowerCase() === 'tài liệu'}
                                     onChange={() => {setType('Tài liệu')}}
                                 />
-                                <label className={cx('label')} for='order-form-type-document'>
+                                <label className={cx('label')} htmlFor='order-form-type-document'>
                                     Tài liệu
                                 </label>
                                 <input 
@@ -103,7 +103,7 @@ function OrderForm({ order }) {
                                     checked={type.toLowerCase() === 'hàng hóa'}
                                     onChange={() => {setType('Hàng hóa')}}
                                 />
-                                <label className={cx('label')} for='order-form-type-product'>
+                                <label className={cx('label')} htmlFor='order-form-type-product'>
                                     Hàng hóa
                                 </label>
                             </div>

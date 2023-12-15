@@ -12,14 +12,14 @@ const cx = classNames.bind(styles);
 
 function Sidebar() {
     const authUser = useContext(authUserContext);
-    const [role, setRole] = useState('');
+    const [role, setRole] = useState('boss');
     const [subMenu, setSubMenu] = useState([]);
     const [menuItem, setMenuItem] = useState();
     const menuRef = useRef();
 
     // Get role of user
     useEffect(() => {
-        if (authUser) {
+        if (authUser && authUser.role) {
             setRole(authUser.role);
         }
     }, [authUser]);
@@ -67,7 +67,26 @@ function Sidebar() {
                     </>
                 );
                 break;
-            case 'leader':
+            case 'station_leader':
+                setMenuItem (
+                    <>
+                        <MenuItem className={cx('menu-item')} title='Trang chủ' to={config.routes.leader} icon={<FontAwesomeIcon icon={faHouse} />} />
+                        <MenuItem className={cx('menu-item')} title='Quản lý nhân viên' icon={<FontAwesomeIcon icon={faUserGroup} />} to={config.routes.employeeManagement} />
+                        <MenuItem 
+                            className={cx('menu-item', 'has-sub-menu')} 
+                            title='Quản lý đơn hàng' 
+                            icon={<FontAwesomeIcon icon={faFilePen} />} 
+                            onClick={(e) => handleToggleSubMenu(e)}
+                        >
+                            <Menu className={cx('sub-menu')}>
+                                <MenuItem className={cx('sub-menu-item')} title='Đơn hàng nhận' to={config.routes.orderInManagement} />
+                                <MenuItem className={cx('sub-menu-item')} title='Đơn hàng gửi' to={config.routes.orderOutManagement} />
+                            </Menu>
+                        </MenuItem>
+                    </>
+                );
+                break;
+            case 'office_leader':
                 setMenuItem (
                     <>
                         <MenuItem className={cx('menu-item')} title='Trang chủ' to={config.routes.leader} icon={<FontAwesomeIcon icon={faHouse} />} />
@@ -143,23 +162,25 @@ function Sidebar() {
 
     // Active menu item when click on sub menu item
     useEffect(() => {
-        subMenu.forEach(menu => {
-            const menuList = menu.childNodes;
-            const menuItem = menu.previousSibling;
+        if (subMenu.length > 0) {
+            subMenu.forEach(menu => {
+                const menuList = menu.childNodes;
+                const menuItem = menu.previousSibling;
 
-            if (menuItem.classList.contains(cx('active'))) {
-                menuItem.classList.remove(cx('active'));
-            }
+                if (menuItem.classList.contains(cx('active'))) {
+                    menuItem.classList.remove(cx('active'));
+                }
 
-            for (let i = 0; i < menuList.length; i++) {
-                if (menuList[i].classList.contains(cx('active'))) {
-                    if (!menuItem.classList.contains(cx('active'))) {
-                        menuItem.classList.add(cx('active'));
-                        break;
-                    }
-                } 
-            }
-        });
+                for (let i = 0; i < menuList.length; i++) {
+                    if (menuList[i].classList.contains(cx('active'))) {
+                        if (!menuItem.classList.contains(cx('active'))) {
+                            menuItem.classList.add(cx('active'));
+                            break;
+                        }
+                    } 
+                }
+            });
+        }
     });
 
     // Toggle sub menu when click on menu item

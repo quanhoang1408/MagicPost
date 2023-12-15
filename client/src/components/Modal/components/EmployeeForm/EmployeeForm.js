@@ -65,7 +65,7 @@ function EmployeeForm({ employee, employeeRole }) {
                                     checked={gender.toLowerCase() === 'nam'}
                                     onChange={() => {setGender('nam')}}
                                 />
-                                <label className={cx('label')} for='employee-form-gender-male'>
+                                <label className={cx('label')} htmlFor='employee-form-gender-male'>
                                     Nam
                                 </label>
                                 <input 
@@ -75,7 +75,7 @@ function EmployeeForm({ employee, employeeRole }) {
                                     checked={gender.toLowerCase() === 'nữ'}
                                     onChange={() => {setGender('nữ')}}
                                 />
-                                <label className={cx('label')} for='employee-form-gender-female'>
+                                <label className={cx('label')} htmlFor='employee-form-gender-female'>
                                     Nữ
                                 </label>
                             </div>
@@ -87,7 +87,7 @@ function EmployeeForm({ employee, employeeRole }) {
                                 Ngày sinh:
                             </div>
                             <div className={cx('label')}>
-                                Ngày tham gia:
+                                Ngày gia nhập:
                             </div>
                         </div>
                         <div className={cx('info-detail')}>

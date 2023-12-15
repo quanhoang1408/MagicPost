@@ -17,19 +17,15 @@ const cx = classNames.bind(styles);
 const OFFICES = [
     {
         id: 1,
-        name: 'Điểm giao dịch A',
-        leader: {
-            leaderId: 2,
-            name: 'Nguyễn Văn C',
+        name: 'Điểm tập kết A',
+        office_lead: {
+            leaderId: 1,
+            name: 'Nguyễn Văn B',
         },
-        mobile: '0987654321',
+        phone_number: '0987654321',
         email: 'A@gmail.com',
         create_date: '06/04/2003',
-        address: {
-            city: 'Hà Nội',
-            district: 'Bắc Từ Liêm',
-            street: '234 Phạm Văn Đồng',
-        },
+        address: '234 Phạm Văn Đồng, Bắc Từ Liêm, Hà Nội',
     },
 ]
 
@@ -122,8 +118,8 @@ function OfficeManagement() {
                                             <th>Tên</th>
                                             <th>Quản lý</th>
                                             <th>Số điện thoại</th>
-                                            <th>Email</th>
-                                            <th>Ngày thêm</th>
+                                            {/* <th>Email</th> */}
+                                            <th>Ngày tạo</th>
                                             <th>Địa chỉ</th>
                                             <th>Hành động</th>
                                         </tr>
@@ -131,16 +127,15 @@ function OfficeManagement() {
                                     <tbody>
                                         {
                                             offices.map((office, index) => {
-                                                const address = `${office.address.street}, ${office.address.district}, ${office.address.city}`
                                                 return (
                                                     <tr className={cx('data-row')} key={office.id}>
                                                         <td>{index + 1}</td>
-                                                        <td>{office.name}</td>
-                                                        <td>{office.leader.name}</td>
-                                                        <td>{office.mobile}</td>
-                                                        <td>{office.email}</td>
+                                                        <td className={cx('text-align-left')}>{office.name}</td>
+                                                        <td className={cx('text-align-left')}>{office.office_lead.name}</td>
+                                                        <td>{office.phone_number}</td> 
+                                                        {/* <td>{office.email}</td> */}
                                                         <td>{office.create_date}</td>
-                                                        <td>{address}</td>
+                                                        <td className={cx('text-align-left')}>{office.address}</td>
                                                         <td>
                                                             <div className={cx('actions')}>
                                                                 <Tippy 
