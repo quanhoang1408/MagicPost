@@ -15,37 +15,33 @@ import * as stationService from '~/services/stationService';
 
 const cx = classNames.bind(styles);
 
-// const STATIONS = [
-//     {
-//         id: 1,
-//         name: 'Điểm tập kết A',
-//         leader: {
-//             leaderId: 1,
-//             name: 'Nguyễn Văn B',
-//         },
-//         mobile: '0987654321',
-//         email: 'A@gmail.com',
-//         create_date: '06/04/2003',
-//         address: {
-//             city: 'Hà Nội',
-//             district: 'Bắc Từ Liêm',
-//             street: '234 Phạm Văn Đồng',
-//         },
-//     },
-// ]
+const STATIONS = [
+    {
+        id: 1,
+        name: 'Điểm tập kết A',
+        station_lead: {
+            leaderId: 1,
+            name: 'Nguyễn Văn B',
+        },
+        phone_number: '0987654321',
+        email: 'A@gmail.com',
+        create_date: '06/04/2003',
+        address: '234 Phạm Văn Đồng, Bắc Từ Liêm, Hà Nội',
+    },
+]
 
 function StationManagement() {
-    const [stations, setStations] = useState([]);
+    const [stations, setStations] = useState([...STATIONS]);
     const [showModal, setShowModal] = useState(false);
     const [station, setStation] = useState();
 
-    useEffect(() => {
-        stationService.getAllStation()
-            .then(data => {
-                // console.log(data);
-                setStations(data);
-            })
-    }, []);
+    // useEffect(() => {
+    //     stationService.getAllStation()
+    //         .then(data => {
+    //             // console.log(data);
+    //             setStations(data);
+    //         })
+    // }, []);
 
     const handleEdit = (id) => {
         setShowModal(true);
@@ -128,7 +124,7 @@ function StationManagement() {
                                             <th>Quản lý</th>
                                             <th>Số điện thoại</th>
                                             {/* <th>Email</th> */}
-                                            <th>Ngày thêm</th>
+                                            <th>Ngày tạo</th>
                                             <th>Địa chỉ</th>
                                             <th>Hành động</th>
                                         </tr>
@@ -136,16 +132,15 @@ function StationManagement() {
                                     <tbody>
                                         {
                                             stations.map((station, index) => {
-                                                // const address = `${station.address.street}, ${station.address.district}, ${station.address.city}`
                                                 return (
                                                     <tr className={cx('data-row')} key={station.id}>
                                                         <td>{index + 1}</td>
-                                                        <td>{station.name}</td>
-                                                        <td>{station.station_lead.name}</td>
+                                                        <td className={cx('text-align-left')}>{station.name}</td>
+                                                        <td className={cx('text-align-left')}>{station.station_lead.name}</td>
                                                         <td>{station.phone_number}</td> 
                                                         {/* <td>{station.email}</td> */}
                                                         <td>{station.create_date}</td>
-                                                        <td>{station.address}</td>
+                                                        <td className={cx('text-align-left')}>{station.address}</td>
                                                         <td>
                                                             <div className={cx('actions')}>
                                                                 <Tippy 
