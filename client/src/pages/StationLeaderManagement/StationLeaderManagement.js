@@ -14,31 +14,31 @@ import EmployeeForm from '~/components/Modal/components/EmployeeForm';
 
 const cx = classNames.bind(styles);
 
-const EMPLOYEES = [
-    {
-        id: 1,
-        name: 'Nguyễn Văn A',
-        birthday: '06/04/2003',
-        gender: 'nữ',
-        mobile: '0987654321',
-        role: 'Trưởng điểm tập kết',
-        workPlace: 'Toà nhà Magic Post, 144 Xuân Thủy, Cầu Giấy, Hà Nội',
-        address: '234 Phạm Văn Đồng, Bắc Từ Liêm, Hà Nội',
-        email: 'a@gmail.com',
-        password: '111111',
-        avatar: '',
-        joiningDate: '08/08/2016',
-    },
-]
+// const EMPLOYEES = [
+//     {
+//         id: 1,
+//         name: 'Nguyễn Văn A',
+//         birthday: '06/04/2003',
+//         gender: 'nữ',
+//         mobile: '0987654321',
+//         role: 'Trưởng điểm tập kết',
+//         workPlace: 'Toà nhà Magic Post, 144 Xuân Thủy, Cầu Giấy, Hà Nội',
+//         address: '234 Phạm Văn Đồng, Bắc Từ Liêm, Hà Nội',
+//         email: 'a@gmail.com',
+//         password: '111111',
+//         avatar: '',
+//         joiningDate: '08/08/2016',
+//     },
+// ]
 
 function StationLeaderManagement() {
-    const [employees, setEmployees] = useState(EMPLOYEES);
+    const [stationLeads, setstationLeads] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [employee, setEmployee] = useState();
 
     const handleEdit = (id) => {
         setShowModal(true);
-        setEmployee(employees.find((employee) => employee.id === parseInt(id)));
+        setEmployee(stationLeads.find((station_lead) => station_lead.id === parseInt(id)));
     }
 
     const handleDelete = () => {
@@ -100,7 +100,7 @@ function StationLeaderManagement() {
                                 </thead>
                                 <tbody>
                                     {
-                                        employees.map((employee, index) => {
+                                        stationLeads.map((station_lead, index) => {
                                             return (
                                                 <tr className={cx('data-row')} key={employee.id}>
                                                     <td>{index + 1}</td>
@@ -116,7 +116,7 @@ function StationLeaderManagement() {
                                                                 content='Sửa'
                                                                 placement='bottom'
                                                             >
-                                                                <Button className={cx('actions-btn')} outline onClick={() => handleEdit(employee.id)}>
+                                                                <Button className={cx('actions-btn')} outline onClick={() => handleEdit(station_lead._id)}>
                                                                     <FontAwesomeIcon className={cx('actions-icon')} icon={faPenToSquare} />
                                                                 </Button>
                                                             </Tippy>
