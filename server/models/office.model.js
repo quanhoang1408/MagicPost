@@ -9,11 +9,23 @@ const officeSchema = new Schema({
     office_lead: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        require: true,
+        require: false,
     },
     station: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Station',
+        require: true,
+    },
+    address: {
+        type: String,
+        require: true,
+    },
+    create_date: {
+        type: Date,
+        default: Date.now,
+    },
+    phone_number: {
+        type: String,
         require: true,
     }
 })

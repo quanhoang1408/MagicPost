@@ -1,14 +1,12 @@
-const {Office} = require('../models/office.model');
+const Office = require('../models/office.model');
 
 const officeController = {
     addOffice: async(req, res) => {
         try {
-            console.log("hi");
-            const {name, office_lead, station} = req.body;
-            res.status(200).json(req.body);
-            // const newStation = new Station({name, station_lead});
-            // await newStation.save();
-            // res.status(201).json({message: 'Station added successfully'});
+            const {name, station, address, phone_number} = req.body;
+            office_lead = null;
+            const newOffice = await Office.create({name, station,office_lead, address, phone_number});
+            res.status(201).json({message: 'Office added successfully', newOffice});
         } catch (error) {
             res.status(500).json({message: error.message});
         }
