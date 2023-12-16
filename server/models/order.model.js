@@ -7,15 +7,21 @@ const station = new Schema({
         ref: 'Station',
         require: true
     },
-    is_received: {
-        type: Boolean,
+    received_time: {
+        type: Date,
+        require: true,
+        default: null
     },
-    time: {
-        type: Date
+    send_time: {
+        type: Date,
+        require: true,
+        default: null
     },
     staff_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        require: true,
+        default: null
     }
 }, {
     _id: false
@@ -65,7 +71,8 @@ const orderSchema = new Schema({
         type: office
     },
     stations: {
-        type: [station]
+        type: [station],
+        require: false
     },
     sender : {
         type: client,

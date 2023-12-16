@@ -10,17 +10,20 @@ router.route('/')
 router.route('/create')
     .post(verifyToken, authorize([constants.ROLES.OFFICE_STAFF]), orderController.create)
 
-router.route('/forwardToStation')
-    .post(verifyToken, authorize([constants.ROLES.OFFICE_STAFF, constants.ROLES.STATION_STAFF]), orderController.forwardToStation)
+router.route('/forwardToStation/:id')
+    .put(verifyToken, authorize([constants.ROLES.OFFICE_STAFF, constants.ROLES.STATION_STAFF]), orderController.forwardToStation)
 
-router.route('/forwardToOffice')
-    .post(verifyToken, authorize([constants.ROLES.OFFICE_STAFF]), orderController.forwardToOffice)
+router.route('/forwardToOffice/:id')
+    .put(verifyToken, authorize([constants.ROLES.OFFICE_STAFF]), orderController.forwardToOffice)
 
-router.route('/confirmArrival')
-    .post(verifyToken, authorize([constants.ROLES.OFFICE_STAFF, constants.ROLES.STATION_STAFF]), orderController.confirmArrival)
+router.route('forward/:id')
+    .put(verifyToken, authorize([constants.ROLES.STATION_STAFF]), orderController.forward)
+
+router.route('/confirmArrival/:id')
+    .put(verifyToken, authorize([constants.ROLES.OFFICE_STAFF, constants.ROLES.STATION_STAFF]), orderController.confirmArrival)
 
 router.route('/delivers')
     .get(verifyToken, authorize([constants.ROLES.OFFICE_STAFF]), orderController.getDelivers)
-    .post(verifyToken, authorize([constants.ROLES.OFFICE_STAFF]), orderController.createDeliver)
+    .put(verifyToken, authorize([constants.ROLES.OFFICE_STAFF]), orderController.createDeliver)
 
 module.exports = router;

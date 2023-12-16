@@ -38,7 +38,16 @@ const getAllOrdersByOfficeStaffID = async(id) => {
     }
 }
 
-generateOrderCode = async () => {
+const validateForwardStation = (user, order) => {
+    try {
+        if (order.stations.length > 0) return order.stations[order.stations.length - 1].station_id.toString() === user.work_place.toString();
+        return order.start_office.office_id.toString() === user.work_place.toString()
+    } catch (error) {
+        return error;
+    }
+}
+
+const generateOrderCode = async () => {
     const order = {}
     // Generate a timestamp-based order ID
     const timestamp = new Date().toISOString().replace(/\D/g, ''); // Remove non-numeric characters from timestamp
@@ -53,5 +62,6 @@ module.exports = {
     getAllOrdersByStationID,
     getAllOrdersByOfficeID,
     getAllOrdersByOfficeStaffID,
-    generateOrderCode
+    generateOrderCode,
+    validateForwardStation
 }
