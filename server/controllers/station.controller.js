@@ -19,6 +19,15 @@ const stationController = {
             res.status(400).json(error);
         }
     },
+    getStationById: async(req, res) => {
+        try {
+            const station = await Station.findById(req.params.id);
+            if(!station) return res.status(404).json({message: "Station not found"});
+            res.status(200).json(station);
+        } catch (error) {
+            res.status(400).json(error);
+        }
+    },
     updateStation: async(req, res) => {
         try {
             const { name, address, station_lead, phone_number } = req.body;

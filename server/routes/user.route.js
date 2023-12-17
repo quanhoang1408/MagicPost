@@ -14,6 +14,9 @@ router.route('/update/:id')
 router.route('/')
     .get(userController.getAllUsers)
 
+router.route('/station-leads')
+    .get(userController.getAllStationLeads)
+
 router.route('/delete/:id')
     .delete(userController.deleteUser)
 

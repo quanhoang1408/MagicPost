@@ -11,6 +11,9 @@ import 'tippy.js/dist/tippy.css';
 import Button from '~/components/Button';
 import Modal from '~/components/Modal';
 import EmployeeForm from '~/components/Modal/components/EmployeeForm';
+import * as stationLeadService from '~/services/stationLeadService';
+import * as stationService from '~/services/stationService';
+// import { set } from 'mongoose';
 
 const cx = classNames.bind(styles);
 
@@ -32,9 +35,24 @@ const cx = classNames.bind(styles);
 // ]
 
 function StationLeaderManagement() {
-    const [stationLeads, setstationLeads] = useState([]);
+    const [stationLeads, setStationLeads] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [employee, setEmployee] = useState();
+
+    useEffect(() => {
+        stationLeadService.getAllStationLeads()
+            .then(data => {
+                for (let i = 0; i < data.length; i++) {
+                    stationService.getStationById(data[i].work_place).then(result => {
+                            console.log(result.name)    
+                            data[i].work_place = result.name;
+                        }
+                    );
+                }
+                setStationLeads(data);
+            })
+    }, []);
+    console.log(stationLeads)
 
     const handleEdit = (id) => {
         setShowModal(true);
@@ -91,10 +109,10 @@ function StationLeaderManagement() {
                                         <th>STT</th>
                                         <th>Tên</th>
                                         <th>Chức vụ</th>
-                                        <th>Số điện thoại</th>
+                                        {/* <th>Số điện thoại</th> */}
                                         <th>Email</th>
                                         <th>Cơ quan</th>
-                                        <th>Ngày gia nhập</th>
+                                        {/* <th>Ngày gia nhập</th> */}
                                         <th>Hành động</th>
                                     </tr>
                                 </thead>
@@ -102,14 +120,14 @@ function StationLeaderManagement() {
                                     {
                                         stationLeads.map((station_lead, index) => {
                                             return (
-                                                <tr className={cx('data-row')} key={employee.id}>
+                                                <tr className={cx('data-row')} key={station_lead._id}>
                                                     <td>{index + 1}</td>
-                                                    <td className={cx('text-align-left')}>{employee.name}</td>
-                                                    <td>{employee.role}</td>
-                                                    <td>{employee.mobile}</td>
-                                                    <td className={cx('text-align-left')}>{employee.email}</td>
-                                                    <td className={cx('text-align-left')}>{employee.workPlace}</td>
-                                                    <td>{employee.joiningDate}</td>
+                                                    <td className={cx('text-align-left')}>{station_lead.name}</td>
+                                                    <td>{station_lead.role}</td>
+                                                    {/* <td>{employee.mobile}</td> */}
+                                                    <td className={cx('text-align-left')}>{station_lead.email}</td>
+                                                    <td className={cx('text-align-left')}>{station_lead.work_place}</td>
+                                                    {/* <td>{employee.joiningDate}</td> */}
                                                     <td>
                                                         <div className={cx('actions')}>
                                                             <Tippy 

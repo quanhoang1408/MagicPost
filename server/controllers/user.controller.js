@@ -50,6 +50,15 @@ const getAllUsers = async (req, res) => {
     }
 }
 
+const getAllStationLeads = async (req, res) => {
+    try {
+        const station_leads = await User.find({role: "station_lead"});
+        res.status(200).json(station_leads);
+    } catch (err) {
+        res.status(400).json(err);
+    }
+}
+
 const updateUser = async (req, res) => {
     try {
         const { name, role, work_place } = req.body;
@@ -77,6 +86,7 @@ module.exports = {
     addUser,
     getUserInfoById,
     getAllUsers,
+    getAllStationLeads,
     updateUser,
     deleteUser
 }
