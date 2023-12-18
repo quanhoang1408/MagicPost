@@ -28,7 +28,11 @@ const userSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         rel: ['Office','Station'],
         require: false
-    }
+    },
+    work_place_name: {
+        type: String,
+        require: false
+    },
 });
 
 userSchema.pre('save', async function() {

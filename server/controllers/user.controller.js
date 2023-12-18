@@ -52,7 +52,13 @@ const getAllUsers = async (req, res) => {
 
 const getAllStationLeads = async (req, res) => {
     try {
-        const station_leads = await User.find({role: "station_lead"});
+        let station_leads = await User.find({role: "station_lead"});
+        for (let i = 0; i < station_leads.length; i++) {
+            await Station.findById(station_leads[i].work_place).then(data => {
+                station_leads[i].work_place_name = data.name;
+            });
+        }
+        console.log(station_leads)
         res.status(200).json(station_leads);
     } catch (err) {
         res.status(400).json(err);
