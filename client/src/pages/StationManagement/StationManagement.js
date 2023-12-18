@@ -49,7 +49,7 @@ function StationManagement() {
 
     const handleEdit = (id) => {
         setShowModal(true);
-        setStation(stations.find((station) => station.id === parseInt(id)));
+        setStation(stations.find((station) => station._id === id));
     }
 
     const handleDelete = (id) => {

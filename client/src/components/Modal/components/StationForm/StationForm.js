@@ -13,17 +13,32 @@ function StationForm({ station }) {
     const [mobile, setMobile] = useState(station !== undefined ? station.phone_number : '');
 
     const handleSave = () => {
-        stationService.addStation(name, address, mobile)
-            .then(data => {
-                console.log(data);
-                if (data.success === true) {
-                    alert("Thêm điểm tập kết thành công");
-                    window.location.reload();
-                }
-                else {
-                    alert(data.message);
-                }
+        if(station === undefined) {
+            stationService.addStation(name, address, mobile)
+                .then(data => {
+                    console.log(data);
+                    if (data.success === true) {
+                        alert("Thêm điểm tập kết thành công");
+                        window.location.reload();
+                    }
+                    else {
+                        alert(data.message);
+                    }
             })
+        }
+        else {
+            stationService.updateStation(station._id, name, address, mobile)
+                .then(data => {
+                    console.log(data);
+                    if (data.success === true) {
+                        alert("Cập nhật điểm tập kết thành công");
+                        window.location.reload();
+                    }
+                    else {
+                        alert(data.message);
+                    }
+            })
+        }
     }
 
     return (
