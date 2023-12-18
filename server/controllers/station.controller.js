@@ -3,12 +3,13 @@ const Station = require('../models/station.model');
 const stationController = {
     addStation: async(req, res) => {
         try {
+            console.log(req.body);
             const { name, address, phone_number } = req.body;
             station_lead = {id: null, name: null}
             const newStation = await Station.create({name, address, phone_number, station_lead});
-            res.status(201).json({message: 'Station added successfully', newStation});
+            res.status(201).json({success: true,message: 'Station added successfully', newStation});
         } catch (error) {
-            res.status(500).json({message: error.message});
+            res.status(500).json({success:false,message: error.message});
         }
     },
     getStation: async(req, res) => {

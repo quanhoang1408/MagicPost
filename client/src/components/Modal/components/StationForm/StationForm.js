@@ -4,7 +4,7 @@ import styles from './StationForm.module.scss';
 
 import Button from '~/components/Button';
 import Input from '~/components/Input';
-
+import * as stationService from '~/services/stationService';
 const cx = classNames.bind(styles);
 
 function StationForm({ station }) {
@@ -13,7 +13,17 @@ function StationForm({ station }) {
     const [mobile, setMobile] = useState(station !== undefined ? station.phone_number : '');
 
     const handleSave = () => {
-        
+        stationService.addStation(name, address, mobile)
+            .then(data => {
+                console.log(data);
+                if (data.success === true) {
+                    alert("Thêm điểm tập kết thành công");
+                    window.location.reload();
+                }
+                else {
+                    alert(data.message);
+                }
+            })
     }
 
     return (
@@ -36,7 +46,7 @@ function StationForm({ station }) {
                             className={cx('input-wrapper')}
                             type='text' 
                             value={name}
-                            placeholder='Tên nhân viên' 
+                            placeholder='Tên điểm tập kết' 
                             onChange={(e) => setName(e.target.value)}
                         />
                         <Input 
@@ -59,7 +69,7 @@ function StationForm({ station }) {
                     <div className={cx('info-detail')}>
                         <Input 
                             className={cx('input-wrapper')}
-                            type='number' 
+                            type='text' 
                             value={mobile}
                             placeholder='Số điện thoại' 
                             onChange={(e) => setMobile(e.target.value)}
