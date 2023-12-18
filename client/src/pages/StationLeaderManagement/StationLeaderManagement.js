@@ -42,13 +42,6 @@ function StationLeaderManagement() {
     useEffect(() => {
         stationLeadService.getAllStationLeads()
             .then(data => {
-                for (let i = 0; i < data.length; i++) {
-                    stationService.getStationById(data[i].work_place).then(result => {
-                            console.log(result.name)    
-                            data[i].work_place = result.name;
-                        }
-                    );
-                }
                 setStationLeads(data);
             })
     }, []);
@@ -126,7 +119,7 @@ function StationLeaderManagement() {
                                                     <td>{station_lead.role}</td>
                                                     {/* <td>{employee.mobile}</td> */}
                                                     <td className={cx('text-align-left')}>{station_lead.email}</td>
-                                                    <td className={cx('text-align-left')}>{station_lead.work_place}</td>
+                                                    <td className={cx('text-align-left')}>{station_lead.work_place_name}</td>
                                                     {/* <td>{employee.joiningDate}</td> */}
                                                     <td>
                                                         <div className={cx('actions')}>

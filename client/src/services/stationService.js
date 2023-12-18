@@ -18,6 +18,21 @@ export const getStationById = async (id) => {
     }
 }
 
+export const addStation = async (name, address, phone_number) => {
+    try {
+        console.log(name, address, phone_number);
+        const res = await httpRequest.post('stations/add',{
+            "name": name,
+            "address": address,
+            "phone_number": phone_number,
+        } );
+        // console.log(res);
+        return res;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export const updateStation = async (id, name, address, phone_number) => {
     try {
         const res = await httpRequest.put(`stations/update/${id}`, {
