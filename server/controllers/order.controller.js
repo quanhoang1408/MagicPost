@@ -63,43 +63,6 @@ const getOrders= async (req, res) => {
     }
 }
 
-const forwardToStation = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const { station } = req.body;
-        const order = await Order.findById(id);
-        const staff = await User.findOne({ email: req.user.email });
-        
-        if (!order) return res.status(404).json({ message: "Order not found" });
-        if (order.stations.length === 0
-            && order.stations[order.stations.length - 1].station_id.toString() !== staff.work_place.toString())
-            return res.status(400).json({ message: "Cannot forward order" });
-        
-        order.stations[order.stations.length - 1].send_time = new Date();
-        order.stations.push({station_id: station})
-        await order.save();
-        res.status(200).json({ message: "Order forwarded to station successfully" });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-}
-
-const forwardToOffice = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const { office } = req.body;
-        const order = await Order.findById(id);
-        
-        order.station[order.station.length - 1].send_time = new Date();
-        order.end_office = { office_id: office }
-        await order.save();
-        res.status(200).json({ message: "Order forwarded to office successfully" });
-    }
-    catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-}
-
 const forward = async (req, res) => {
     try {
         const { id } = req.params;
@@ -122,17 +85,25 @@ const forward = async (req, res) => {
     }
 }
 
-
 const confirmArrival = async (req, res) => {
     try {
         const { id } = req.params;
         const order = await Order.findById(id);
+        const staff = await User.findOne({ email: req.user.email });
         if (!order) return res.status(404).json({ message: "Order not found" });
-        
-        if (req.user.role === constants.ROLES.STATION_STAFF)
+
+        if (req.user.role === constants.ROLES.STATION_STAFF) {
+            if (order.stations[order.stations.length - 1].station_id.toString() !== staff.work_place.toString())
+                return res.status(400).json({ message: "Cannot confirm arrival" });
             order.stations[order.stations.length - 1].received_time = new Date();
-        else
+            order.stations[order.stations.length - 1].staff_id = staff.id
+        }
+        else {
+            if (order.end_office.office_id.toString() !== staff.work_place.toString())
+                return res.status(400).json({ message: "Cannot confirm arrival" });
             order.end_office.received_time = new Date();
+            order.end_office.staff_id = staff.id;
+        }
         await order.save();
         res.status(200).json({ message: "Order arrived successfully" });
     } catch (error) {
@@ -142,10 +113,9 @@ const confirmArrival = async (req, res) => {
 
 const getDelivers = async (req, res) => {
     try {
-        const { id } = req.params;
-        const order = await Order.findById(id);
-        if (!order) return res.status(404).json({ message: "Order not found" });
-        res.status(200).json(order.logs);
+        const staff = await User.findOne({ email: req.user.email });
+        const orders = await Order.find({ "end_office.office_id": staff.work_place });
+
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -167,8 +137,6 @@ const createDeliver = async (req, res) => {
 module.exports = {
     create,
     getOrders,
-    forwardToStation,
-    forwardToOffice,
     forward,
     getDelivers,
     createDeliver,
