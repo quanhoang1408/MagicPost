@@ -11,6 +11,8 @@ import 'tippy.js/dist/tippy.css';
 import Button from '~/components/Button';
 import Modal from '~/components/Modal';
 import OfficeForm from '~/components/Modal/components/OfficeForm';
+import * as officeService from '~/services/officeService';
+import formatDate from '../../utils/formatDate';
 
 const cx = classNames.bind(styles);
 
@@ -30,17 +32,39 @@ const OFFICES = [
 ]
 
 function OfficeManagement() {
-    const [offices, setOffices] = useState(OFFICES);
+    const [offices, setOffices] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [office, setOffice] = useState();
+
+    useEffect(() => {
+        officeService.getAllOffice()
+            .then(data => {
+                for (let i = 0; i < data.length; i++) {
+                    data[i].create_date = new Date(data[i].create_date);
+                    data[i].create_date = formatDate(data[i].create_date.toString());
+                }
+                console.log(data);
+                setOffices(data);
+            })
+    }, []);
 
     const handleEdit = (id) => {
         setShowModal(true);
         setOffice(offices.find((office) => office.id === parseInt(id)));
     }
 
-    const handleDelete = () => {
-
+    const handleDelete = (id) => {
+        officeService.deleteOffice(id)
+            .then(data => {
+                console.log(data);
+                if (data.success === true) {
+                    alert(data.message);
+                    window.location.reload();
+                }
+                else {
+                    alert(data.message);
+                }
+        })
     }
 
     const handlePrint = () => {
@@ -128,10 +152,10 @@ function OfficeManagement() {
                                         {
                                             offices.map((office, index) => {
                                                 return (
-                                                    <tr className={cx('data-row')} key={office.id}>
+                                                    <tr className={cx('data-row')} key={office._id}>
                                                         <td>{index + 1}</td>
                                                         <td className={cx('text-align-left')}>{office.name}</td>
-                                                        <td className={cx('text-align-left')}>{office.office_lead.name}</td>
+                                                        <td className={cx('text-align-left')}>{office.office_lead}</td>
                                                         <td>{office.phone_number}</td> 
                                                         {/* <td>{office.email}</td> */}
                                                         <td>{office.create_date}</td>
@@ -142,7 +166,7 @@ function OfficeManagement() {
                                                                     content='Sửa'
                                                                     placement='bottom'
                                                                 >
-                                                                    <Button className={cx('actions-btn')} outline onClick={() => handleEdit(office.id)}>
+                                                                    <Button className={cx('actions-btn')} outline onClick={() => handleEdit(office._id)}>
                                                                         <FontAwesomeIcon className={cx('actions-icon')} icon={faPenToSquare} />
                                                                     </Button>
                                                                 </Tippy>
@@ -152,7 +176,7 @@ function OfficeManagement() {
                                                                     content='Xóa'
                                                                     placement='bottom'
                                                                 >
-                                                                    <Button className={cx('actions-btn')} outline onClick={handleDelete}>
+                                                                    <Button className={cx('actions-btn')} outline onClick={() => handleDelete(office._id)}>
                                                                         <FontAwesomeIcon className={cx('actions-icon')} icon={faTrash} />
                                                                     </Button>
                                                                 </Tippy>
