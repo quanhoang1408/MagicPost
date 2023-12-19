@@ -19,6 +19,17 @@ const officeController = {
             res.status(400).json(error);
         }
     },
+    deleteOffice: async(req, res) => {
+        try {
+            const station = await Office.findById(req.params.id);
+            if(!station) return res.status(404).json({message: "Office not found"});
+            await Office.findByIdAndDelete(req.params.id);
+            res.status(200).json({success: true, message: "Office deleted successfully"});
+        } catch (error) {
+            res.status(500).json({success:false, message: error.message});
+        }
+    }
+
 }
 
 module.exports = officeController;
