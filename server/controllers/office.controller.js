@@ -1,20 +1,26 @@
 const Office = require('../models/office.model');
+const Station = require('../models/station.model');
 
 const officeController = {
     addOffice: async(req, res) => {
         try {
             const {name, station, address, phone_number} = req.body;
-            office_lead = null;
+            office_lead = {id: null, name: null};
             const newOffice = await Office.create({name, station,office_lead, address, phone_number});
-            res.status(201).json({message: 'Office added successfully', newOffice});
+            res.status(201).json({success: true, message: 'Office added successfully', newOffice});
         } catch (error) {
-            res.status(500).json({message: error.message});
+            res.status(500).json({success: false, message: error.message});
         }
     },
     getOffice: async(req, res) => {
         try {
-            const station = await Office.find();
-            res.status(200).json(station);
+            const office = await Office.find();
+            for (let i = 0; i < office.length; i++) {
+                await Station.findById(office[i].station).then(data => {
+                    office[i].station_name = data.name;
+                });
+            }
+            res.status(200).json(office);
         } catch (error) {
             res.status(400).json(error);
         }

@@ -17,3 +17,31 @@ export const deleteOffice = async (id) => {
         console.log(error)
     }
 }
+
+export const addOffice = async (name, address, phone_number, station) => {
+    try {
+        const res = await httpRequest.post('offices/add',{
+            "name": name,
+            "address": address,
+            "phone_number": phone_number,
+            "station": station
+        } );
+        return res;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const updateOffice = async (id, name, address, phone_number, station) => {
+    try {
+        const res = await httpRequest.put(`offices/update/${id}`, {
+            name,
+            address,
+            phone_number,
+            station
+        });
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+}

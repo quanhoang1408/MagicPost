@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import { useState } from 'react';
+import { useEffect ,useState } from 'react';
 import styles from './OfficeForm.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
@@ -7,63 +7,59 @@ import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import Button from '~/components/Button';
 import Input from '~/components/Input';
 import Popper from '~/components/Popper';
+import * as officeService from '~/services/officeService';
+import * as stationService from '~/services/stationService';
 
 const cx = classNames.bind(styles);
-
-const STATIONS = [
-    {
-        id: '1',
-        name: 'Hà Nội',
-    }, 
-    {
-        id: '2',
-        name: 'Hồ Chí Minh',
-    },
-    {
-        id: '3',
-        name: 'Đà Nẵng',
-    },
-    {
-        id: '4',
-        name: 'Hà Nội',
-    }, 
-    {
-        id: '5',
-        name: 'Hồ Chí Minh',
-    },
-    {
-        id: '6',
-        name: 'Đà Nẵng',
-    },
-    {
-        id: '7',
-        name: 'Hà Nội',
-    }, 
-    {
-        id: '8',
-        name: 'Hồ Chí Minh',
-    },
-    {
-        id: '9',
-        name: 'Đà Nẵng',
-    },
-]
 
 function OfficeForm({ office }) {
     const [name, setName] = useState(office !== undefined ? office.name : '');
     const [address, setAddress] = useState(office !== undefined ? office.address : '');
     const [mobile, setMobile] = useState(office !== undefined ? office.phone_number : '');
-    const [station, setStation] = useState(office !== undefined ? office.station : 'Chọn điểm tập kết');
-    const [stations, setStations] = useState(STATIONS);
+    const [station, setStation] = useState(office !== undefined ? office.station_name : 'Chọn điểm tập kết');
+    const [station_id, setStation_id] = useState(office !== undefined ? office.station_id : '');
+    const [stations, setStations] = useState([]);
     const [isActive, setIsActive] = useState(false);
 
-    const handleSelectItem = (e) => {
-        const item = e.currentTarget;
-        setStation(item.textContent);
+    useEffect(() => {
+        stationService.getAllStation()
+            .then(data => {
+                setStations(data);
+            })
+    }, []);
+
+    const handleSelectItem = (id) => {
+        //getIDofSelectedItem
+        setStation_id(id);
+        setStation(stations.find((station) => station._id === id).name);
     }
 
     const handleSave = () => {
-        
+        if(office === undefined) {
+            officeService.addOffice(name, address, mobile, station_id)
+                .then(data => {
+                    console.log(data);
+                    if (data.success === true) {
+                        alert("Thêm điểm giao dịch thành công");
+                        window.location.reload();
+                    }
+                    else {
+                        alert(data.message);
+                    }
+            })
+        }else{
+            officeService.updateOffice(office._id, name, address, mobile, station_id)
+                .then(data => {
+                    console.log(data);
+                    if (data.success === true) {
+                        alert("Cập nhật điểm giao dịch thành công");
+                        window.location.reload();
+                    }
+                    else {
+                        alert(data.message);
+                    }
+            })
+        }
     }
 
     return (
@@ -118,7 +114,7 @@ function OfficeForm({ office }) {
                                         <li 
                                             className={cx('select-item')}
                                             key={index}
-                                            onClick={(e) => handleSelectItem(e)} 
+                                            onClick={(e) => handleSelectItem(item._id)} 
                                         >
                                             {item.name}
                                         </li>
@@ -139,7 +135,7 @@ function OfficeForm({ office }) {
                     <div className={cx('info-detail')}>
                         <Input 
                             className={cx('input-wrapper')}
-                            type='number' 
+                            type='text' 
                             value={mobile}
                             placeholder='Số điện thoại' 
                             onChange={(e) => setMobile(e.target.value)}
