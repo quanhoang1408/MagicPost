@@ -1,26 +1,54 @@
 import classNames from 'classnames/bind';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './EmployeeForm.module.scss';
 
 import Button from '~/components/Button';
 import Input from '~/components/Input';
 
+import * as stationLeadService from '~/services/stationLeadService';
+
 const cx = classNames.bind(styles);
 
 function EmployeeForm({ employee, employeeRole }) {
     const [name, setName] = useState(employee !== undefined ? employee.name : '');
-    const [birthday, setBirthday] = useState(employee !== undefined ? employee.birthday.split('/').reverse().join('-') : '');
+    // const [birthday, setBirthday] = useState(employee !== undefined ? employee.birthday.split('/').reverse().join('-') : '');
     const [gender, setGender] = useState(employee !== undefined ? employee.gender : '');
+    const [sex, setSex] = useState('');
     const [mobile, setMobile] = useState(employee !== undefined ? employee.mobile : '');
     const [role, setRole] = useState(employee !== undefined ? employee.role : employeeRole);
+    const [role_name, setRole_name] = useState(employee !== undefined ? employee.role_name : '');
     const [workPlace, setWorkPlace] = useState(employee !== undefined ? employee.workPlace : '');
-    const [address, setAddress] = useState(employee !== undefined ? employee.address : '');
+    // const [address, setAddress] = useState(employee !== undefined ? employee.address : '');
     const [email, setEmail] = useState(employee !== undefined ? employee.email : '');
     const [password, setPassword] = useState(employee !== undefined ? employee.password : '');
-    const [joiningDate, setJoiningDate] = useState(employee !== undefined ? employee.joiningDate.split('/').reverse().join('-') : '');
+    // const [joiningDate, setJoiningDate] = useState(employee !== undefined ? employee.joiningDate.split('/').reverse().join('-') : '');
+    useEffect(() => {
+        if(role === 'Trưởng điểm tập kết'){
+            setRole_name('station_lead');
+        }
+    }, [role])
 
     const handleSave = () => {
-        
+        if(employee === undefined) {
+            //add station lead
+            if(role === 'Trưởng điểm tập kết'){
+                stationLeadService.addStationLead(email, password, name, role_name, workPlace, sex, mobile)
+                    .then(data => {
+                        console.log(data);
+                        if (data.success === true) {
+                            alert("Thêm trưởng điểm tập kết thành công");
+                            window.location.reload();
+                        }
+                        else {
+                            alert(data.message);
+                        }
+                })
+            }
+
+            //add
+        }else{
+            //update
+        }
     }
 
     return (
@@ -63,7 +91,8 @@ function EmployeeForm({ employee, employeeRole }) {
                                     id='employee-form-gender-male'
                                     type='radio' 
                                     checked={gender.toLowerCase() === 'nam'}
-                                    onChange={() => {setGender('nam')}}
+                                    onChange={() => {setGender('nam')
+                                setSex('M')}}
                                 />
                                 <label className={cx('label')} htmlFor='employee-form-gender-male'>
                                     Nam
@@ -73,7 +102,8 @@ function EmployeeForm({ employee, employeeRole }) {
                                     id='employee-form-gender-female'
                                     type='radio' 
                                     checked={gender.toLowerCase() === 'nữ'}
-                                    onChange={() => {setGender('nữ')}}
+                                    onChange={() => {setGender('nữ')
+                                setSex('F')}}
                                 />
                                 <label className={cx('label')} htmlFor='employee-form-gender-female'>
                                     Nữ
@@ -83,26 +113,26 @@ function EmployeeForm({ employee, employeeRole }) {
                     </div>
                     <div className={cx('grid-col-2-8')}>
                         <div className={cx('info-label')}>
-                            <div className={cx('label')}>
+                            {/* <div className={cx('label')}>
                                 Ngày sinh:
-                            </div>
-                            <div className={cx('label')}>
+                            </div> */}
+                            {/* <div className={cx('label')}>
                                 Ngày gia nhập:
-                            </div>
+                            </div> */}
                         </div>
                         <div className={cx('info-detail')}>
-                            <Input 
+                            {/* <Input 
                                 className={cx('input-wrapper')}
                                 type='date' 
                                 value={birthday}
                                 onChange={(e) => {setBirthday(e.target.value)}}
-                            />
-                            <Input 
+                            /> */}
+                            {/* <Input 
                                 className={cx('input-wrapper')}
                                 type='date' 
                                 value={joiningDate}
                                 onChange={(e) => {setJoiningDate(e.target.value)}}
-                            />
+                            /> */}
                         </div>
                     </div>
                 </div>
@@ -114,44 +144,44 @@ function EmployeeForm({ employee, employeeRole }) {
                             <div className={cx('label')}>
                                 Số điện thoại:
                             </div>
-                            <div className={cx('label')}>
+                            {/* <div className={cx('label')}>
                                 Email:
-                            </div>
-                        </div>
-                        <div className={cx('info-detail')}>
-                            <Input 
-                                className={cx('input-wrapper')}
-                                type='number' 
-                                value={mobile}
-                                placeholder='Số điện thoại' 
-                                onChange={(e) => setMobile(e.target.value)}
-                            />
-                            <Input 
-                                className={cx('input-wrapper')}
-                                type='email' 
-                                value={email}
-                                placeholder='Email' 
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                        </div>
-                    </div>
-                    <div className={cx('grid-col-2-8')}>
-                        <div className={cx('info-label')}>
-                            <div className={cx('label')}>
-                                Địa chỉ:
-                            </div>
-                            <div className={cx('label')}>
-                                Cơ quan:
-                            </div>
+                            </div> */}
                         </div>
                         <div className={cx('info-detail')}>
                             <Input 
                                 className={cx('input-wrapper')}
                                 type='text' 
+                                value={mobile}
+                                placeholder='Số điện thoại' 
+                                onChange={(e) => setMobile(e.target.value)}
+                            />
+                            {/* <Input 
+                                className={cx('input-wrapper')}
+                                type='email' 
+                                value={email}
+                                placeholder='Email' 
+                                onChange={(e) => setEmail(e.target.value)}
+                            /> */}
+                        </div>
+                    </div>
+                    <div className={cx('grid-col-2-8')}>
+                        <div className={cx('info-label')}>
+                            {/* <div className={cx('label')}>
+                                Địa chỉ:
+                            </div> */}
+                            <div className={cx('label')}>
+                                Cơ quan:
+                            </div>
+                        </div>
+                        <div className={cx('info-detail')}>
+                            {/* <Input 
+                                className={cx('input-wrapper')}
+                                type='text' 
                                 value={address}
                                 placeholder='Địa chỉ' 
                                 onChange={(e) => setAddress(e.target.value)}
-                            />
+                            /> */}
                             <Input 
                                 className={cx('input-wrapper')}
                                 type='text' 

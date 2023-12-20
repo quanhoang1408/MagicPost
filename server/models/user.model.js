@@ -15,6 +15,10 @@ const userSchema = new Schema({
         trim: true,
         minlength: 3
     },
+    sex: {
+        type: String,
+        require: true,
+    },
     password: {
         type: String,
         require: [true,"Password is required"],
@@ -32,6 +36,14 @@ const userSchema = new Schema({
     work_place_name: {
         type: String,
         require: false
+    },
+    phone_number: {
+        type: String,
+        require: true
+    },
+    join_date: {
+        type: Date,
+        default: Date.now,
     },
 });
 

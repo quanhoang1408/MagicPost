@@ -29,7 +29,6 @@ function OfficeForm({ office }) {
     }, []);
 
     const handleSelectItem = (id) => {
-        //getIDofSelectedItem
         setStation_id(id);
         setStation(stations.find((station) => station._id === id).name);
     }
