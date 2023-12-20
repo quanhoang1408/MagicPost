@@ -52,8 +52,16 @@ function StationLeaderManagement() {
         setEmployee(stationLeads.find((station_lead) => station_lead.id === parseInt(id)));
     }
 
-    const handleDelete = () => {
-
+    const handleDelete = (id) => {
+        stationLeadService.deleteStationLead(id)
+            .then(data => {
+                if(data.success === true) {
+                    alert("Xóa trưởng điểm thành công");
+                    window.location.reload();
+                }else{
+                    alert(data.message);
+                }
+            })
     }
 
     const handlePrint = () => {
@@ -116,7 +124,7 @@ function StationLeaderManagement() {
                                                 <tr className={cx('data-row')} key={station_lead._id}>
                                                     <td>{index + 1}</td>
                                                     <td className={cx('text-align-left')}>{station_lead.name}</td>
-                                                    <td>{station_lead.role}</td>
+                                                    <td>Trưởng điểm tập kết</td>
                                                     {/* <td>{employee.mobile}</td> */}
                                                     <td className={cx('text-align-left')}>{station_lead.email}</td>
                                                     <td className={cx('text-align-left')}>{station_lead.work_place_name}</td>
@@ -137,7 +145,7 @@ function StationLeaderManagement() {
                                                                 content='Xóa'
                                                                 placement='bottom'
                                                             >
-                                                                <Button className={cx('actions-btn')} outline onClick={handleDelete}>
+                                                                <Button className={cx('actions-btn')} outline onClick={() => handleDelete(station_lead._id)}>
                                                                     <FontAwesomeIcon className={cx('actions-icon')} icon={faTrash} />
                                                                 </Button>
                                                             </Tippy>
