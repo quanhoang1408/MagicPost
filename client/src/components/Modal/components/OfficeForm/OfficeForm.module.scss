@@ -88,6 +88,18 @@
     align-items: center;
     position: relative;
     padding: 12px;
+    cursor: pointer;
+}
+
+.select-input {
+    display: -webkit-box;
+    width: calc(100% - 20px);
+    height: 100%;
+    line-height: 1.8rem;
+    overflow: hidden;
+    word-wrap: break-word;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
 }
 
 .select-icon {

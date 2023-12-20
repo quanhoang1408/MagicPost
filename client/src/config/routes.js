@@ -8,13 +8,20 @@ const routes = {
     employee: '/employee',
     print: '/print',
 
-    stationLeaderManagement: '/station_leader_management',
+    // Office
+    officeCreateOrder: '/office_create_order',
     officeLeaderManagement: '/office_leader_management',
     officeManagement: '/office_management',
+    officeOrderInManagement: '/office_order_in_management',
+    officeOrderOutManagement: '/office_order_out_management',
+    officeEmployeeManagement: '/office_employee_management',
+    // Station
+    stationLeaderManagement: '/station_leader_management',
     stationManagement: '/station_management',
-    employeeManagement: '/employee_management',
-    orderInManagement: '/order_in_management',
-    orderOutManagement: '/order_out_management',
+    stationOrderInManagement: '/station_order_in_management',
+    stationOrderOutManagement: '/station_order_out_management',
+    stationEmployeeManagement: '/station_employee_management',
+
     orderInStatistic: '/order_in_statistic',
     orderOutStatistic: '/order_out_statistic',
 };
