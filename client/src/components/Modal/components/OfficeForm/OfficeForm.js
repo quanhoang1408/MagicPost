@@ -98,7 +98,7 @@ function OfficeForm({ office }) {
                             className={cx('input-wrapper', 'select-wrapper')}
                             onClick={() => setIsActive(!isActive)}
                         >
-                            {station}
+                            <div className={cx('select-input')}>{station}</div>
                             <FontAwesomeIcon 
                                 className={cx('select-icon')} 
                                 icon={isActive ? faChevronUp : faChevronDown} 
@@ -113,7 +113,7 @@ function OfficeForm({ office }) {
                                         <li 
                                             className={cx('select-item')}
                                             key={index}
-                                            onClick={(e) => handleSelectItem(item._id)} 
+                                            onClick={() => handleSelectItem(item._id)} 
                                         >
                                             {item.name}
                                         </li>
