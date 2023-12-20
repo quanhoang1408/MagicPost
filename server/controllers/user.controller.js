@@ -58,7 +58,7 @@ const getAllStationLeads = async (req, res) => {
                 station_leads[i].work_place_name = data.name;
             });
         }
-        console.log(station_leads)
+        // console.log(station_leads)
         res.status(200).json(station_leads);
     } catch (err) {
         res.status(400).json(err);

@@ -50,7 +50,7 @@ function OfficeManagement() {
 
     const handleEdit = (id) => {
         setShowModal(true);
-        setOffice(offices.find((office) => office.id === parseInt(id)));
+        setOffice(offices.find((office) => office._id === id));
     }
 
     const handleDelete = (id) => {
@@ -142,7 +142,7 @@ function OfficeManagement() {
                                             <th>Tên</th>
                                             <th>Quản lý</th>
                                             <th>Số điện thoại</th>
-                                            {/* <th>Email</th> */}
+                                            <th>Tập kết</th>
                                             <th>Ngày tạo</th>
                                             <th>Địa chỉ</th>
                                             <th>Hành động</th>
@@ -155,9 +155,9 @@ function OfficeManagement() {
                                                     <tr className={cx('data-row')} key={office._id}>
                                                         <td>{index + 1}</td>
                                                         <td className={cx('text-align-left')}>{office.name}</td>
-                                                        <td className={cx('text-align-left')}>{office.office_lead}</td>
+                                                        <td className={cx('text-align-left')}>{office.office_lead.name}</td>
                                                         <td>{office.phone_number}</td> 
-                                                        {/* <td>{office.email}</td> */}
+                                                        <td>{office.station_name}</td>
                                                         <td>{office.create_date}</td>
                                                         <td className={cx('text-align-left')}>{office.address}</td>
                                                         <td>

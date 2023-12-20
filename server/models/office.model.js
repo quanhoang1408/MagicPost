@@ -7,14 +7,24 @@ const officeSchema = new Schema({
         require: true,
     },
     office_lead: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        require: false,
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            require: false,
+        },
+        name: {
+            type: String,
+            require: false,
+        },
     },
     station: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Station',
         require: true,
+    },
+    station_name:{
+        type: String,
+        require: false,
     },
     address: {
         type: String,
