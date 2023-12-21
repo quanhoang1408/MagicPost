@@ -114,11 +114,11 @@ function EmployeeForm({ employee, employeeRole }) {
                     .then(data => {
                         console.log(data);
                         if (data.success === true) {
-                            alert("Cập nhật trưởng điểm tập kết thành công");
+                            toast.showSuccessToast("Cập nhật trưởng điểm tập kết thành công");
                             window.location.reload();
                         }
                         else {
-                            alert(data.message);
+                            toast.showErrorToast(data.message);
                         }
                 })
             }
