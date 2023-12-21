@@ -1,6 +1,5 @@
 const User = require('../models/user.model');
 const Station = require('../models/station.model');
-const bcrypt = require('bcryptjs');
 
 const addUser = async (req, res) => {
     try {
@@ -67,13 +66,13 @@ const getAllStationLeads = async (req, res) => {
 
 const updateUser = async (req, res) => {
     try {
-        const { name, role, work_place } = req.body;
+        const { name, sex, phone_number } = req.body;
         const user = await User.findById(req.params.id);
         if(!user) return res.status(404).json({message: "User not found"});
-        await User.updateOne({"_id" : req.params.id},{$set: { name, role, work_place} });
-        res.status(200).json({message: "User updated successfully"});
+        await User.updateOne({"_id" : req.params.id},{$set: { name, sex, phone_number} });
+        res.status(200).json({success:true, message: "User updated successfully"});
     } catch (error) {
-        res.status(500).json({message: error.message});
+        res.status(500).json({success:false, message: error.message});
     }
 }
 

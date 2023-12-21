@@ -26,6 +26,19 @@ export const addStationLead = async (email, password, name, role, work_place, se
     }
 }
 
+export const updateStationLead = async (id, name, sex, phone_number) => {
+    try{
+        const res = await httpRequest.put(`users/update/${id}`, {
+            "name": name,
+            "sex": sex,
+            "phone_number": phone_number
+    });
+    return res;
+    }catch(error){
+        console.log(error)
+    }
+}
+
 export const deleteStationLead = async (id) => {
     try {
         const res = await httpRequest.del(`users/delete/${id}`);

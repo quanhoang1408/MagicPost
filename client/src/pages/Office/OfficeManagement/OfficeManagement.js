@@ -16,21 +16,6 @@ import formatDate from '../../../utils/formatDate';
 
 const cx = classNames.bind(styles);
 
-const OFFICES = [
-    {
-        id: 1,
-        name: 'Điểm tập kết A',
-        office_lead: {
-            leaderId: 1,
-            name: 'Nguyễn Văn B',
-        },
-        phone_number: '0987654321',
-        email: 'A@gmail.com',
-        create_date: '06/04/2003',
-        address: '234 Phạm Văn Đồng, Bắc Từ Liêm, Hà Nội',
-    },
-]
-
 function OfficeManagement() {
     const [offices, setOffices] = useState([]);
     const [showModal, setShowModal] = useState(false);

@@ -18,6 +18,15 @@ export const getStationById = async (id) => {
     }
 }
 
+export const getStationHasNoLead = async () => {
+    try {
+        const res = await httpRequest.get('stations/get/hasnolead');
+        return res;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export const addStation = async (name, address, phone_number) => {
     try {
         console.log(name, address, phone_number);

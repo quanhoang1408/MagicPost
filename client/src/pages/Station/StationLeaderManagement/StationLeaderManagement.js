@@ -35,7 +35,7 @@ const EMPLOYEES = [
 ]
 
 function StationLeaderManagement() {
-    const [stationLeads, setStationLeads] = useState([...EMPLOYEES]);
+    const [stationLeads, setStationLeads] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [employee, setEmployee] = useState();
 
@@ -45,15 +45,25 @@ function StationLeaderManagement() {
                 setStationLeads(data);
             })
     }, []);
-    console.log(stationLeads)
 
     const handleEdit = (id) => {
         setShowModal(true);
-        setEmployee(stationLeads.find((station_lead) => station_lead.id === parseInt(id)));
+        setEmployee(stationLeads.find((employee) => employee._id === id));
+        console.log(employee);
     }
 
-    const handleDelete = () => {
-
+    const handleDelete = (id) => {
+        stationLeadService.deleteStationLead(id)
+            .then(data => {
+                if(data.success === true) {
+                    alert("Xóa trưởng điểm thành công");
+                    window.location.reload();
+                }
+                else {
+                    alert(data.message);
+                }
+            }
+        )
     }
 
     const handlePrint = () => {
@@ -116,7 +126,7 @@ function StationLeaderManagement() {
                                                 <tr className={cx('data-row')} key={station_lead._id}>
                                                     <td className={cx('text-align-center')}>{index + 1}</td>
                                                     <td>{station_lead.name}</td>
-                                                    <td>{station_lead.role}</td>
+                                                    <td>Trưởng điểm tập kết</td>
                                                     {/* <td>{employee.mobile}</td> */}
                                                     <td>{station_lead.email}</td>
                                                     <td>{station_lead.work_place_name}</td>
@@ -137,7 +147,7 @@ function StationLeaderManagement() {
                                                                 content='Xóa'
                                                                 placement='bottom'
                                                             >
-                                                                <Button className={cx('actions-btn')} primary onClick={handleDelete}>
+                                                                <Button className={cx('actions-btn')} primary onClick={() => handleDelete(station_lead._id)}>
                                                                     <FontAwesomeIcon className={cx('actions-icon')} icon={faTrash} />
                                                                 </Button>
                                                             </Tippy>

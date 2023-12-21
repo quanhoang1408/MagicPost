@@ -25,6 +25,14 @@ const officeController = {
             res.status(400).json(error);
         }
     },
+    getOfficeHasNoLead: async(req, res) => {
+        try {
+            const office = await Office.find({"office_lead.id" : null});
+            res.status(200).json(office);
+        } catch (error) {
+            res.status(400).json(error);
+        }
+    },
     deleteOffice: async(req, res) => {
         try {
             const station = await Office.findById(req.params.id);
