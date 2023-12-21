@@ -4,6 +4,7 @@ import { publicRoutes } from '~/routes';
 import { DefaultLayout } from '~/layouts';
 import * as userService from '~/services/userService';
 import { useState } from 'react';
+import Toast from './components/Toast';
 
 export const authUserContext = createContext();
 
@@ -17,34 +18,36 @@ function App() {
   }, []);
   return (
     <authUserContext.Provider value={authUser}>
-      <Router>
-        <div className="App">
-          <Routes>
-            {publicRoutes.map((route, index) => {
-              const Page = route.component;
-  
-              let Layout = DefaultLayout
-              if (route.layout) {
-                Layout = route.layout
-              } else if (route.layout === null) {
-                Layout = Fragment
-              }
-  
-              return (
-                <Route 
-                  key={index} 
-                  path={route.path} 
-                  element={
-                    <Layout>
-                      <Page />
-                    </Layout>
-                  } 
-                />
-              )
-            })}
-          </Routes>
-        </div>
-      </Router>
+      <Toast>
+        <Router>
+          <div className="App">
+            <Routes>
+              {publicRoutes.map((route, index) => {
+                const Page = route.component;
+    
+                let Layout = DefaultLayout
+                if (route.layout) {
+                  Layout = route.layout
+                } else if (route.layout === null) {
+                  Layout = Fragment
+                }
+    
+                return (
+                  <Route 
+                    key={index} 
+                    path={route.path} 
+                    element={
+                      <Layout>
+                        <Page />
+                      </Layout>
+                    } 
+                  />
+                )
+              })}
+            </Routes>
+          </div>
+        </Router>
+      </Toast>
     </authUserContext.Provider>
   );
 }

@@ -1,10 +1,13 @@
 import classNames from 'classnames/bind';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import styles from './StationForm.module.scss';
 
 import Button from '~/components/Button';
 import Input from '~/components/Input';
+import { ToastContext } from '~/components/Toast/Toast';
+
 import * as stationService from '~/services/stationService';
+
 const cx = classNames.bind(styles);
 
 function StationForm({ station }) {
@@ -12,17 +15,19 @@ function StationForm({ station }) {
     const [address, setAddress] = useState(station !== undefined ? station.address : '');
     const [mobile, setMobile] = useState(station !== undefined ? station.phone_number : '');
 
+    const toast = useContext(ToastContext);
+
     const handleSave = () => {
         if(station === undefined) {
             stationService.addStation(name, address, mobile)
                 .then(data => {
                     console.log(data);
                     if (data.success === true) {
-                        alert("Thêm điểm tập kết thành công");
+                        toast.showSuccessToast("Thêm điểm tập kết thành công");
                         window.location.reload();
                     }
                     else {
-                        alert(data.message);
+                        toast.showErrorToast(data.message);
                     }
             })
         }
@@ -31,11 +36,11 @@ function StationForm({ station }) {
                 .then(data => {
                     console.log(data);
                     if (data.success === true) {
-                        alert("Cập nhật điểm tập kết thành công");
+                        toast.showSuccessToast("Cập nhật điểm tập kết thành công");
                         window.location.reload();
                     }
                     else {
-                        alert(data.message);
+                        toast.showErrorToast(data.message);
                     }
             })
         }
