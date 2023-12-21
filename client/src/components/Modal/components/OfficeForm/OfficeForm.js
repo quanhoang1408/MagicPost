@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import { useEffect ,useState } from 'react';
+import { useContext, useEffect ,useState } from 'react';
 import styles from './OfficeForm.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
@@ -7,6 +7,8 @@ import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import Button from '~/components/Button';
 import Input from '~/components/Input';
 import Popper from '~/components/Popper';
+import { ToastContext } from '~/components/Toast/Toast';
+
 import * as officeService from '~/services/officeService';
 import * as stationService from '~/services/stationService';
 
@@ -20,6 +22,8 @@ function OfficeForm({ office }) {
     const [station_id, setStation_id] = useState(office !== undefined ? office.station_id : '');
     const [stations, setStations] = useState([]);
     const [isActive, setIsActive] = useState(false);
+
+    const toast = useContext(ToastContext);
 
     useEffect(() => {
         stationService.getAllStation()
@@ -39,11 +43,11 @@ function OfficeForm({ office }) {
                 .then(data => {
                     console.log(data);
                     if (data.success === true) {
-                        alert("Thêm điểm giao dịch thành công");
+                        toast.showSuccessToast("Thêm điểm giao dịch thành công");
                         window.location.reload();
                     }
                     else {
-                        alert(data.message);
+                        toast.showErrorToast(data.message);
                     }
             })
         }else{
@@ -51,11 +55,11 @@ function OfficeForm({ office }) {
                 .then(data => {
                     console.log(data);
                     if (data.success === true) {
-                        alert("Cập nhật điểm giao dịch thành công");
+                        toast.showSuccessToast("Cập nhật điểm giao dịch thành công");
                         window.location.reload();
                     }
                     else {
-                        alert(data.message);
+                        toast.showErrorToast(data.message);
                     }
             })
         }

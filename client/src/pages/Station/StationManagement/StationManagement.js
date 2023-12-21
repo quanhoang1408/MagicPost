@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import styles from './StationManagement.module.scss';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,6 +11,8 @@ import 'tippy.js/dist/tippy.css';
 import Button from '~/components/Button';
 import Modal from '~/components/Modal';
 import StationForm from '~/components/Modal/components/StationForm';
+import { ToastContext } from '~/components/Toast/Toast';
+
 import * as stationService from '~/services/stationService';
 import formatDate from '../../../utils/formatDate';
 
@@ -36,6 +38,8 @@ function StationManagement() {
     const [showModal, setShowModal] = useState(false);
     const [station, setStation] = useState();
 
+    const toast = useContext(ToastContext);
+
     useEffect(() => {
         stationService.getAllStation()
             .then(data => {
@@ -57,10 +61,10 @@ function StationManagement() {
             .then(data => {
                 console.log(data);
                 if (data.success === true) {
-                    alert(data.message);
+                    toast.showSuccessToast(data.message);
                     window.location.reload();
                 } else {
-                    alert(data.message);
+                    toast.showErrorToast(data.message);
                 }
             })
     }
