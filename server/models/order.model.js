@@ -94,6 +94,11 @@ const orderSchema = new Schema({
         type: Number,
         require: true,
     },
+    success: {
+        type: Boolean,
+        require: true,
+        default: null
+    }
 })
 
 module.exports = mongoose.model('Order', orderSchema);

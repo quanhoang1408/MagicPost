@@ -17,7 +17,6 @@ router.route('/confirmArrival/:id')
     .put(verifyToken, authorize([constants.ROLES.OFFICE_STAFF, constants.ROLES.STATION_STAFF]), orderController.confirmArrival)
 
 router.route('/delivers')
-    .get(verifyToken, authorize([constants.ROLES.OFFICE_STAFF]), orderController.getDelivers)
     .put(verifyToken, authorize([constants.ROLES.OFFICE_STAFF]), orderController.createDeliver)
 
 module.exports = router;

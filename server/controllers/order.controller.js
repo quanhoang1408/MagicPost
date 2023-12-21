@@ -28,7 +28,6 @@ const create = async (req, res) => {
             order.end_office = office
         }
         else {
-            
             order.stations.push({station_id: staff.work_place})
         }
         await order.save();
@@ -43,7 +42,6 @@ const getOrders= async (req, res) => {
     try {
         let orders;
         const user = await User.findOne({email: req.user.email})
-        // orders = await orderService.getAllOrdersByOfficeStaffID("657299afd9155a24a1916505");
         
         if (req.user.role === constants.ROLES.BOSS) {
             orders = await orderService.getAllOrders();
@@ -54,8 +52,11 @@ const getOrders= async (req, res) => {
         else if (req.user.role === constants.ROLES.OFFICE_LEAD) {
             orders = await orderService.getAllOrdersByOfficeID(user.work_place);
         }
+        else if (req.user.role === constants.ROLES.STATION_STAFF) {
+            orders = await orderService.getAllOrdersByStationStaffID(user.id);
+        }
         else {
-            orders = await orderService.getAllOrdersByOfficeStaffID("657299afd9155a24a1916505");
+            orders = await orderService.getAllOrdersByOfficeStaffID(user.id);
         }
         res.status(200).json(orders);
     } catch (error) {
@@ -71,11 +72,12 @@ const forward = async (req, res) => {
         const staff = await User.findOne({ email: req.user.email });
         
         if (!order) return res.status(404).json({ message: "Order not found" });
-        if (order.stations.length === 0
-            && order.stations[order.stations.length - 1].station_id.toString() !== staff.work_place.toString())
+        if (order.stations.length === 0)
             return res.status(400).json({ message: "Cannot forward order" });
         
+        order.stations[order.stations.length - 1].received_time = new Date();
         order.stations[order.stations.length - 1].send_time = new Date();
+        order.stations[order.stations.length - 1].staff_id = staff.id
         if (is_to_station) order.stations.push({station_id: dest_id})
         else order.end_office = { office_id: dest_id }
         await order.save();
@@ -90,20 +92,14 @@ const confirmArrival = async (req, res) => {
         const { id } = req.params;
         const order = await Order.findById(id);
         const staff = await User.findOne({ email: req.user.email });
+        
         if (!order) return res.status(404).json({ message: "Order not found" });
-
-        if (req.user.role === constants.ROLES.STATION_STAFF) {
-            if (order.stations[order.stations.length - 1].station_id.toString() !== staff.work_place.toString())
-                return res.status(400).json({ message: "Cannot confirm arrival" });
-            order.stations[order.stations.length - 1].received_time = new Date();
-            order.stations[order.stations.length - 1].staff_id = staff.id
-        }
-        else {
-            if (order.end_office.office_id.toString() !== staff.work_place.toString())
-                return res.status(400).json({ message: "Cannot confirm arrival" });
-            order.end_office.received_time = new Date();
-            order.end_office.staff_id = staff.id;
-        }
+        if (order.end_office.office_id.toString() !== staff.work_place.toString())
+            return res.status(400).json({ message: "Cannot confirm arrival" });
+        
+        order.end_office.received_time = new Date();
+        order.end_office.staff_id = staff.id;
+    
         await order.save();
         res.status(200).json({ message: "Order arrived successfully" });
     } catch (error) {
@@ -124,10 +120,13 @@ const getDelivers = async (req, res) => {
 const createDeliver = async (req, res) => {
     try {
         const { id } = req.params;
-        const { deliver } = req.body;
+        const { success } = req.body;
         const order = await Order.findById(id);
+        
         if (!order) return res.status(404).json({ message: "Order not found" });
-        await Order.updateOne({ "_id": id }, { $push: { "logs": deliver } });
+        
+        order.success = success;
+        await order.save();
         res.status(200).json({ message: "Deliver created successfully" });
     } catch (error) {
         res.status(500).json({ message: error.message });
