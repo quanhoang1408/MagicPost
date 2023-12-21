@@ -29,6 +29,14 @@ const stationController = {
             res.status(400).json(error);
         }
     },
+    getStationHasNoLead: async(req, res) => {
+        try {
+            const station = await Station.find({"station_lead.id" : null});
+            res.status(200).json(station);
+        } catch (error) {
+            res.status(400).json(error);
+        }
+    },
     updateStation: async(req, res) => {
         try {
             const { name, address, station_lead, phone_number } = req.body;

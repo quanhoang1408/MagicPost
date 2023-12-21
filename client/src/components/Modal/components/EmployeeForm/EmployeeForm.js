@@ -7,56 +7,60 @@ import Input from '~/components/Input';
 import Popper from '~/components/Popper';
 
 import * as stationLeadService from '~/services/stationLeadService';
+import * as stationService from '~/services/stationService';
+import * as officeService from '~/services/officeService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(styles);
 
-const OFFICES = [
-    {
-        id: 1,
-        name: 'Điểm giao dịch A',
-        office_lead: {
-            leaderId: 1,
-            name: 'Nguyễn Văn B',
-        },
-        phone_number: '0987654321',
-        email: 'A@gmail.com',
-        create_date: '06/04/2003',
-        address: '234 Phạm Văn Đồng, Bắc Từ Liêm, Hà Nội',
-    },
-]
-
-const STATIONS = [
-    {
-        id: 1,
-        name: 'Điểm tập kết A',
-        station_lead: {
-            leaderId: 1,
-            name: 'Nguyễn Văn B',
-        },
-        phone_number: '0987654321',
-        email: 'A@gmail.com',
-        create_date: '06/04/2003',
-        address: '234 Phạm Văn Đồng, Bắc Từ Liêm, Hà Nội',
-    },
-]
 
 function EmployeeForm({ employee, employeeRole }) {
     const [name, setName] = useState(employee !== undefined ? employee.name : '');
-    // const [birthday, setBirthday] = useState(employee !== undefined ? employee.birthday.split('/').reverse().join('-') : '');
-    const [gender, setGender] = useState(employee !== undefined ? employee.gender : '');
-    const [sex, setSex] = useState('');
-    const [mobile, setMobile] = useState(employee !== undefined ? employee.mobile : '');
+    const [gender, setGender] = useState('');
+    const [sex, setSex] = useState(employee !== undefined ? employee.sex : '');
+    const [mobile, setMobile] = useState(employee !== undefined ? employee.phone_number : '');
     const [role, setRole] = useState(employeeRole);
-    const [role_name, setRole_name] = useState(employee !== undefined ? employee.role_name : '');
+    const [role_name, setRole_name] = useState('');
     const [workPlace, setWorkPlace] = useState(employee !== undefined ? employee.work_place_name : 'Chọn nơi làm việc');
     const [workPlaces, setWorkPlaces] = useState([]);
-    // const [address, setAddress] = useState(employee !== undefined ? employee.address : '');
+    const [workPlaceId, setWorkPlaceId] = useState(employee !== undefined ? employee.work_place : '');
+    const [stations, setStations] = useState([]);
+    const [offices, setOffices] = useState([]);
     const [email, setEmail] = useState(employee !== undefined ? employee.email : '');
     const [password, setPassword] = useState(employee !== undefined ? employee.password : '');
     // const [joiningDate, setJoiningDate] = useState(employee !== undefined ? employee.joiningDate.split('/').reverse().join('-') : '');
     const [isActive, setIsActive] = useState(false);
+
+    useEffect(() => {
+        
+        //officeService
+    }, []);
+
+    useEffect(() => {
+        switch (role_name) {
+            case 'station_lead':
+                stationService.getStationHasNoLead()
+                .then(data => {
+                    setWorkPlaces(data);
+                })
+                break;
+            case 'office_lead':
+                officeService.getOfficeHasNoLead()
+                .then(data => {
+                    setWorkPlaces(data);
+                })
+                break;
+            case 'station_staff':
+                setWorkPlaces(stations);
+                break;
+            case 'office_staff':
+                setWorkPlaces(offices);
+                break;
+            default:
+                break;
+        }
+    }, [role_name]);
 
     useEffect(() => {
         switch (role) {
@@ -77,34 +81,16 @@ function EmployeeForm({ employee, employeeRole }) {
         }
     }, [role]);
 
-    useEffect(() => {
-        switch (role_name) {
-            case 'station_lead':
-                setWorkPlaces(STATIONS);
-                break;
-            case 'office_lead':
-                setWorkPlaces(OFFICES);
-                break;
-            case 'station_staff':
-                setWorkPlaces(STATIONS);
-                break;
-            case 'office_staff':
-                setWorkPlaces(OFFICES);
-                break;
-            default:
-                break;
-        }
-    }, [role_name]);
-
     const handleSelectItem = (id) => {
-        setWorkPlace(workPlaces.find(item => item.id === id).name);
+        setWorkPlaceId(id);
+        setWorkPlace(workPlaces.find(item => item._id === id).name);
     }
 
     const handleSave = () => {
         if(employee === undefined) {
             //add station lead
             if(role === 'Trưởng điểm tập kết'){
-                stationLeadService.addStationLead(email, password, name, role_name, workPlace, sex, mobile)
+                stationLeadService.addStationLead(email, password, name, role_name, workPlaceId, sex, mobile)
                     .then(data => {
                         console.log(data);
                         if (data.success === true) {
@@ -120,6 +106,19 @@ function EmployeeForm({ employee, employeeRole }) {
             //add
         }else{
             //update
+            if(role === 'Trưởng điểm tập kết'){
+                stationLeadService.updateStationLead(employee._id, name, sex, mobile)
+                    .then(data => {
+                        console.log(data);
+                        if (data.success === true) {
+                            alert("Cập nhật trưởng điểm tập kết thành công");
+                            window.location.reload();
+                        }
+                        else {
+                            alert(data.message);
+                        }
+                })
+            }
         }
     }
 
@@ -175,7 +174,7 @@ function EmployeeForm({ employee, employeeRole }) {
                                     className={cx('input-radio')}
                                     id='employee-form-gender-male'
                                     type='radio' 
-                                    checked={gender.toLowerCase() === 'nam'}
+                                    checked={sex === 'M'}
                                     onChange={() => {
                                         setGender('nam')
                                         setSex('M')
@@ -188,7 +187,7 @@ function EmployeeForm({ employee, employeeRole }) {
                                     className={cx('input-radio')}
                                     id='employee-form-gender-female'
                                     type='radio' 
-                                    checked={gender.toLowerCase() === 'nữ'}
+                                    checked={sex === 'F'}
                                     onChange={() => {
                                         setGender('nữ')
                                         setSex('F')
@@ -285,7 +284,7 @@ function EmployeeForm({ employee, employeeRole }) {
                                             <li 
                                                 className={cx('select-item')}
                                                 key={index}
-                                                onClick={() => handleSelectItem(item.id)} 
+                                                onClick={() => handleSelectItem(item._id)} 
                                             >
                                                 {item.name}
                                             </li>
