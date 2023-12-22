@@ -1,5 +1,6 @@
 const Order = require('../models/order.model');
 const User = require('../models/user.model');
+const Office = require('../models/office.model');
 const orderService = require('../services/orderService');
 const constants = require("../utils/constants");
 
@@ -28,7 +29,8 @@ const create = async (req, res) => {
             order.end_office = office
         }
         else {
-            order.stations.push({station_id: staff.work_place})
+            const office = await Office.findOne({_id: staff.work_place})
+            order.stations.push({station_id: office.station})
         }
         await order.save();
         res.status(201).json({ message: 'Order added successfully', order });
@@ -42,6 +44,7 @@ const getOrders= async (req, res) => {
     try {
         let orders;
         const user = await User.findOne({email: req.user.email})
+        console.log(user)
         
         if (req.user.role === constants.ROLES.BOSS) {
             orders = await orderService.getAllOrders();
@@ -58,6 +61,7 @@ const getOrders= async (req, res) => {
         else {
             orders = await orderService.getAllOrdersByOfficeStaffID(user.id);
         }
+        console.log(orders)
         res.status(200).json(orders);
     } catch (error) {
         res.status(400).json(error);

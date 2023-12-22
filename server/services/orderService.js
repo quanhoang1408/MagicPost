@@ -39,10 +39,13 @@ const getAllOrdersByStationStaffID = async(id) => {
         const orders = await Order.find({stations: {$elemMatch: {station_id: user.work_place}}});
         
         orders.forEach(order => {
-            if (order.stations[order.stations.length - 1].station_id === user.work_place) {
-                if (order.end_office.office_id === null)
+            if (order.stations[order.stations.length - 1].station_id.toString() === user.work_place.toString()) {
+                console.log("haha")
+                if (order.end_office === null) {
+                    console.log("hahaha")
                     result.arriving.push(order);
-                else if (order.end_office.staff_id === null) {
+                }
+                else if (order.end_office.staff_id === null || order.end_office.staff_id === undefined) {
                     order.destination = order.end_office.office_id;
                     result.forwarding.push(order);
                 }
@@ -77,10 +80,12 @@ const getAllOrdersByOfficeStaffID = async(id) => {
             arrived: [],
             finished: []
         }
-        const orders = await Order.find({end_office: {office_id: user.work_place}});
+        // const orders = await Order.find({end_office: {office_id: user.work_place}})
+        const orders = await Order.find({"end_office.office_id": user.work_place})
+        console.log(orders)
         
         orders.forEach(order => {
-            if (order.end_office.staff_id === null) {
+            if (order.end_office.staff_id === null || order.end_office.staff_id === undefined) {
                 result.arriving.push(order);
             }
             else if (order.success === null) {

@@ -68,7 +68,9 @@ const orderSchema = new Schema({
         require: true
     },
     end_office: {
-        type: office
+        type: office,
+        require: true,
+        default: null
     },
     stations: {
         type: [station],
