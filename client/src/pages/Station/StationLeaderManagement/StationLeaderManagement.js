@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import styles from './StationLeaderManagement.module.scss';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,6 +11,8 @@ import 'tippy.js/dist/tippy.css';
 import Button from '~/components/Button';
 import Modal from '~/components/Modal';
 import EmployeeForm from '~/components/Modal/components/EmployeeForm';
+import { ToastContext } from '~/components/Toast/Toast';
+
 import * as stationLeadService from '~/services/stationLeadService';
 import * as stationService from '~/services/stationService';
 // import { set } from 'mongoose';
@@ -21,6 +23,8 @@ function StationLeaderManagement() {
     const [stationLeads, setStationLeads] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [employee, setEmployee] = useState();
+
+    const toast = useContext(ToastContext);
 
     useEffect(() => {
         stationLeadService.getAllStationLeads()
@@ -38,11 +42,11 @@ function StationLeaderManagement() {
         stationLeadService.deleteStationLead(id)
             .then(data => {
                 if(data.success === true) {
-                    alert("Xóa trưởng điểm tập kết thành công");
+                    toast.showSuccessToast("Xóa trưởng điểm thành công");
                     window.location.reload();
                 }
                 else {
-                    alert(data.message);
+                    toast.showErrorToast(data.message);
                 }
             }
         )

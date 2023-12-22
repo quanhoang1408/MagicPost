@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import styles from './EmployeeForm.module.scss';
 
 import Button from '~/components/Button';
@@ -12,6 +12,7 @@ import * as stationService from '~/services/stationService';
 import * as officeService from '~/services/officeService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
+import { ToastContext } from '~/components/Toast/Toast';
 
 const cx = classNames.bind(styles);
 
@@ -32,6 +33,8 @@ function EmployeeForm({ employee, employeeRole }) {
     const [password, setPassword] = useState(employee !== undefined ? employee.password : '');
     // const [joiningDate, setJoiningDate] = useState(employee !== undefined ? employee.joiningDate.split('/').reverse().join('-') : '');
     const [isActive, setIsActive] = useState(false);
+
+    const toast = useContext(ToastContext)
 
     useEffect(() => {
         switch (role) {
@@ -92,11 +95,11 @@ function EmployeeForm({ employee, employeeRole }) {
                     .then(data => {
                         console.log(data);
                         if (data.success === true) {
-                            alert("Thêm trưởng điểm tập kết thành công");
+                            toast.showSuccessToast("Thêm trưởng điểm tập kết thành công");
                             window.location.reload();
                         }
                         else {
-                            alert(data.message);
+                            toast.showErrorToast(data.message);
                         }
                 })
             }else if(role === 'Trưởng điểm giao dịch'){
@@ -121,11 +124,11 @@ function EmployeeForm({ employee, employeeRole }) {
                     .then(data => {
                         console.log(data);
                         if (data.success === true) {
-                            alert("Cập nhật trưởng điểm tập kết thành công");
+                            toast.showSuccessToast("Cập nhật trưởng điểm tập kết thành công");
                             window.location.reload();
                         }
                         else {
-                            alert(data.message);
+                            toast.showErrorToast(data.message);
                         }
                 })
             }else if(role === 'Trưởng điểm giao dịch'){

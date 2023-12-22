@@ -6,6 +6,7 @@ import Button from '~/components/Button';
 import Input from '~/components/Input';
 import { EyeOpen, EyeClose } from "~/components/Icon";
 import { ModalContext } from "~/pages/Authentication/Authentication";
+import { ToastContext } from "~/components/Toast/Toast";
 import config from '~/config';
 
 import * as authService from '~/services/authService';
@@ -17,14 +18,15 @@ function Login() {
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const context = useContext(ModalContext);
+    const toast = useContext(ToastContext);
 
     const validate = ()=> {
-        if(email == ""){
-            alert("Vui lòng nhập email");
+        if(email === ""){
+            toast.showErrorToast("Vui lòng nhập email");
             return false;
         }
-        if(password == ""){
-            alert("Vui lòng nhập mật khẩu");
+        if(password === ""){
+            toast.showErrorToast("Vui lòng nhập mật khẩu");
             return false;
         }
         return true;
@@ -42,18 +44,18 @@ function Login() {
             .then(data => {
                 console.log(data);
                 if (data.success === true) {
-                    alert(data.message);
+                    toast.showSuccessToast(data.message);
                     console.log(data)
-                    if(data.user.role == "boss"){
+                    if(data.user.role === "boss"){
                         window.location.assign(config.routes.boss)
-                    }else if(data.user.role == "station_lead"|| data.user.role == "office_lead"){
+                    }else if(data.user.role === "station_lead"|| data.user.role == "office_lead"){
                         window.location.assign(config.routes.leader)
                     }else{
                         window.location.assign(config.routes.employee)
                     }
                     //window.location.assign(config.routes.boss)
                 } else {
-                    alert(data.message);
+                    toast.showErrorToast(data.message);
                     console.log(data);
                 }
                 
