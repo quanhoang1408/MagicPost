@@ -1,5 +1,6 @@
 const User = require('../models/user.model');
 const Station = require('../models/station.model');
+const Office = require('../models/office.model');
 
 const addUser = async (req, res) => {
     try {
@@ -19,6 +20,17 @@ const addUser = async (req, res) => {
                 return res.status(200).json({success: true, message: "Station lead created successfully", user});
             }else{
                 return res.status(400).json({success: false,message: "Station lead already exists"});
+            }
+        }
+        if( role == "office_lead"){
+            const office = await Office.findById(work_place);
+            if(!office.office_lead.id){
+                const user = await User.create({ email, name, password, role, work_place, sex, phone_number });
+                await Office.updateOne({"_id" : user.work_place},{$set: {office_lead: {id:user._id, name:user.name}} });
+                console.log("Office updated");
+                return res.status(200).json({success: true, message: "Office lead created successfully", user});
+            }else{
+                return res.status(400).json({success: false,message: "Office lead already exists"});
             }
         }
         const user = await User.create({ email, name, password, role, work_place, sex, phone_number });
@@ -57,8 +69,43 @@ const getAllStationLeads = async (req, res) => {
                 station_leads[i].work_place_name = data.name;
             });
         }
-        // console.log(station_leads)
+        console.log(station_leads)
         res.status(200).json(station_leads);
+    } catch (err) {
+        res.status(400).json(err);
+    }
+}
+
+const getAllOfficeLeads = async (req, res) => {
+    try {
+        let office_leads = await User.find({role: "office_lead"});
+        for (let i = 0; i < office_leads.length; i++) {
+            await Office.findById(office_leads[i].work_place).then(data => {
+                console.log(data);
+                office_leads[i].work_place_name = data.name;
+            });
+        }
+        res.status(200).json(office_leads);
+    } catch (err) {
+        res.status(400).json(err);
+    }
+}
+
+const getAllStaffAtStation = async (req, res) => {
+    const {id} = req.body;
+    try {
+        let staffs = await User.find({role: "station_staff", work_place: id});
+        res.status(200).json(staffs);
+    } catch (err) {
+        res.status(400).json(err);
+    }
+}
+
+const getAllStaffAtOffice = async (req, res) => {
+    const {id} = req.body;
+    try {
+        let staffs = await User.find({role: "office_staff", work_place: id});
+        res.status(200).json(staffs);
     } catch (err) {
         res.status(400).json(err);
     }
@@ -82,6 +129,9 @@ const deleteUser = async (req, res) => {
         if(user.role == "station_lead"){
             await Station.updateOne({"_id" : user.work_place},{$set: {station_lead: {id: null, name:null}} });
         }
+        if(user.role == "office_lead"){
+            await Office.updateOne({"_id" : user.work_place},{$set: {office_lead: {id: null, name:null}} });
+        }
         if(!user) return res.status(404).json({message: "User not found"});
         await User.findByIdAndDelete(req.params.id);
         res.status(200).json({success: true,message: "User deleted successfully"});
@@ -95,6 +145,9 @@ module.exports = {
     getUserInfoById,
     getAllUsers,
     getAllStationLeads,
+    getAllOfficeLeads,
+    getAllStaffAtStation,
+    getAllStaffAtOffice,
     updateUser,
     deleteUser
 }
