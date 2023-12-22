@@ -19,23 +19,6 @@ import * as stationService from '~/services/stationService';
 
 const cx = classNames.bind(styles);
 
-const EMPLOYEES = [
-    {
-        id: 1,
-        name: 'Nguyễn Văn A',
-        birthday: '06/04/2003',
-        gender: 'nữ',
-        mobile: '0987654321',
-        role: 'Trưởng điểm tập kết',
-        work_place_name: 'Toà nhà Magic Post, 144 Xuân Thủy, Cầu Giấy, Hà Nội',
-        address: '234 Phạm Văn Đồng, Bắc Từ Liêm, Hà Nội',
-        email: 'a@gmail.com',
-        password: '111111',
-        avatar: '',
-        joiningDate: '08/08/2016',
-    },
-]
-
 function StationLeaderManagement() {
     const [stationLeads, setStationLeads] = useState([]);
     const [showModal, setShowModal] = useState(false);
@@ -53,7 +36,6 @@ function StationLeaderManagement() {
     const handleEdit = (id) => {
         setShowModal(true);
         setEmployee(stationLeads.find((employee) => employee._id === id));
-        console.log(employee);
     }
 
     const handleDelete = (id) => {
@@ -68,10 +50,6 @@ function StationLeaderManagement() {
                 }
             }
         )
-    }
-
-    const handlePrint = () => {
-
     }
 
     const handleAdd = () => {

@@ -7,6 +7,7 @@ import Input from '~/components/Input';
 import Popper from '~/components/Popper';
 
 import * as stationLeadService from '~/services/stationLeadService';
+import * as officeLeadService from '~/services/officeLeadService';
 import * as stationService from '~/services/stationService';
 import * as officeService from '~/services/officeService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -36,9 +37,23 @@ function EmployeeForm({ employee, employeeRole }) {
     const toast = useContext(ToastContext)
 
     useEffect(() => {
-        
-        //officeService
-    }, []);
+        switch (role) {
+            case 'Trưởng điểm tập kết':
+                setRole_name('station_lead');
+                break;
+            case 'Trưởng điểm giao dịch':
+                setRole_name('office_lead');
+                break;
+            case 'Nhân viên điểm tập kết':
+                setRole_name('station_staff');
+                break;
+            case 'Nhân viên điểm giao dịch':
+                setRole_name('office_staff');
+                break;
+            default:
+                break;
+        }
+    }, [role]);
 
     useEffect(() => {
         switch (role_name) {
@@ -65,24 +80,7 @@ function EmployeeForm({ employee, employeeRole }) {
         }
     }, [role_name]);
 
-    useEffect(() => {
-        switch (role) {
-            case 'Trưởng điểm tập kết':
-                setRole_name('station_lead');
-                break;
-            case 'Trưởng điểm giao dịch':
-                setRole_name('office_lead');
-                break;
-            case 'Nhân viên điểm tập kết':
-                setRole_name('station_staff');
-                break;
-            case 'Nhân viên điểm giao dịch':
-                setRole_name('office_staff');
-                break;
-            default:
-                break;
-        }
-    }, [role]);
+
 
     const handleSelectItem = (id) => {
         setWorkPlaceId(id);
@@ -104,6 +102,18 @@ function EmployeeForm({ employee, employeeRole }) {
                             toast.showErrorToast(data.message);
                         }
                 })
+            }else if(role === 'Trưởng điểm giao dịch'){
+                officeLeadService.addOfficeLead(email, password, name, role_name, workPlaceId, sex, mobile)
+                    .then(data => {
+                        console.log(data);
+                        if (data.success === true) {
+                            alert("Thêm trưởng điểm giao dịch thành công");
+                            window.location.reload();
+                        }
+                        else {
+                            alert(data.message);
+                        }
+                })
             }
 
             //add
@@ -119,6 +129,18 @@ function EmployeeForm({ employee, employeeRole }) {
                         }
                         else {
                             toast.showErrorToast(data.message);
+                        }
+                })
+            }else if(role === 'Trưởng điểm giao dịch'){
+                officeLeadService.updateOfficeLead(employee._id, name, sex, mobile)
+                    .then(data => {
+                        console.log(data);
+                        if (data.success === true) {
+                            alert("Cập nhật trưởng điểm giao dịch thành công");
+                            window.location.reload();
+                        }
+                        else {
+                            alert(data.message);
                         }
                 })
             }

@@ -11,6 +11,7 @@ import 'tippy.js/dist/tippy.css';
 import Button from '~/components/Button';
 import Modal from '~/components/Modal';
 import EmployeeForm from '~/components/Modal/components/EmployeeForm';
+import * as officeLeadService from '~/services/officeLeadService';
 
 const cx = classNames.bind(styles);
 
@@ -32,21 +33,33 @@ const EMPLOYEES = [
 ]
 
 function OfficeLeaderManagement() {
-    const [employees, setEmployees] = useState([...EMPLOYEES]);
+    const [officeLeads, setOfficeLeads] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [employee, setEmployee] = useState();
 
+    useEffect(() => {
+        officeLeadService.getAllOfficeLeads()
+            .then(data => {
+                setOfficeLeads(data);
+            })
+    }, []);
+
     const handleEdit = (id) => {
         setShowModal(true);
-        setEmployee(employees.find((employee) => employee.id === parseInt(id)));
+        setEmployee(officeLeads.find((employee) => employee._id === id));
     }
 
-    const handleDelete = () => {
-
-    }
-
-    const handlePrint = () => {
-
+    const handleDelete = (id) => {
+        officeLeadService.deleteOfficeLead(id)
+            .then(data => {
+                if(data.success === true) {
+                    alert("Xóa trưởng điểm giao dịch thành công");
+                    window.location.reload();
+                }
+                else {
+                    alert(data.message);
+                }
+            })
     }
 
     const handleAdd = () => {
@@ -100,15 +113,15 @@ function OfficeLeaderManagement() {
                                 </thead>
                                 <tbody>
                                     {
-                                        employees.map((employee, index) => {
+                                        officeLeads.map((officeLead, index) => {
                                             return (
-                                                <tr className={cx('data-row')} key={employee.id}>
+                                                <tr className={cx('data-row')} key={officeLead._id}>
                                                     <td className={cx('text-align-center')}>{index + 1}</td>
-                                                    <td>{employee.name}</td>
-                                                    <td>{employee.role}</td>
+                                                    <td>{officeLead.name}</td>
+                                                    <td>Trưởng điểm giao dịch</td>
                                                     {/* <td>{employee.mobile}</td> */}
-                                                    <td>{employee.email}</td>
-                                                    <td>{employee.work_place_name}</td>
+                                                    <td>{officeLead.email}</td>
+                                                    <td>{officeLead.work_place_name}</td>
                                                     {/* <td>{employee.joiningDate}</td> */}
                                                     <td className={cx('text-align-center')}>
                                                         <div className={cx('actions')}>
@@ -116,7 +129,7 @@ function OfficeLeaderManagement() {
                                                                 content='Sửa'
                                                                 placement='bottom'
                                                             >
-                                                                <Button className={cx('actions-btn', 'btn-green')} primary onClick={() => handleEdit(employee.id)}>
+                                                                <Button className={cx('actions-btn', 'btn-green')} primary onClick={() => handleEdit(officeLead._id)}>
                                                                     <FontAwesomeIcon className={cx('actions-icon')} icon={faPen} />
                                                                 </Button>
                                                             </Tippy>
@@ -126,7 +139,7 @@ function OfficeLeaderManagement() {
                                                                 content='Xóa'
                                                                 placement='bottom'
                                                             >
-                                                                <Button className={cx('actions-btn')} primary onClick={handleDelete}>
+                                                                <Button className={cx('actions-btn')} primary onClick={()=> handleDelete(officeLead._id)}>
                                                                     <FontAwesomeIcon className={cx('actions-icon')} icon={faTrash} />
                                                                 </Button>
                                                             </Tippy>
