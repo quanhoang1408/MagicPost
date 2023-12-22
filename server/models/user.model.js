@@ -35,7 +35,8 @@ const userSchema = new Schema({
     },
     work_place_name: {
         type: String,
-        require: false
+        require: false,
+        default: null
     },
     phone_number: {
         type: String,

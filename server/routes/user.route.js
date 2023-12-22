@@ -17,6 +17,9 @@ router.route('/')
 router.route('/station-leads')
     .get(userController.getAllStationLeads)
 
+router.route('/office-leads')
+    .get(userController.getAllOfficeLeads)
+
 router.route('/delete/:id')
     .delete(userController.deleteUser)
 
