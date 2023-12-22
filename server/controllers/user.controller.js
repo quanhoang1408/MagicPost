@@ -89,7 +89,26 @@ const getAllOfficeLeads = async (req, res) => {
     } catch (err) {
         res.status(400).json(err);
     }
+}
 
+const getAllStaffAtStation = async (req, res) => {
+    const {id} = req.body;
+    try {
+        let staffs = await User.find({role: "station_staff", work_place: id});
+        res.status(200).json(staffs);
+    } catch (err) {
+        res.status(400).json(err);
+    }
+}
+
+const getAllStaffAtOffice = async (req, res) => {
+    const {id} = req.body;
+    try {
+        let staffs = await User.find({role: "office_staff", work_place: id});
+        res.status(200).json(staffs);
+    } catch (err) {
+        res.status(400).json(err);
+    }
 }
 
 const updateUser = async (req, res) => {
@@ -127,6 +146,8 @@ module.exports = {
     getAllUsers,
     getAllStationLeads,
     getAllOfficeLeads,
+    getAllStaffAtStation,
+    getAllStaffAtOffice,
     updateUser,
     deleteUser
 }
