@@ -22,6 +22,9 @@ const create = async (req, res) => {
                 weight: req.body.weight,
                 price: req.body.price,
                 contents: req.body.contents,
+                sender: req.body.sender,
+                receiver: req.body.receiver,
+                category: req.body.category,
             }
         )
         

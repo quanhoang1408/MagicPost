@@ -5,6 +5,8 @@ import styles from './OrderForm.module.scss';
 import Button from '~/components/Button';
 import Input from '~/components/Input';
 
+import * as orderService from '~/services/orderService';
+
 const cx = classNames.bind(styles);
 
 function OrderForm({ order }) {
@@ -19,6 +21,7 @@ function OrderForm({ order }) {
     const [time, setTime] = useState(order !== undefined ? order.date.time.split('h').join(':') : '');
     const [date, setDate] = useState(order !== undefined ? order.date.date.split('/').reverse().join('-') : '');
     const [weight, setWeight] = useState(order !== undefined ? order.weight : undefined);
+    const [forward, setForward] = useState(order !== undefined ? order.forward : false);
 
     const [mainPrice, setMainPrice] = useState(order !== undefined ? order.price.main : undefined);
     const [subPrice, setSubPrice] = useState(order !== undefined ? order.price.sub : undefined);
@@ -30,7 +33,33 @@ function OrderForm({ order }) {
     const [toPostalCode, setToPostalCode] = useState(order !== undefined ? order.to.postalCode : '');
 
     const handleSave = () => {
-        
+        order = {
+            contents: name,
+            weight: weight,
+            price: {
+                main: mainPrice,
+                sub: subPrice,
+                GTGT: GTGTPrice
+            },
+            sender: {
+                name: fromName,
+                address: fromAddress,
+                phone: fromPhoneNumber,
+                postal_code: fromPostalCode
+            },
+            receiver: {
+                name: toName,
+                address: toAddress,
+                phone: toPhoneNumber,
+                postal_code: toPostalCode
+            },
+            category: type,
+            forward: forward
+        }
+        orderService.createOrder(order)
+            .then(data => {
+                console.log(data);
+            })
     }
 
     return (
@@ -45,17 +74,20 @@ function OrderForm({ order }) {
                             <div className={cx('label')}>
                                 Tên đơn hàng:
                             </div>
-                            <div className={cx('label')}>
-                                Thời gian:
-                            </div>
-                            <div className={cx('label')}>
-                                Ngày:
-                            </div>
+                            {/*<div className={cx('label')}>*/}
+                            {/*    Thời gian:*/}
+                            {/*</div>*/}
+                            {/*<div className={cx('label')}>*/}
+                            {/*    Ngày:*/}
+                            {/*</div>*/}
                             <div className={cx('label')}>
                                 Trọng lượng (kg):
                             </div>
                             <div className={cx('label')}>
                                 Loại:
+                            </div>
+                            <div className={cx('label')}>
+                                Chuyển tiếp:
                             </div>
                         </div>
                         <div className={cx('info-detail')}>
@@ -66,18 +98,18 @@ function OrderForm({ order }) {
                                 placeholder='Tên đơn hàng' 
                                 onChange={(e) => setName(e.target.value)}
                             />
-                            <Input 
-                                className={cx('input-wrapper')}
-                                type='time' 
-                                value={time}
-                                onChange={(e) => {setTime(e.target.value)}}
-                            />
-                            <Input 
-                                className={cx('input-wrapper')}
-                                type='date' 
-                                value={date}
-                                onChange={(e) => {setDate(e.target.value)}}
-                            />
+                            {/*<Input */}
+                            {/*    className={cx('input-wrapper')}*/}
+                            {/*    type='time' */}
+                            {/*    value={time}*/}
+                            {/*    onChange={(e) => {setTime(e.target.value)}}*/}
+                            {/*/>*/}
+                            {/*<Input */}
+                            {/*    className={cx('input-wrapper')}*/}
+                            {/*    type='date' */}
+                            {/*    value={date}*/}
+                            {/*    onChange={(e) => {setDate(e.target.value)}}*/}
+                            {/*/>*/}
                             <Input 
                                 className={cx('input-wrapper')}
                                 type='number' 
@@ -107,6 +139,13 @@ function OrderForm({ order }) {
                                     Hàng hóa
                                 </label>
                             </div>
+                            <input
+                                className={cx('input-checkbox')}
+                                value={forward}
+                                type='checkbox'
+                                // checked={true}
+                                onChange={(e) => {setForward(e.target.checked)}}
+                            />
                         </div>
                     </div>
                     <div className={cx('grid-col-2-8')}>
@@ -183,10 +222,10 @@ function OrderForm({ order }) {
                             />
                             <Input 
                                 className={cx('input-wrapper')}
-                                type='number' 
+                                type='text'
                                 value={fromPhoneNumber}
                                 placeholder='Số điện thoại' 
-                                onChange={(e) => setFromAddress(e.target.value)}
+                                onChange={(e) => setFromPhoneNumber(e.target.value)}
                             />
                         </div>
                     </div>
@@ -205,7 +244,7 @@ function OrderForm({ order }) {
                                 type='text' 
                                 value={fromAddress}
                                 placeholder='Địa chỉ' 
-                                onChange={(e) => setFromPhoneNumber(e.target.value)}
+                                onChange={(e) => setFromAddress(e.target.value)}
                             />
                             <Input 
                                 className={cx('input-wrapper')}
