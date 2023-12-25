@@ -17,6 +17,7 @@ const Login = async (req,res,next) => {
         const token = createLoginToken(existingUser.email, existingUser._id, existingUser.role);
         console.log(token);
         res.cookie("id",existingUser._id,{httponly:true})
+        res.cookie("work_place",existingUser.work_place,{httponly:true})
         return res.cookie("token",token,{httponly:true}).json({message: "User logged in successfully", success: true, user: existingUser, token: token});
     } catch (err) {
         res.status(500).json({message: err.message});

@@ -48,11 +48,13 @@ function Login() {
                     console.log(data)
                     if(data.user.role === "boss"){
                         window.location.assign(config.routes.boss)
-                    }else if(data.user.role === "station_lead"|| data.user.role === "office_lead"){
+                    }else if(data.user.role === "station_lead" || data.user.role == "office_lead"){
+
                         window.location.assign(config.routes.leader)
                     }else{
                         window.location.assign(config.routes.employee)
                     }
+                    
                     //window.location.assign(config.routes.boss)
                 } else {
                     toast.showErrorToast(data.message);
