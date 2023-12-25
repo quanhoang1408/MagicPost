@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import styles from './StationEmployeeManagement.module.scss';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,44 +8,52 @@ import { faHouse, faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-ico
 import config from '~/config';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
+import { ToastContext } from '~/components/Toast/Toast';
 import Button from '~/components/Button';
 import Modal from '~/components/Modal';
 import EmployeeForm from '~/components/Modal/components/EmployeeForm';
 
+import * as stationEmployeeService from '~/services/stationEmployeeService';
+import * as userService from '~/services/userService';
+
 const cx = classNames.bind(styles);
 
-const EMPLOYEES = [
-    {
-        id: 1,
-        name: 'Nguyễn Văn C',
-        birthday: '06/04/2003',
-        gender: 'nữ',
-        mobile: '0987654321',
-        role: 'Nhân viên điểm tập kết',
-        work_place_name: 'Toà nhà Magic Post, 144 Xuân Thủy, Cầu Giấy, Hà Nội',
-        address: '234 Phạm Văn Đồng, Bắc Từ Liêm, Hà Nội',
-        email: 'c@gmail.com',
-        password: '111111',
-        avatar: '',
-        joiningDate: '08/08/2016',
-    },
-]
-
 function StationEmployeesManagement() {
-    const [employees, setEmployees] = useState(EMPLOYEES);
+    const [employees, setEmployees] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [employee, setEmployee] = useState();
+    const [workplace, setWorkplace] = useState();
+    const toast = useContext(ToastContext);
+
+    useEffect(()=> {
+        stationEmployeeService.getAllStationEmployees()
+            .then(data => {
+                setEmployees(data);
+            })
+        userService.getUserById()
+            .then(data => {
+                setWorkplace(data.work_place);
+            })
+    }, []);
 
     const handleEdit = (id) => {
         setShowModal(true);
-        setEmployee(employees.find((employee) => employee.id === parseInt(id)));
+        setEmployee(employees.find((employee) => employee._id === id));
     }
 
-    const handleDelete = () => {
-
+    const handleDelete = (id) => {
+        stationEmployeeService.deleteStationEmployee(id)
+            .then(data => {
+                if(data.success === true) {
+                    window.location.reload();
+                    toast.showSuccessToast("Xóa nhân viên thành công");
+                }
+            }
+        )
     }
 
     const handleAdd = () => {
+        console.log(document.cookie.split(';')[1].split('=')[1]);
         setShowModal(true);
         setEmployee();
     }
@@ -98,7 +106,7 @@ function StationEmployeesManagement() {
                                                 <tr className={cx('data-row')} key={employee.id}>
                                                     <td className={cx('text-align-center')}>{index + 1}</td>
                                                     <td>{employee.name}</td>
-                                                    <td>{employee.role}</td>
+                                                    <td>Nhân viên điểm tập kết</td>
                                                     {/* <td>{employee.mobile}</td> */}
                                                     <td>{employee.email}</td>
                                                     {/* <td>{employee.joiningDate}</td> */}
@@ -109,7 +117,7 @@ function StationEmployeesManagement() {
                                                                 content='Sửa'
                                                                 placement='bottom'
                                                             >
-                                                                <Button className={cx('actions-btn', 'btn-green')} primary onClick={() => handleEdit(employee.id)}>
+                                                                <Button className={cx('actions-btn', 'btn-green')} primary onClick={() => handleEdit(employee._id)}>
                                                                     <FontAwesomeIcon className={cx('actions-icon')} icon={faPen} />
                                                                 </Button>
                                                             </Tippy>
@@ -119,7 +127,7 @@ function StationEmployeesManagement() {
                                                                 content='Xóa'
                                                                 placement='bottom'
                                                             >
-                                                                <Button className={cx('actions-btn')} primary onClick={handleDelete}>
+                                                                <Button className={cx('actions-btn')} primary onClick={() => handleDelete(employee._id)}>
                                                                     <FontAwesomeIcon className={cx('actions-icon')} icon={faTrash} />
                                                                 </Button>
                                                             </Tippy>
@@ -139,7 +147,7 @@ function StationEmployeesManagement() {
     
                 {showModal && 
                     <Modal className={cx('modal')} onClose={handleCloseModal}>
-                        <EmployeeForm employee={employee} employeeRole='Nhân viên điểm tập kết' />
+                        <EmployeeForm employee={employee} employeeRole='Nhân viên điểm tập kết' workplace={workplace}/>
                     </Modal>
                 }
             </div>

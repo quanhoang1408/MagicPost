@@ -149,7 +149,7 @@ function StationLeaderManagement() {
     
                 {showModal && 
                     <Modal className={cx('modal')} onClose={handleCloseModal}>
-                        <EmployeeForm employee={employee} employeeRole='Trưởng điểm tập kết' />
+                        <EmployeeForm employee={employee} employeeRole='Trưởng điểm tập kết'/>
                     </Modal>
                 }
             </div>

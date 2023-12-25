@@ -18,6 +18,15 @@ export const getOfficeHasNoLead = async () => {
     }
 }
 
+export const getOfficeById = async (id) => {
+    try {
+        const res = await httpRequest.get(`offices/${id}`);
+        return res;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export const deleteOffice = async (id) => {
     try {
         const res = await httpRequest.del(`offices/delete/${id}`);

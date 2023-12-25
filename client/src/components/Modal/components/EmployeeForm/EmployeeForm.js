@@ -10,6 +10,8 @@ import * as stationLeadService from '~/services/stationLeadService';
 import * as officeLeadService from '~/services/officeLeadService';
 import * as stationService from '~/services/stationService';
 import * as officeService from '~/services/officeService';
+import * as stationEmployeeService from '~/services/stationEmployeeService';
+import * as officeEmployeeService from '~/services/officeEmployeeService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { ToastContext } from '~/components/Toast/Toast';
@@ -17,14 +19,14 @@ import { ToastContext } from '~/components/Toast/Toast';
 const cx = classNames.bind(styles);
 
 
-function EmployeeForm({ employee, employeeRole }) {
+function EmployeeForm({ employee, employeeRole, workplace}) {
     const [name, setName] = useState(employee !== undefined ? employee.name : '');
     const [gender, setGender] = useState('');
     const [sex, setSex] = useState(employee !== undefined ? employee.sex : '');
     const [mobile, setMobile] = useState(employee !== undefined ? employee.phone_number : '');
     const [role, setRole] = useState(employeeRole);
     const [role_name, setRole_name] = useState('');
-    const [workPlace, setWorkPlace] = useState(employee !== undefined ? employee.work_place_name : 'Chọn nơi làm việc');
+    const [workPlace, setWorkPlace] = useState('');
     const [workPlaces, setWorkPlaces] = useState([]);
     const [workPlaceId, setWorkPlaceId] = useState(employee !== undefined ? employee.work_place : '');
     const [stations, setStations] = useState([]);
@@ -60,20 +62,36 @@ function EmployeeForm({ employee, employeeRole }) {
             case 'station_lead':
                 stationService.getStationHasNoLead()
                 .then(data => {
+                    setWorkPlace(employee !== undefined ? employee.work_place_name : 'Chọn nơi làm việc');
                     setWorkPlaces(data);
                 })
                 break;
             case 'office_lead':
                 officeService.getOfficeHasNoLead()
                 .then(data => {
+                    setWorkPlace(employee !== undefined ? employee.work_place_name : 'Chọn nơi làm việc');
                     setWorkPlaces(data);
                 })
                 break;
             case 'station_staff':
-                setWorkPlaces(stations);
+                if(workplace !== undefined){
+                    stationService.getStationById(workplace)
+                    .then(data => {
+                        setWorkPlace(data.name);
+                    })
+                }else{
+                    setWorkPlace(employee !== undefined ? employee.work_place_name : 'Chọn nơi làm việc');
+                }
                 break;
             case 'office_staff':
-                setWorkPlaces(offices);
+                if(workplace !== undefined){
+                    officeService.getOfficeById(workplace)
+                    .then(data => {
+                        setWorkPlace(data.name);
+                    })
+                }else{
+                    setWorkPlace(employee !== undefined ? employee.work_place_name : 'Chọn nơi làm việc');
+                }
                 break;
             default:
                 break;
@@ -89,7 +107,6 @@ function EmployeeForm({ employee, employeeRole }) {
 
     const handleSave = () => {
         if(employee === undefined) {
-            //add station lead
             if(role === 'Trưởng điểm tập kết'){
                 stationLeadService.addStationLead(email, password, name, role_name, workPlaceId, sex, mobile)
                     .then(data => {
@@ -114,8 +131,31 @@ function EmployeeForm({ employee, employeeRole }) {
                             alert(data.message);
                         }
                 })
+            }else if(role === 'Nhân viên điểm tập kết'){
+                stationEmployeeService.addStationEmployee(email, password, name, role_name, workplace, sex, mobile)
+                    .then(data => {
+                        console.log(data);
+                        if (data.success === true) {
+                            alert("Thêm nhân viên điểm tập kết thành công");
+                            window.location.reload();
+                        }
+                        else {
+                            alert(data.message);
+                        }
+                })
+            }else if(role === 'Nhân viên điểm giao dịch'){
+                officeEmployeeService.addOfficeEmployee(email, password, name, role_name, workplace, sex, mobile)
+                    .then(data => {
+                        console.log(data);
+                        if (data.success === true) {
+                            alert("Thêm nhân viên điểm giao dịch thành công");
+                            window.location.reload();
+                        }
+                        else {
+                            alert(data.message);
+                        }
+                })
             }
-
             //add
         }else{
             //update
@@ -137,6 +177,30 @@ function EmployeeForm({ employee, employeeRole }) {
                         console.log(data);
                         if (data.success === true) {
                             alert("Cập nhật trưởng điểm giao dịch thành công");
+                            window.location.reload();
+                        }
+                        else {
+                            alert(data.message);
+                        }
+                })
+            }else if(role === 'Nhân viên điểm tập kết'){
+                stationEmployeeService.updateStationEmployee(employee._id, name, sex, mobile)
+                    .then(data => {
+                        console.log(data);
+                        if (data.success === true) {
+                            alert("Cập nhật nhân viên điểm tập kết thành công");
+                            window.location.reload();
+                        }
+                        else {
+                            alert(data.message);
+                        }
+                })
+            }else if(role === 'Nhân viên điểm giao dịch'){
+                officeEmployeeService.updateOfficeEmployee(employee._id, name, sex, mobile)
+                    .then(data => {
+                        console.log(data);
+                        if (data.success === true) {
+                            alert("Cập nhật nhân viên điểm giao dịch thành công");
                             window.location.reload();
                         }
                         else {

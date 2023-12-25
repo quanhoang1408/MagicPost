@@ -92,9 +92,14 @@ const getAllOfficeLeads = async (req, res) => {
 }
 
 const getAllStaffAtStation = async (req, res) => {
-    const {id} = req.body;
+    const id = req.cookies.work_place;
     try {
         let staffs = await User.find({role: "station_staff", work_place: id});
+        for (let i = 0; i < staffs.length; i++) {
+            await Station.findById(staffs[i].work_place).then(data => {
+                staffs[i].work_place_name = data.name;
+            });
+        }
         res.status(200).json(staffs);
     } catch (err) {
         res.status(400).json(err);
@@ -102,7 +107,7 @@ const getAllStaffAtStation = async (req, res) => {
 }
 
 const getAllStaffAtOffice = async (req, res) => {
-    const {id} = req.body;
+    const id = req.cookies.work_place;
     try {
         let staffs = await User.find({role: "office_staff", work_place: id});
         res.status(200).json(staffs);
