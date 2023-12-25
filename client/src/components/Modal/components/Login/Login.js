@@ -44,11 +44,11 @@ function Login() {
             .then(data => {
                 console.log(data);
                 if (data.success === true) {
-                    toast.showSuccessToast(data.message);
+                    // toast.showSuccessToast(data.message);
                     console.log(data)
                     if(data.user.role === "boss"){
                         window.location.assign(config.routes.boss)
-                    }else if(data.user.role === "station_lead"|| data.user.role == "office_lead"){
+                    }else if(data.user.role === "station_lead"|| data.user.role === "office_lead"){
                         window.location.assign(config.routes.leader)
                     }else{
                         window.location.assign(config.routes.employee)
