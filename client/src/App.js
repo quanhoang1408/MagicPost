@@ -9,7 +9,7 @@ import Toast from './components/Toast';
 export const authUserContext = createContext();
 
 function App() {
-  const [authUser, setAuthUser] = useState({});
+  const [authUser, setAuthUser] = useState();
   useEffect(() => {
     userService.getUserById()
       .then(data => {
