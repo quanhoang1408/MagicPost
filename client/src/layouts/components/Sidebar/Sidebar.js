@@ -11,16 +11,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const cx = classNames.bind(styles);
 
 function Sidebar() {
-    const authUser = useContext(authUserContext);
-    const [role, setRole] = useState('station_leader');
+    const [role, setRole] = useState();
     const [subMenu, setSubMenu] = useState([]);
     const [menuItem, setMenuItem] = useState();
+
+    const authUser = useContext(authUserContext);
     const menuRef = useRef();
 
     // Get role of user
     useEffect(() => {
         if (authUser && authUser.role) {
             setRole(authUser.role);
+            // console.log('[sidebar]', authUser);
         }
     }, [authUser]);
     

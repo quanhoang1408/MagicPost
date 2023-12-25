@@ -1,19 +1,21 @@
 import { useContext, useEffect, useState } from "react";
 
+import { authUserContext } from '~/App';
 import { ToastContext } from "~/components/Toast/Toast";
 import Button from '~/components/Button';
 
 function Home() {
+    const [isLoaded, setIsLoad] = useState(false);
+    const authUser = useContext(authUserContext);
     const toast = useContext(ToastContext);
-    const [user, setUser] = useState();
 
     useEffect(() => {
-        setUser('hoang anh');
-    }, []);
-
-    useEffect(() => {
-        toast.showSuccessToast('Thêm thành công')
-    }, [user]);
+        if (authUser && !isLoaded) {
+            toast.showSuccessToast('Đăng nhập thành công');
+            setIsLoad(true);
+            // console.log('[leader]', authUser);
+        }
+    }, [authUser]);
 
     const handleSuccess = () => {
         toast.showSuccessToast('Đăng nhập thành công')
