@@ -9,12 +9,14 @@ import Button from "~/components/Button";
 import Image from '~/components/Image';
 import Menu from '~/components/Menu';
 import { UserIcon, LogOutIcon } from "~/components/Icon";
+import { authUserContext } from '~/App';
 import * as authService from '~/services/authService';
 
 const cx = classNames.bind(styles);
 
 function Header() {
-    const [isUser, setIsUser] = useState(true);
+    const authUser = useContext(authUserContext);
+    
     const MENU_ITEMS = [
         {
             icon: <UserIcon />,
@@ -56,7 +58,7 @@ function Header() {
                 </Link>
 
                 <div className={cx('action')}>
-                    {isUser ? (
+                    {authUser ? (
                         <Menu
                             className={cx('header-menu-list')}
                             items={MENU_ITEMS}

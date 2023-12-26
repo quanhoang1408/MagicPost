@@ -166,20 +166,22 @@ function Station() {
                                         <tr>
                                             <th className={cx('text-align-center')}>STT</th>
                                             <th>Tên</th>
+                                            <th>Code</th>
                                             <th>Trạng thái</th>
                                             <th>Từ</th>
                                             <th>Thời gian</th>
                                             <th>Đến</th>
-                                            <th className={cx('text-align-center')}>Hành động</th>
+                                            <th>Cước</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {
                                             orders.map((order, index) => {
                                                 return (
-                                                    <tr className={cx('data-row')} key={order.id}>
+                                                    <tr className={cx('data-row')} key={index}>
                                                         <td className={cx('text-align-center')}>{index + 1}</td>
                                                         <td>{order.name}</td>
+                                                        <td>{order.from.postalCode}</td>
                                                         <td className={cx('text-align-center')}>
                                                             <div className={cx('order-status', { 
                                                                 active: (order.status === 'Đã đến') ? 'active' : '', 
@@ -190,28 +192,7 @@ function Station() {
                                                         <td>{order.from.address}</td>
                                                         <td>{order.date.date}</td>
                                                         <td>{order.to.address}</td>
-                                                        <td className={cx('text-align-center')}>
-                                                            <div className={cx('actions')}>
-                                                                <Tippy 
-                                                                    content='Xác nhận'
-                                                                    placement='bottom'
-                                                                >
-                                                                    <Button className={cx('actions-btn', 'btn-green')} primary onClick={() => handleEdit(order.id)}>
-                                                                        <FontAwesomeIcon className={cx('actions-icon')} icon={faCheck} />
-                                                                    </Button>
-                                                                </Tippy>
-                                                            </div>
-                                                            <div className={cx('actions')}>
-                                                                <Tippy 
-                                                                    content='Hủy'
-                                                                    placement='bottom'
-                                                                >
-                                                                    <Button className={cx('actions-btn')} primary onClick={handleDelete}>
-                                                                        <FontAwesomeIcon className={cx('actions-icon')} icon={faXmark} />
-                                                                    </Button>
-                                                                </Tippy>
-                                                            </div>
-                                                        </td>
+                                                        <td>{new Intl.NumberFormat().format(parseInt(order.price.main) + parseInt(order.price.sub) + parseInt(order.price.GTGT))} VND</td>
                                                     </tr>
                                                 )
                                             })

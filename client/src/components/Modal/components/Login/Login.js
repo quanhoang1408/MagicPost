@@ -45,17 +45,18 @@ function Login() {
                 console.log(data);
                 if (data.success === true) {
                     // toast.showSuccessToast(data.message);
-                    console.log(data)
+                    // console.log(data)
                     if(data.user.role === "boss"){
-                        window.location.assign(config.routes.boss)
-                    }else if(data.user.role === "station_lead" || data.user.role == "office_lead"){
-
-                        window.location.assign(config.routes.leader)
+                        window.history.pushState({ prevUrl: window.location.href }, null, config.routes.boss);
+                        window.location.assign(config.routes.boss);
+                    }else if(data.user.role === "station_lead" || data.user.role === "office_lead"){
+                        window.history.pushState({ prevUrl: window.location.href }, null, config.routes.leader);
+                        window.location.assign(config.routes.leader);
                     }else{
-                        window.location.assign(config.routes.employee)
+                        window.history.pushState({ prevUrl: window.location.href }, null, config.routes.employee);
+                        window.location.assign(config.routes.employee);
                     }
                     
-                    //window.location.assign(config.routes.boss)
                 } else {
                     toast.showErrorToast(data.message);
                     console.log(data);

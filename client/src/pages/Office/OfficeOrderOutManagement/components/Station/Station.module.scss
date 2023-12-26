@@ -175,18 +175,8 @@
         margin: 0 4px;
         padding: 12px;
     }
-    
-    & tr th:last-child,
-    & tr td:last-child {
-        position: sticky;
-        right: 0;
-        min-width: 120px;
-        background-color: var(--white);
-    }
 
-    & .data-row:hover,
-    & .data-row:hover th:last-child,
-    & .data-row:hover td:last-child {
+    & .data-row:hover {
         background-color: #f6f6f6;
     }
 }

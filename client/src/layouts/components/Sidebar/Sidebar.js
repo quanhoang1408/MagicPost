@@ -22,6 +22,7 @@ function Sidebar() {
     useEffect(() => {
         if (authUser && authUser.role) {
             setRole(authUser.role);
+            // setRole('office_staff');
             // console.log('[sidebar]', authUser);
         }
     }, [authUser]);
@@ -150,19 +151,23 @@ function Sidebar() {
     }
     
     useEffect(() => {
-        handleSetMenuItem(role);
+        if (!!role) {
+            handleSetMenuItem(role);
+        }
     }, [role]);
 
     // Find all sub menu
     useEffect(() => {
-        const menu = menuRef.current;
-        const menuList = menu.childNodes;
-        
-        menuList.forEach(item => {
-            if (item.tagName.toLowerCase() === 'nav') {
-                setSubMenu((prev) => ([...prev, item]));
-            }
-        });
+        if (!!menuItem) {
+            const menu = menuRef.current;
+            const menuList = menu.childNodes;
+            
+            menuList.forEach(item => {
+                if (item.tagName.toLowerCase() === 'nav') {
+                    setSubMenu((prev) => ([...prev, item]));
+                }
+            });
+        }
     }, [menuItem]);
 
     // Active menu item when click on sub menu item

@@ -29,29 +29,15 @@ function Menu({
 
             return (
                 <div key={index}>
-                    {!!item.to ? (
-                        <Link to={item.to}>
-                            <MenuItem 
-                                data={item}
-                                onClick={() => {
-                                    if (isParent) 
-                                        setHistory(prev => [...prev, item.children]);
-                                    else
-                                        onChange(item);
-                                }}
-                            />
-                        </Link>
-                    ) : (
-                        <MenuItem 
-                            data={item}
-                            onClick={() => {
-                                if (isParent) 
-                                    setHistory(prev => [...prev, item.children]);
-                                else
-                                    onChange(item);
-                            }}
-                        />
-                    )}
+                    <MenuItem 
+                        data={item}
+                        onClick={() => {
+                            if (isParent) 
+                                setHistory(prev => [...prev, item.children]);
+                            else
+                                onChange(item);
+                        }}
+                    />
                 </div>
             );
         });

@@ -4,105 +4,127 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse, faPenToSquare, faPlus, faPrint, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faHouse, faXmark } from '@fortawesome/free-solid-svg-icons';
 import config from '~/config';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import Button from '~/components/Button';
 import Modal from '~/components/Modal';
 import OrderForm from '~/components/Modal/components/OrderForm';
-import Customer from './components/Customer';
-import Station from './components/Station';
 
 const cx = classNames.bind(styles);
 
-const CUSTOMER_TAB = 0;
-const STATION_TAB = 1;
+const ORDERS = [
+    {
+        id: 1,
+        name: 'Product 1',
+        from: {
+            name: 'Nguyen Van A',
+            address: 'Ho Chi Minh',
+            phoneNumber: '0123456789',
+            postalCode: '10179',
+        },
+        type: 'Tài liệu',
+        date: {
+            time: '07h52',
+            date: '18/10/2023',
+        },
+        to: {
+            name: 'Nguyen Van B',
+            address: 'Da Nang',
+            phoneNumber: '0987654321',
+            postalCode: '10179',
+        },
+        price: {
+            main: 9500,
+            sub: 1900,
+            GTGT: 0,
+        },
+        weight: 30,
+        status: 'Đã đến',
+    },{
+        id: 2,
+        name: 'Product 2',
+        from: {
+            name: 'Nguyen Van C',
+            address: 'Ho Chi Minh',
+            phoneNumber: '0123456789',
+            postalCode: '10179',
+        },
+        type: 'Hàng hóa',
+        date: {
+            time: '07h52',
+            date: '18/10/2023',
+        },
+        to: {
+            name: 'Nguyen Van D',
+            address: 'Da Nang',
+            phoneNumber: '0987654321',
+            postalCode: '10179',
+        },
+        price: {
+            main: 9500,
+            sub: 1900,
+            GTGT: 0,
+        },
+        weight: 30,
+        status: 'Đang chuyển',
+    },{
+        id: 3,
+        name: 'Product 3',
+        from: {
+            name: 'Nguyen Van E',
+            address: 'Ho Chi Minh',
+            phoneNumber: '0123456789',
+            postalCode: '10179',
+        },
+        type: 'Tài liệu',
+        date: {
+            time: '07h52',
+            date: '18/10/2023',
+        },
+        to: {
+            name: 'Nguyen Van F',
+            address: 'Da Nang',
+            phoneNumber: '0987654321',
+            postalCode: '10179',
+        },
+        price: {
+            main: 9500,
+            sub: 1900,
+            GTGT: 0,
+        },
+        weight: 30,
+        status: 'Đã đến',
+    },
+]
 
 function OfficeOrderInManagement() {
-    const [currentTab, setCurrentTab] = useState(CUSTOMER_TAB);
-    const [children, setChildren] = useState(<Customer />);
-    const orderTabRef = useRef();
+    const [orders, setOrders] = useState(ORDERS);
+    const [showModal, setShowModal] = useState(false);
+    const [order, setOrder] = useState();
 
-    useEffect(() => {
-        const orderTab = orderTabRef.current;
-        const tabs = [...orderTab.childNodes].slice(0, orderTab.childNodes.length - 1);
-        const line = [...orderTab.childNodes].at(orderTab.childNodes.length - 1);
-
-        tabs.forEach(tab => {
-            if (tab.classList.contains(cx('active'))) {
-                line.style.left = `${tab.offsetLeft}px`;
-                line.style.width = `${tab.offsetWidth}px`;
-            }
-        });
-    }, []);
-
-    const handleTabClick = (e) => {
-        const orderTab = orderTabRef.current;
-        const tabs = [...orderTab.childNodes].slice(0, orderTab.childNodes.length - 1);
-        const line = [...orderTab.childNodes].at(orderTab.childNodes.length - 1);
-        const tab = e.currentTarget;
-        
-        tabs.forEach(tab => {
-            if (tab.classList.contains(cx('active'))) {
-                tab.classList.remove(cx('active'));
-            }
-            if (!tab.classList.contains(cx('disable'))) {
-                tab.classList.add(cx('disable'));
-            }
-        });
-
-        if (tab.classList.contains(cx('disable'))) {
-            tab.classList.remove(cx('disable'));
-        }
-        if (!tab.classList.contains(cx('active'))) {
-            tab.classList.add(cx('active'));
-        }
-
-        tabs.forEach((tab, index) => {
-            if (tab.classList.contains(cx('active'))) {
-                line.style.left = `${tab.offsetLeft}px`;
-                line.style.width = `${tab.offsetWidth}px`;
-                setCurrentTab(index);
-            }
-        });
+    const handleEdit = (id) => {
+        setShowModal(true);
+        setOrder(orders.find((order) => order.id === parseInt(id)));
     }
 
-    const handleTabHover = (e) => {
-        const orderTab = orderTabRef.current;
-        const line = [...orderTab.childNodes].at(orderTab.childNodes.length - 1);
-        const tab = e.currentTarget;
+    const handleDelete = () => {
 
-        line.style.left = `${tab.offsetLeft}px`;
-        line.style.width = `${tab.offsetWidth}px`;
     }
 
-    const handleTabNotHover = (e) => {
-        const orderTab = orderTabRef.current;
-        const tabs = [...orderTab.childNodes].slice(0, orderTab.childNodes.length - 1);
-        const line = [...orderTab.childNodes].at(orderTab.childNodes.length - 1);
+    const handlePrint = () => {
 
-        tabs.forEach(tab => {
-            if (tab.classList.contains(cx('active'))) {
-                line.style.left = `${tab.offsetLeft}px`;
-                line.style.width = `${tab.offsetWidth}px`;
-            }
-        });
     }
 
-    useEffect(() => {
-        switch(currentTab) {
-            case CUSTOMER_TAB:
-                setChildren(<Customer />);
-                break;
-            case STATION_TAB:
-                setChildren(<Station />);
-                break;
-            default:
-                setChildren(<Customer />);
-                break;
-        }
-    }, [currentTab]);
+    const handleAdd = () => {
+        setShowModal(true);
+        setOrder();
+    }
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    }
     
     return (
         <div className={cx('wrapper')}>
@@ -126,30 +148,102 @@ function OfficeOrderInManagement() {
                         </li>
                     </ul>
                 </div>
-                
-                <div className={cx('statistic-tab')} ref={orderTabRef}>
-                    <Button 
-                        className={cx('statistic-tab-btn', 'active')} 
-                        onClick={(e) => handleTabClick(e)}
-                        onMouseOver={(e) => handleTabHover(e)}
-                        onMouseOut={(e) => handleTabNotHover(e)}
-                    >
-                        Từ khách hàng
-                    </Button>
-                    <Button 
-                        className={cx('statistic-tab-btn', 'disable')} 
-                        onClick={(e) => handleTabClick(e)}
-                        onMouseOver={(e) => handleTabHover(e)}
-                        onMouseOut={(e) => handleTabNotHover(e)}
-                    >
-                        Từ điểm tập kết
-                    </Button>
-                    <div className={cx('statistic-tab-line')}></div>
-                </div>
 
                 <div className={cx('content')}>
-                    {children}
+                    <div className={cx('content-section', 'grid-col-4')}>
+                        <div className={cx('card', 'info-card', 'bg-purple')}>
+                            <div className={cx('info-wrapper')}>
+                                <h3 className={cx('info-header')}>Đơn trong ngày</h3>
+                                <h2 className={cx('info-number')}>0</h2>
+                            </div>
+                        </div>
+                        <div className={cx('card', 'info-card', 'bg-blue')}>
+                            <div className={cx('info-wrapper')}>
+                                <h3 className={cx('info-header')}>Đơn trong tháng</h3>
+                                <h2 className={cx('info-number')}>0</h2>
+                            </div>
+                        </div>
+                        <div className={cx('card', 'info-card', 'bg-green')}>
+                            <div className={cx('info-wrapper')}>
+                                <h3 className={cx('info-header')}>Đơn trong năm</h3>
+                                <h2 className={cx('info-number')}>3</h2>
+                            </div>
+                        </div>
+                        <div className={cx('card', 'info-card', 'bg-orange')}>
+                            <div className={cx('info-wrapper')}>
+                                <h3 className={cx('info-header')}>Tổng số đơn hàng</h3>
+                                <h2 className={cx('info-number')}>3</h2>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div className={cx('content-section')}>
+                        <div className={cx('card', 'table-card')}>
+                            <div className={cx('table-wrapper')}>
+                                <h3 className={cx('table-header')}>Đơn hàng nhận</h3>
+                                <table className={cx('table')} rules='rows'>
+                                    <thead>
+                                        <tr>
+                                            <th className={cx('text-align-center')}>STT</th>
+                                            <th>Tên</th>
+                                            <th>Code</th>
+                                            <th>Trạng thái</th>
+                                            <th>Từ</th>
+                                            <th>Thời gian</th>
+                                            <th>Đến</th>
+                                            <th>Cước</th>
+                                            <th className={cx('text-align-center')}>Hành động</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {
+                                            orders.map((order, index) => {
+                                                return (
+                                                    <tr className={cx('data-row')} key={index}>
+                                                        <td className={cx('text-align-center')}>{index + 1}</td>
+                                                        <td>{order.name}</td>
+                                                        <td>{order.from.postalCode}</td>
+                                                        <td className={cx('text-align-center')}>
+                                                            <div className={cx('order-status', { 
+                                                                active: (order.status === 'Đã đến') ? 'active' : '', 
+                                                            })}>
+                                                                {order.status}
+                                                            </div>
+                                                        </td>
+                                                        <td>{order.from.address}</td>
+                                                        <td>{order.date.date}</td>
+                                                        <td>{order.to.address}</td>
+                                                        <td>{new Intl.NumberFormat().format(parseInt(order.price.main) + parseInt(order.price.sub) + parseInt(order.price.GTGT))} VND</td>
+                                                        <td className={cx('text-align-center')}>
+                                                            {(order.status === 'Đã đến') &&
+                                                                <div className={cx('actions')}>
+                                                                    <Tippy 
+                                                                        content='Xác nhận'
+                                                                        placement='bottom'
+                                                                    >
+                                                                        <Button className={cx('actions-btn', 'btn-green')} primary onClick={() => handleEdit(order.id)}>
+                                                                            <FontAwesomeIcon className={cx('actions-icon')} icon={faCheck} />
+                                                                        </Button>
+                                                                    </Tippy>
+                                                                </div>
+                                                            }
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            })
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+    
+                {showModal && 
+                    <Modal className={cx('modal')} onClose={handleCloseModal}>
+                        <OrderForm order={order} />
+                    </Modal>
+                }
             </div>
         </div>
     );
