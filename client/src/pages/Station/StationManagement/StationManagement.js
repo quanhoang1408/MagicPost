@@ -150,7 +150,7 @@ function StationManagement() {
                                         {
                                             stations.map((station, index) => {
                                                 return (
-                                                    <tr className={cx('data-row')} key={station.id}>
+                                                    <tr className={cx('data-row')} key={index}>
                                                         <td>{index + 1}</td>
                                                         <td className={cx('text-align-left')}>{station.name}</td>
                                                         <td className={cx('text-align-left')}>{station.station_lead.name}</td>

@@ -141,7 +141,7 @@ function OfficeManagement() {
                                         {
                                             offices.map((office, index) => {
                                                 return (
-                                                    <tr className={cx('data-row')} key={office._id}>
+                                                    <tr className={cx('data-row')} key={index}>
                                                         <td>{index + 1}</td>
                                                         <td className={cx('text-align-left')}>{office.name}</td>
                                                         <td className={cx('text-align-left')}>{office.office_lead.name}</td>

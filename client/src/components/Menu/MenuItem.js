@@ -13,6 +13,7 @@ function MenuItem({ data, onClick }) {
             className={classes} 
             leftIcon={data.icon}
             href={data.href}
+            to={data.to}
             onClick={onClick}
         >
             {data.title}

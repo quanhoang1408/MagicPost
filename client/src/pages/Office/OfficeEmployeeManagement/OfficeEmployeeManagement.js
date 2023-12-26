@@ -106,7 +106,7 @@ function OfficeEmployeesManagement() {
                                     {
                                         employees.map((employee, index) => {
                                             return (
-                                                <tr className={cx('data-row')} key={employee.id}>
+                                                <tr className={cx('data-row')} key={index}>
                                                     <td className={cx('text-align-center')}>{index + 1}</td>
                                                     <td>{employee.name}</td>
                                                     <td>Nhân viên điểm giao dịch</td>

@@ -166,10 +166,12 @@ function Customer() {
                                         <tr>
                                             <th className={cx('text-align-center')}>STT</th>
                                             <th>Tên</th>
+                                            <th>Code</th>
                                             <th>Trạng thái</th>
                                             <th>Từ</th>
                                             <th>Thời gian</th>
                                             <th>Đến</th>
+                                            <th>Cước</th>
                                             <th className={cx('text-align-center')}>Hành động</th>
                                         </tr>
                                     </thead>
@@ -177,9 +179,10 @@ function Customer() {
                                         {
                                             orders.map((order, index) => {
                                                 return (
-                                                    <tr className={cx('data-row')} key={order.id}>
+                                                    <tr className={cx('data-row')} key={index}>
                                                         <td className={cx('text-align-center')}>{index + 1}</td>
                                                         <td>{order.name}</td>
+                                                        <td>{order.from.postalCode}</td>
                                                         <td className={cx('text-align-center')}>
                                                             <div className={cx('order-status', { 
                                                                 active: (order.status === 'Đã đến') ? 'active' : '', 
@@ -190,6 +193,7 @@ function Customer() {
                                                         <td>{order.from.address}</td>
                                                         <td>{order.date.date}</td>
                                                         <td>{order.to.address}</td>
+                                                        <td>{new Intl.NumberFormat().format(parseInt(order.price.main) + parseInt(order.price.sub) + parseInt(order.price.GTGT))} VND</td>
                                                         <td className={cx('text-align-center')}>
                                                             <div className={cx('actions')}>
                                                                 <Tippy 

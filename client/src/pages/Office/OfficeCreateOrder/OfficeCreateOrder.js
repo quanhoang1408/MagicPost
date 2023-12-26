@@ -109,10 +109,6 @@ function OfficeCreateOrder() {
         setOrder(orders.find((order) => order.id === parseInt(id)));
     }
 
-    const handleDelete = () => {
-
-    }
-
     const handlePrint = () => {
 
     }
@@ -211,16 +207,6 @@ function OfficeCreateOrder() {
                                                                 >
                                                                     <Button className={cx('actions-btn', 'btn-green')} primary onClick={() => handleEdit(order.id)}>
                                                                         <FontAwesomeIcon className={cx('actions-icon')} icon={faPen} />
-                                                                    </Button>
-                                                                </Tippy>
-                                                            </div>
-                                                            <div className={cx('actions')}>
-                                                                <Tippy 
-                                                                    content='Xóa'
-                                                                    placement='bottom'
-                                                                >
-                                                                    <Button className={cx('actions-btn')} primary onClick={handleDelete}>
-                                                                        <FontAwesomeIcon className={cx('actions-icon')} icon={faTrash} />
                                                                     </Button>
                                                                 </Tippy>
                                                             </div>
