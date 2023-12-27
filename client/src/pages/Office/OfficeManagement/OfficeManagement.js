@@ -123,14 +123,14 @@ function OfficeManagement() {
                                 <table className={cx('table')} rules='rows'>
                                     <thead>
                                         <tr>
-                                            <th>STT</th>
+                                            <th className={cx('text-align-center')}>STT</th>
                                             <th>Tên</th>
                                             <th>Quản lý</th>
                                             <th>Số điện thoại</th>
                                             <th>Tập kết</th>
                                             <th>Ngày tạo</th>
                                             <th>Địa chỉ</th>
-                                            <th>Hành động</th>
+                                            <th className={cx('text-align-center')}>Hành động</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -138,14 +138,14 @@ function OfficeManagement() {
                                             offices.map((office, index) => {
                                                 return (
                                                     <tr className={cx('data-row')} key={index}>
-                                                        <td>{index + 1}</td>
-                                                        <td className={cx('text-align-left')}>{office.name}</td>
-                                                        <td className={cx('text-align-left')}>{office.office_lead.name}</td>
+                                                        <td className={cx('text-align-center')}>{index + 1}</td>
+                                                        <td>{office.name}</td>
+                                                        <td>{office.office_lead.name}</td>
                                                         <td>{office.phone_number}</td> 
                                                         <td>{office.station_name}</td>
                                                         <td>{office.create_date}</td>
-                                                        <td className={cx('text-align-left')}>{office.address}</td>
-                                                        <td>
+                                                        <td>{office.address}</td>
+                                                        <td className={cx('text-align-center')}>
                                                             <div className={cx('actions')}>
                                                                 <Tippy 
                                                                     content='Sửa'

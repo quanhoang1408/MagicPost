@@ -5,6 +5,9 @@ import styles from './EmployeeForm.module.scss';
 import Button from '~/components/Button';
 import Input from '~/components/Input';
 import Popper from '~/components/Popper';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
+import { ToastContext } from '~/components/Toast/Toast';
 
 import * as stationLeadService from '~/services/stationLeadService';
 import * as officeLeadService from '~/services/officeLeadService';
@@ -12,16 +15,12 @@ import * as stationService from '~/services/stationService';
 import * as officeService from '~/services/officeService';
 import * as stationEmployeeService from '~/services/stationEmployeeService';
 import * as officeEmployeeService from '~/services/officeEmployeeService';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
-import { ToastContext } from '~/components/Toast/Toast';
 
 const cx = classNames.bind(styles);
 
 
 function EmployeeForm({ employee, employeeRole, workplace, handleCloseModal}) {
     const [name, setName] = useState(employee !== undefined ? employee.name : '');
-    const [gender, setGender] = useState('');
     const [sex, setSex] = useState(employee !== undefined ? employee.sex : '');
     const [mobile, setMobile] = useState(employee !== undefined ? employee.phone_number : '');
     const [role, setRole] = useState(employeeRole);
@@ -29,8 +28,6 @@ function EmployeeForm({ employee, employeeRole, workplace, handleCloseModal}) {
     const [workPlace, setWorkPlace] = useState('');
     const [workPlaces, setWorkPlaces] = useState([]);
     const [workPlaceId, setWorkPlaceId] = useState(employee !== undefined ? employee.work_place : '');
-    const [stations, setStations] = useState([]);
-    const [offices, setOffices] = useState([]);
     const [email, setEmail] = useState(employee !== undefined ? employee.email : '');
     const [password, setPassword] = useState(employee !== undefined ? employee.password : '');
     // const [joiningDate, setJoiningDate] = useState(employee !== undefined ? employee.joiningDate.split('/').reverse().join('-') : '');
@@ -273,7 +270,6 @@ function EmployeeForm({ employee, employeeRole, workplace, handleCloseModal}) {
                                     type='radio' 
                                     checked={sex === 'M'}
                                     onChange={() => {
-                                        setGender('nam')
                                         setSex('M')
                                     }}
                                 />
@@ -286,7 +282,6 @@ function EmployeeForm({ employee, employeeRole, workplace, handleCloseModal}) {
                                     type='radio' 
                                     checked={sex === 'F'}
                                     onChange={() => {
-                                        setGender('nữ')
                                         setSex('F')
                                     }}
                                 />

@@ -22,7 +22,7 @@ function Sidebar() {
     useEffect(() => {
         if (authUser && authUser.role) {
             // setRole(authUser.role);
-            setRole('office_staff');
+            setRole('station_lead');
             // console.log('[sidebar]', authUser);
         }
     }, [authUser]);
@@ -75,17 +75,7 @@ function Sidebar() {
                     <>
                         <MenuItem className={cx('menu-item')} title='Trang chủ' to={config.routes.leader} icon={<FontAwesomeIcon icon={faHouse} />} />
                         <MenuItem className={cx('menu-item')} title='Quản lý nhân viên' icon={<FontAwesomeIcon icon={faUserGroup} />} to={config.routes.stationEmployeeManagement} />
-                        <MenuItem 
-                            className={cx('menu-item', 'has-sub-menu')} 
-                            title='Quản lý đơn hàng' 
-                            icon={<FontAwesomeIcon icon={faFilePen} />} 
-                            onClick={(e) => handleToggleSubMenu(e)}
-                        >
-                            <Menu className={cx('sub-menu')}>
-                                <MenuItem className={cx('sub-menu-item')} title='Đơn hàng nhận' to={config.routes.stationOrderInManagement} />
-                                <MenuItem className={cx('sub-menu-item')} title='Đơn hàng gửi' to={config.routes.stationOrderOutManagement} />
-                            </Menu>
-                        </MenuItem>
+                        <MenuItem className={cx('menu-item')} title='Quản lý đơn hàng' to={config.routes.stationOrderManagement} icon={<FontAwesomeIcon icon={faFilePen} />} />
                     </>
                 );
                 break;
@@ -112,17 +102,7 @@ function Sidebar() {
                 setMenuItem (
                     <>
                         <MenuItem className={cx('menu-item')} title='Trang chủ' to={config.routes.employee} icon={<FontAwesomeIcon icon={faHouse} />} />
-                        <MenuItem 
-                            className={cx('menu-item', 'has-sub-menu')} 
-                            title='Quản lý đơn hàng' 
-                            icon={<FontAwesomeIcon icon={faFilePen} />} 
-                            onClick={(e) => handleToggleSubMenu(e)}
-                        >
-                            <Menu className={cx('sub-menu')}>
-                                <MenuItem className={cx('sub-menu-item')} title='Đơn hàng nhận' to={config.routes.stationOrderInManagement} />
-                                <MenuItem className={cx('sub-menu-item')} title='Đơn hàng gửi' to={config.routes.stationOrderOutManagement} />
-                            </Menu>
-                        </MenuItem>
+                        <MenuItem className={cx('menu-item')} title='Quản lý đơn hàng' to={config.routes.stationOrderManagement} icon={<FontAwesomeIcon icon={faFilePen} />} />
                     </>
                 );
                 break;

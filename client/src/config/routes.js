@@ -18,8 +18,7 @@ const routes = {
     // Station
     stationLeaderManagement: '/station_leader_management',
     stationManagement: '/station_management',
-    stationOrderInManagement: '/station_order_in_management',
-    stationOrderOutManagement: '/station_order_out_management',
+    stationOrderManagement: '/station_order_management',
     stationEmployeeManagement: '/station_employee_management',
 
     orderInStatistic: '/order_in_statistic',

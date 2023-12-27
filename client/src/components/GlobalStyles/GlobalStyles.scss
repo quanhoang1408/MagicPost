@@ -68,6 +68,15 @@ a {
     text-decoration: none;
 }
 
+input[type='number'] {
+    &::-webkit-inner-spin-button {
+        -webkit-appearance: none; //* Clear default arrow */
+    } 
+    &::-webkit-outer-spin-button {
+        -webkit-appearance: none; //* Clear default arrow */
+    }
+}
+
 // Fonts embeded
 @font-face{
     font-family: TikTokFont;

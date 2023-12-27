@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import styles from './StationOrderInManagement.module.scss';
+import styles from './StationOrderManagement.module.scss';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -11,17 +11,19 @@ import 'tippy.js/dist/tippy.css';
 import Button from '~/components/Button';
 import Modal from '~/components/Modal';
 import OrderForm from '~/components/Modal/components/OrderForm';
-import Office from './components/Office';
-import Station from './components/Station';
+import OrderIn from './components/OrderIn';
+import OrderOut from './components/OrderOut';
+import Complete from './components/Complete';
 
 const cx = classNames.bind(styles);
 
-const OFFICE_TAB = 0;
-const STATION_TAB = 1;
+const ORDER_IN_TAB = 0;
+const ORDER_OUT_TAB = 1;
+const COMPLETE_TAB = 2;
 
-function StationOrderInManagement() {
-    const [currentTab, setCurrentTab] = useState(OFFICE_TAB);
-    const [children, setChildren] = useState(<Office />);
+function StationOrderManagement() {
+    const [currentTab, setCurrentTab] = useState(ORDER_IN_TAB);
+    const [children, setChildren] = useState(<OrderIn />);
     const orderTabRef = useRef();
 
     useEffect(() => {
@@ -92,14 +94,16 @@ function StationOrderInManagement() {
 
     useEffect(() => {
         switch(currentTab) {
-            case OFFICE_TAB:
-                setChildren(<Office />);
+            case ORDER_IN_TAB:
+                setChildren(<OrderIn />);
                 break;
-            case STATION_TAB:
-                setChildren(<Station />);
+            case ORDER_OUT_TAB:
+                setChildren(<OrderOut />);
+                break;
+            case COMPLETE_TAB:
+                setChildren(<Complete />);
                 break;
             default:
-                setChildren(<Office />);
                 break;
         }
     }, [currentTab]);
@@ -110,7 +114,7 @@ function StationOrderInManagement() {
                 <div className={cx('header-wrapper')}>
                     <ul className={cx('breadcrumb')}>
                         <li className={cx('breadcrumb-item')}>
-                            <h3 className={cx('header')}>Quản lý đơn hàng nhận</h3>
+                            <h3 className={cx('header')}>Quản lý đơn hàng</h3>
                         </li>
                         <li className={cx('breadcrumb-item')}>
                             <Link to={config.routes.employee}>
@@ -121,9 +125,9 @@ function StationOrderInManagement() {
                         <li className={cx('breadcrumb-item')}>
                             Quản lý đơn hàng
                         </li>
-                        <li className={cx('breadcrumb-item')}>
+                        {/* <li className={cx('breadcrumb-item')}>
                             Đơn hàng nhận
-                        </li>
+                        </li> */}
                     </ul>
                 </div>
                 
@@ -134,7 +138,7 @@ function StationOrderInManagement() {
                         onMouseOver={(e) => handleTabHover(e)}
                         onMouseOut={(e) => handleTabNotHover(e)}
                     >
-                        Từ điểm giao dịch
+                        Đang đến
                     </Button>
                     <Button 
                         className={cx('statistic-tab-btn', 'disable')} 
@@ -142,7 +146,15 @@ function StationOrderInManagement() {
                         onMouseOver={(e) => handleTabHover(e)}
                         onMouseOut={(e) => handleTabNotHover(e)}
                     >
-                        Từ điểm tập kết
+                        Đang gửi
+                    </Button>
+                    <Button 
+                        className={cx('statistic-tab-btn', 'disable')} 
+                        onClick={(e) => handleTabClick(e)}
+                        onMouseOver={(e) => handleTabHover(e)}
+                        onMouseOut={(e) => handleTabNotHover(e)}
+                    >
+                        Hoàn thành
                     </Button>
                     <div className={cx('statistic-tab-line')}></div>
                 </div>
@@ -155,4 +167,4 @@ function StationOrderInManagement() {
     );
 }
 
-export default StationOrderInManagement;
+export default StationOrderManagement;
