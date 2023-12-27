@@ -51,7 +51,7 @@ const office = new Schema({
 const client = new Schema({
     name: String,
     phone: String,
-    email: String,
+    postal_code: String,
     address: String
 }, {
     _id: false
@@ -93,8 +93,23 @@ const orderSchema = new Schema({
         require: true,
     },
     price: {
-        type: Number,
+        main: {
+            type: Number,
+            require: true
+        },
+        sub: {
+            type: Number,
+            require: true
+        },
+        GTGT: {
+            type: Number,
+            require: true
+        }
+    },
+    category: {
+        type: String,
         require: true,
+        default: 'N/A'
     },
     success: {
         type: Boolean,
