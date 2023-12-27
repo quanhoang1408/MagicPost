@@ -8,3 +8,12 @@ export const getUserById = async () => {
         console.log(error)
     }
 }
+
+export const updateUserById = async (id, name, sex, phone_number) => {
+    try {
+        const res = await httpRequest.put(`users/update/${id}`, {name, sex, phone_number});
+        return res;
+    } catch (error) {
+        console.log(error)
+    }
+}

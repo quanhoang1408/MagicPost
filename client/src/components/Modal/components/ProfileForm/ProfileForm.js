@@ -5,13 +5,15 @@ import styles from './ProfileForm.module.scss';
 import Button from '~/components/Button';
 import Input from '~/components/Input';
 import Image from '~/components/Image';
+import * as userService from '~/services/userService';
 
 const cx = classNames.bind(styles);
 
 function ProfileForm({ data }) {
-    const [avatar, setAvatar] = useState(data !== undefined ? data.avatar : '');
+    const [avatar, setAvatar] = useState('');
     const [name, setName] = useState(data !== undefined ? data.name : '');
-    const [gender, setGender] = useState(data !== undefined ? data.gender : '');
+    const [sex, setSex] = useState(data !== undefined ? data.sex : '');
+    const [gender, setGender] = useState('');
     const [mobile, setMobile] = useState(data !== undefined ? data.phone_number : '');
     const [previewAvatar, setPreviewAvatar] = useState();
     
@@ -21,6 +23,16 @@ function ProfileForm({ data }) {
         }
     }, [previewAvatar]);
     
+    useEffect(() => {
+        if(data !== undefined) {
+            if(data.sex === 'M') {
+                setGender('Nam');
+            } else {
+                setGender('Nữ');
+            }
+        }
+    }, [data]);
+
     const handlePreviewImage = (e) => {
         const file = e.target.files[0];
 
@@ -30,7 +42,18 @@ function ProfileForm({ data }) {
     }
 // console.log(previewAvatar === undefined);
     const handleSave = () => {
-        
+        if(gender === 'Nam') {
+            setSex('M');
+        }else {
+            setSex('F');
+        }
+        userService.updateUserById(data._id, name, sex, mobile)
+            .then(data => {
+                if(data.success === true) {
+                    alert ('Cập nhật thông tin thành công');
+                    window.location.reload();
+                }
+            })
     }
 
     return (

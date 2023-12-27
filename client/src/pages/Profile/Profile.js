@@ -1,5 +1,5 @@
 import classNames from "classnames/bind";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from './Profile.module.scss';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
@@ -8,6 +8,7 @@ import Image from '~/components/Image';
 import Button from '~/components/Button';
 import Modal from '~/components/Modal';
 import ProfileForm from '~/components/Modal/components/ProfileForm';
+import * as userService from '~/services/userService';
 
 const cx = classNames.bind(styles);
 
@@ -23,10 +24,20 @@ const USER = {
 }
 
 function Profile() {
-    const [user, setUser] = useState(USER);
+    const [user, setUser] = useState({});
     const [showModal, setShowModal] = useState(false);
+    const [avatar, setAvatar] = useState('');
+    
+    useEffect(() => {
+        userService.getUserById()
+            .then(data => {
+                setUser(data);
+            })
+    }, []);
 
+    console.log(user);
     const handleOpenModal = () => {
+        
         setShowModal(true);
     }
 
@@ -42,7 +53,7 @@ function Profile() {
                         <div className={cx('user-info-wrapper')}>
                             <Image 
                                 className={cx('user-image')}
-                                src={user.avatar}
+                                src={avatar}
                                 alt={user.name}
                             />
                             <div className={cx('user-info')}>
@@ -99,7 +110,7 @@ function Profile() {
                                 </div>
                                 <div className={cx('info-detail')}>
                                     <div className={cx('info-data')}>
-                                        {user.gender}
+                                        {user.sex}
                                     </div>
                                 </div>
                             </div>
