@@ -225,7 +225,7 @@ function Station() {
     
                 {showModal && 
                     <Modal className={cx('modal')} onClose={handleCloseModal}>
-                        <OrderForm order={order} />
+                        <OrderForm order={order} handleCloseModal={handleCloseModal} />
                     </Modal>
                 }
             </div>

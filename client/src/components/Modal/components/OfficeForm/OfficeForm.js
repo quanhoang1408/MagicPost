@@ -14,7 +14,7 @@ import * as stationService from '~/services/stationService';
 
 const cx = classNames.bind(styles);
 
-function OfficeForm({ office }) {
+function OfficeForm({ office, handleCloseModal }) {
     const [name, setName] = useState(office !== undefined ? office.name : '');
     const [address, setAddress] = useState(office !== undefined ? office.address : '');
     const [mobile, setMobile] = useState(office !== undefined ? office.phone_number : '');
@@ -44,7 +44,8 @@ function OfficeForm({ office }) {
                     console.log(data);
                     if (data.success === true) {
                         toast.showSuccessToast("Thêm điểm giao dịch thành công");
-                        window.location.reload();
+                        // window.location.reload();
+                        handleCloseModal();
                     }
                     else {
                         toast.showErrorToast(data.message);
@@ -56,7 +57,8 @@ function OfficeForm({ office }) {
                     console.log(data);
                     if (data.success === true) {
                         toast.showSuccessToast("Cập nhật điểm giao dịch thành công");
-                        window.location.reload();
+                        // window.location.reload();
+                        handleCloseModal();
                     }
                     else {
                         toast.showErrorToast(data.message);
@@ -88,7 +90,7 @@ function OfficeForm({ office }) {
                             className={cx('input-wrapper')}
                             type='text' 
                             value={name}
-                            placeholder='Tên nhân viên' 
+                            placeholder='Tên điểm giao dịch' 
                             onChange={(e) => setName(e.target.value)}
                         />
                         <Input 

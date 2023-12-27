@@ -4,7 +4,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse, faPenToSquare, faPlus, faPrint, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faPen, faPlus, faPrint, faTrash } from '@fortawesome/free-solid-svg-icons';
 import config from '~/config';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
@@ -49,7 +49,7 @@ function StationManagement() {
                 }
                 setStations(data);
             })
-    }, []);
+    }, [stations]);
 
     const handleEdit = (id) => {
         setShowModal(true);
@@ -62,7 +62,7 @@ function StationManagement() {
                 console.log(data);
                 if (data.success === true) {
                     toast.showSuccessToast(data.message);
-                    window.location.reload();
+                    // window.location.reload();
                 } else {
                     toast.showErrorToast(data.message);
                 }
@@ -164,8 +164,8 @@ function StationManagement() {
                                                                     content='Sửa'
                                                                     placement='bottom'
                                                                 >
-                                                                    <Button className={cx('actions-btn')} outline onClick={() => handleEdit(station._id)}>
-                                                                        <FontAwesomeIcon className={cx('actions-icon')} icon={faPenToSquare} />
+                                                                    <Button className={cx('actions-btn', 'btn-green')} primary onClick={() => handleEdit(station._id)}>
+                                                                        <FontAwesomeIcon className={cx('actions-icon')} icon={faPen} />
                                                                     </Button>
                                                                 </Tippy>
                                                             </div>
@@ -174,7 +174,7 @@ function StationManagement() {
                                                                     content='Xóa'
                                                                     placement='bottom'
                                                                 >
-                                                                    <Button className={cx('actions-btn')} outline onClick= {()=> handleDelete(station._id)}>
+                                                                    <Button className={cx('actions-btn')} primary onClick= {()=> handleDelete(station._id)}>
                                                                         <FontAwesomeIcon className={cx('actions-icon')} icon={faTrash} />
                                                                     </Button>
                                                                 </Tippy>
@@ -195,7 +195,7 @@ function StationManagement() {
     
                 {showModal && 
                     <Modal className={cx('modal')} onClose={handleCloseModal}>
-                        <StationForm station={station} />
+                        <StationForm station={station} handleCloseModal={handleCloseModal} />
                     </Modal>
                 }
             </div>

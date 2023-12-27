@@ -19,7 +19,7 @@ import { ToastContext } from '~/components/Toast/Toast';
 const cx = classNames.bind(styles);
 
 
-function EmployeeForm({ employee, employeeRole, workplace}) {
+function EmployeeForm({ employee, employeeRole, workplace, handleCloseModal}) {
     const [name, setName] = useState(employee !== undefined ? employee.name : '');
     const [gender, setGender] = useState('');
     const [sex, setSex] = useState(employee !== undefined ? employee.sex : '');
@@ -113,7 +113,8 @@ function EmployeeForm({ employee, employeeRole, workplace}) {
                         console.log(data);
                         if (data.success === true) {
                             toast.showSuccessToast("Thêm trưởng điểm tập kết thành công");
-                            window.location.reload();
+                            // window.location.reload();
+                            handleCloseModal();
                         }
                         else {
                             toast.showErrorToast(data.message);
@@ -124,11 +125,12 @@ function EmployeeForm({ employee, employeeRole, workplace}) {
                     .then(data => {
                         console.log(data);
                         if (data.success === true) {
-                            alert("Thêm trưởng điểm giao dịch thành công");
-                            window.location.reload();
+                            toast.showSuccessToast("Thêm trưởng điểm giao dịch thành công");
+                            // window.location.reload();
+                            handleCloseModal();
                         }
                         else {
-                            alert(data.message);
+                            toast.showErrorToast(data.message);
                         }
                 })
             }else if(role === 'Nhân viên điểm tập kết'){
@@ -136,11 +138,12 @@ function EmployeeForm({ employee, employeeRole, workplace}) {
                     .then(data => {
                         console.log(data);
                         if (data.success === true) {
-                            alert("Thêm nhân viên điểm tập kết thành công");
-                            window.location.reload();
+                            toast.showSuccessToast("Thêm nhân viên điểm tập kết thành công");
+                            // window.location.reload();
+                            handleCloseModal();
                         }
                         else {
-                            alert(data.message);
+                            toast.showErrorToast(data.message);
                         }
                 })
             }else if(role === 'Nhân viên điểm giao dịch'){
@@ -148,11 +151,12 @@ function EmployeeForm({ employee, employeeRole, workplace}) {
                     .then(data => {
                         console.log(data);
                         if (data.success === true) {
-                            alert("Thêm nhân viên điểm giao dịch thành công");
-                            window.location.reload();
+                            toast.showSuccessToast("Thêm nhân viên điểm giao dịch thành công");
+                            // window.location.reload();
+                            handleCloseModal();
                         }
                         else {
-                            alert(data.message);
+                            toast.showErrorToast(data.message);
                         }
                 })
             }
@@ -165,7 +169,8 @@ function EmployeeForm({ employee, employeeRole, workplace}) {
                         console.log(data);
                         if (data.success === true) {
                             toast.showSuccessToast("Cập nhật trưởng điểm tập kết thành công");
-                            window.location.reload();
+                            // window.location.reload();
+                            handleCloseModal();
                         }
                         else {
                             toast.showErrorToast(data.message);
@@ -176,11 +181,12 @@ function EmployeeForm({ employee, employeeRole, workplace}) {
                     .then(data => {
                         console.log(data);
                         if (data.success === true) {
-                            alert("Cập nhật trưởng điểm giao dịch thành công");
-                            window.location.reload();
+                            toast.showSuccessToast("Cập nhật trưởng điểm giao dịch thành công");
+                            // window.location.reload();
+                            handleCloseModal();
                         }
                         else {
-                            alert(data.message);
+                            toast.showErrorToast(data.message);
                         }
                 })
             }else if(role === 'Nhân viên điểm tập kết'){
@@ -188,11 +194,12 @@ function EmployeeForm({ employee, employeeRole, workplace}) {
                     .then(data => {
                         console.log(data);
                         if (data.success === true) {
-                            alert("Cập nhật nhân viên điểm tập kết thành công");
-                            window.location.reload();
+                            toast.showSuccessToast("Cập nhật nhân viên điểm tập kết thành công");
+                            // window.location.reload();
+                            handleCloseModal();
                         }
                         else {
-                            alert(data.message);
+                            toast.showErrorToast(data.message);
                         }
                 })
             }else if(role === 'Nhân viên điểm giao dịch'){
@@ -200,11 +207,12 @@ function EmployeeForm({ employee, employeeRole, workplace}) {
                     .then(data => {
                         console.log(data);
                         if (data.success === true) {
-                            alert("Cập nhật nhân viên điểm giao dịch thành công");
-                            window.location.reload();
+                            toast.showSuccessToast("Cập nhật nhân viên điểm giao dịch thành công");
+                            // window.location.reload();
+                            handleCloseModal();
                         }
                         else {
-                            alert(data.message);
+                            toast.showErrorToast(data.message);
                         }
                 })
             }

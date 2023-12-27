@@ -8,58 +8,21 @@ import Image from '~/components/Image';
 
 const cx = classNames.bind(styles);
 
-function ProfileForm({ data }) {
-    const [avatar, setAvatar] = useState(data !== undefined ? data.avatar : '');
+function ProfileForm({ data, handleCloseModal }) {
     const [name, setName] = useState(data !== undefined ? data.name : '');
     const [gender, setGender] = useState(data !== undefined ? data.gender : '');
     const [mobile, setMobile] = useState(data !== undefined ? data.phone_number : '');
-    const [previewAvatar, setPreviewAvatar] = useState();
     
-    useEffect(() => {
-        return () => {
-            previewAvatar && URL.revokeObjectURL(previewAvatar.preview)
-        }
-    }, [previewAvatar]);
-    
-    const handlePreviewImage = (e) => {
-        const file = e.target.files[0];
-
-        file.preview = URL.createObjectURL(file);
-
-        setPreviewAvatar(file);
-    }
-// console.log(previewAvatar === undefined);
     const handleSave = () => {
-        
+        // If success -> close modal, else not
+        handleCloseModal();
     }
 
     return (
         <div className={cx('wrapper')}>
             <div className={cx('body')}>
                 <h2 className={cx('header')}>Thông tin cá nhân</h2>
-
-                <h4 className={cx('info-header')}>Ảnh đại diện</h4>
-                <div className={cx('image-wrapper')}>
-                    {(previewAvatar === undefined) &&
-                        <Image 
-                            className={cx('user-image')}
-                            src={avatar}
-                            alt={name}
-                        />
-                    }
-                    {(previewAvatar !== undefined) &&
-                        <Image 
-                            className={cx('user-image')}
-                            src={previewAvatar.preview}
-                            alt={name}
-                        />
-                    }
-                    <input
-                        type='file'
-                        onChange={(e) => handlePreviewImage(e)}
-                    />
-                </div>
-
+                
                 <h4 className={cx('info-header')}>Thông tin cơ bản</h4>
                 <div className={cx('grid-col-2-8')}>
                     <div className={cx('info-label')}>

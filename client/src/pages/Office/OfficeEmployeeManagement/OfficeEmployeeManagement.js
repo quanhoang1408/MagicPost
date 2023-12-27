@@ -36,7 +36,7 @@ function OfficeEmployeesManagement() {
             .then(data => {
                 setWorkplace(data.work_place);
             })
-    }, []);
+    }, [employees]);
 
     console.log(workplace);
 
@@ -49,7 +49,7 @@ function OfficeEmployeesManagement() {
         officeEmployeeService.deleteOfficeEmployee(id)
             .then(data => {
                 if(data.success === true) {
-                    window.location.reload();
+                    // window.location.reload();
                     toast.showSuccessToast("Xóa nhân viên thành công");
                 }
             }
@@ -150,7 +150,7 @@ function OfficeEmployeesManagement() {
     
                 {showModal && 
                     <Modal className={cx('modal')} onClose={handleCloseModal}>
-                        <EmployeeForm employee={employee} employeeRole='Nhân viên điểm giao dịch' workplace={workplace} />
+                        <EmployeeForm employee={employee} employeeRole='Nhân viên điểm giao dịch' workplace={workplace} handleCloseModal={handleCloseModal} />
                     </Modal>
                 }
             </div>

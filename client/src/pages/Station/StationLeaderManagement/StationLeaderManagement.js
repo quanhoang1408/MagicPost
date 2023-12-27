@@ -31,7 +31,7 @@ function StationLeaderManagement() {
             .then(data => {
                 setStationLeads(data);
             })
-    }, []);
+    }, [stationLeads]);
 
     const handleEdit = (id) => {
         setShowModal(true);
@@ -43,7 +43,7 @@ function StationLeaderManagement() {
             .then(data => {
                 if(data.success === true) {
                     toast.showSuccessToast("Xóa trưởng điểm thành công");
-                    window.location.reload();
+                    // window.location.reload();
                 }
                 else {
                     toast.showErrorToast(data.message);
@@ -149,7 +149,7 @@ function StationLeaderManagement() {
     
                 {showModal && 
                     <Modal className={cx('modal')} onClose={handleCloseModal}>
-                        <EmployeeForm employee={employee} employeeRole='Trưởng điểm tập kết'/>
+                        <EmployeeForm employee={employee} employeeRole='Trưởng điểm tập kết' handleCloseModal={handleCloseModal} />
                     </Modal>
                 }
             </div>

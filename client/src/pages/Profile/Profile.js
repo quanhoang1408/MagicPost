@@ -110,7 +110,7 @@ function Profile() {
 
             {showModal &&
                 <Modal className={cx('modal')} onClose={handleCloseModal}>
-                    <ProfileForm data={user} />
+                    <ProfileForm data={user} handleCloseModal={handleCloseModal} />
                 </Modal>
             }
         </div>

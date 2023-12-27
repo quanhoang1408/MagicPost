@@ -7,7 +7,7 @@ import Input from '~/components/Input';
 
 const cx = classNames.bind(styles);
 
-function OrderForm({ order }) {
+function OrderForm({ order, handleCloseModal }) {
     const [name, setName] = useState(order !== undefined ? order.name : '');
 
     const [fromName, setFromName] = useState(order !== undefined ? order.from.name : '');
@@ -30,7 +30,8 @@ function OrderForm({ order }) {
     const [toPostalCode, setToPostalCode] = useState(order !== undefined ? order.to.postalCode : '');
 
     const handleSave = () => {
-        
+        // if success -> close modal, else not
+        handleCloseModal();
     }
 
     return (
@@ -154,7 +155,7 @@ function OrderForm({ order }) {
                                 type='text' 
                                 value={isNaN(parseInt(mainPrice)) || isNaN(parseInt(subPrice)) || isNaN(parseInt(GTGTPrice)) 
                                     ? '0 VND' 
-                                    : `${new Intl.NumberFormat().format(parseInt(mainPrice) + parseInt(subPrice) + parseInt(GTGTPrice))} VND`
+                                    : `${new Intl.NumberFormat().format(parseInt(mainPrice) + parseInt(subPrice) + parseInt(GTGTPrice))} VNĐ`
                                 }
                                 readOnly
                             />

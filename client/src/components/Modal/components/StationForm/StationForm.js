@@ -10,7 +10,7 @@ import * as stationService from '~/services/stationService';
 
 const cx = classNames.bind(styles);
 
-function StationForm({ station }) {
+function StationForm({ station, handleCloseModal }) {
     const [name, setName] = useState(station !== undefined ? station.name : '');
     const [address, setAddress] = useState(station !== undefined ? station.address : '');
     const [mobile, setMobile] = useState(station !== undefined ? station.phone_number : '');
@@ -24,7 +24,8 @@ function StationForm({ station }) {
                     console.log(data);
                     if (data.success === true) {
                         toast.showSuccessToast("Thêm điểm tập kết thành công");
-                        window.location.reload();
+                        // window.location.reload();
+                        handleCloseModal();
                     }
                     else {
                         toast.showErrorToast(data.message);
@@ -37,7 +38,8 @@ function StationForm({ station }) {
                     console.log(data);
                     if (data.success === true) {
                         toast.showSuccessToast("Cập nhật điểm tập kết thành công");
-                        window.location.reload();
+                        // window.location.reload();
+                        handleCloseModal();
                     }
                     else {
                         toast.showErrorToast(data.message);
