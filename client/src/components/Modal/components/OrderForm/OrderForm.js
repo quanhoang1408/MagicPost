@@ -59,6 +59,8 @@ function OrderForm({ order, handleCloseModal }) {
         orderService.createOrder(order)
             .then(data => {
                 console.log(data);
+                // if success
+                handleCloseModal();
             })
     }
 

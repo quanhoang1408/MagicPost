@@ -1,20 +1,22 @@
 import classNames from 'classnames/bind';
-import { useEffect ,useState } from 'react';
+import { useContext, useEffect ,useState } from 'react';
 import styles from './ProfileForm.module.scss';
 
 import Button from '~/components/Button';
 import Input from '~/components/Input';
-import Image from '~/components/Image';
+import { ToastContext } from '~/components/Toast/Toast';
 import * as userService from '~/services/userService';
 
 const cx = classNames.bind(styles);
 
 
-function ProfileForm({ data, handleCloseModal }) {\
+function ProfileForm({ data, handleCloseModal }) {
     const [name, setName] = useState(data !== undefined ? data.name : '');
     const [sex, setSex] = useState(data !== undefined ? data.sex : '');
     const [gender, setGender] = useState('');
     const [mobile, setMobile] = useState(data !== undefined ? data.phone_number : '');
+
+    const toast = useContext(ToastContext);
     
     useEffect(() => {
         if(data !== undefined) {
@@ -25,7 +27,7 @@ function ProfileForm({ data, handleCloseModal }) {\
             }
         }
     }, [data]);
-      
+    
     const handleSave = () => {
         if(gender === 'Nam') {
             setSex('M');
@@ -35,8 +37,9 @@ function ProfileForm({ data, handleCloseModal }) {\
         userService.updateUserById(data._id, name, sex, mobile)
             .then(data => {
                 if(data.success === true) {
-                    alert ('Cập nhật thông tin thành công');
-                    window.location.reload();
+                    toast.showSuccessToast('Cập nhật thông tin thành công');
+                    // window.location.reload();
+                    handleCloseModal();
                 }
             })
     }
