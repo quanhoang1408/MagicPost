@@ -18,20 +18,6 @@ function Header() {
     const navRef = useRef();
     const context = useContext(HeaderContext);
     const [isUser, setIsUser] = useState(false);
-    const MENU_ITEMS = [
-        {
-            icon: <UserIcon />,
-            title: 'Trang cá nhân',
-            // to: '/:nickname',
-            to: '/profile',
-        },
-        {
-            icon: <LogOutIcon />,
-            title: 'Đăng xuất',
-            href: '/logout',
-            className: 'separate',
-        }
-    ];
 
     const handleLogoClick = () => {
         window.scrollTo({
@@ -55,21 +41,6 @@ function Header() {
             }
         });
     }, [context.navItemValue]);
-
-    // Handle logic
-    const handleMenuChange = (menuItem) => {
-        switch(menuItem.href) {
-            case '/logout':
-                localStorage.removeItem('user');
-                window.location.reload();
-                break;
-            case '/:nickname':
-                // window.location.href = `/:${authUser.data.nickname}`;
-                break;
-            default:
-                break;
-        }
-    };
 
     return (
         <header className={cx('wrapper')}>
@@ -96,30 +67,13 @@ function Header() {
                 </nav>
 
                 <div className={cx('action')}>
-                    {isUser ? (
-                        <Menu
-                            className={cx('header-menu-list')}
-                            items={MENU_ITEMS}
-                            placement='bottom-end'
-                            offset={[12, 16]}
-                            onChange={handleMenuChange}
-                            menuPopper={cx('header-menu-popper')}
-                        >
-                            <Image 
-                                className={cx('user-avatar')} 
-                                src='' 
-                                alt='User' 
-                            />
-                        </Menu>
-                    ) : (
-                        <Button 
-                            className={cx('login-btn')}
-                            to={config.routes.authentication} 
-                            primary
-                        >
-                            Đăng nhập
-                        </Button>
-                    )}
+                    <Button 
+                        className={cx('login-btn')}
+                        to={config.routes.authentication} 
+                        primary
+                    >
+                        Đăng nhập
+                    </Button>
                 </div>
             </div>
         </header>

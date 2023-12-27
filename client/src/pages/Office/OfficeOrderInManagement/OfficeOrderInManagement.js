@@ -10,7 +10,7 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import Button from '~/components/Button';
 import Modal from '~/components/Modal';
-import OrderForm from '~/components/Modal/components/OrderForm';
+import LocationChoiceForm from '~/components/Modal/components/LocationChoiceForm';
 
 const cx = classNames.bind(styles);
 
@@ -104,22 +104,9 @@ function OfficeOrderInManagement() {
     const [showModal, setShowModal] = useState(false);
     const [order, setOrder] = useState();
 
-    const handleEdit = (id) => {
+    const handleAccept = (id) => {
         setShowModal(true);
         setOrder(orders.find((order) => order.id === parseInt(id)));
-    }
-
-    const handleDelete = () => {
-
-    }
-
-    const handlePrint = () => {
-
-    }
-
-    const handleAdd = () => {
-        setShowModal(true);
-        setOrder();
     }
 
     const handleCloseModal = () => {
@@ -213,7 +200,7 @@ function OfficeOrderInManagement() {
                                                         <td>{order.from.address}</td>
                                                         <td>{order.date.date}</td>
                                                         <td>{order.to.address}</td>
-                                                        <td>{new Intl.NumberFormat().format(parseInt(order.price.main) + parseInt(order.price.sub) + parseInt(order.price.GTGT))} VND</td>
+                                                        <td>{new Intl.NumberFormat().format(parseInt(order.price.main) + parseInt(order.price.sub) + parseInt(order.price.GTGT))} VNĐ</td>
                                                         <td className={cx('text-align-center')}>
                                                             {(order.status === 'Đã đến') &&
                                                                 <div className={cx('actions')}>
@@ -221,7 +208,7 @@ function OfficeOrderInManagement() {
                                                                         content='Xác nhận'
                                                                         placement='bottom'
                                                                     >
-                                                                        <Button className={cx('actions-btn', 'btn-green')} primary onClick={() => handleEdit(order.id)}>
+                                                                        <Button className={cx('actions-btn', 'btn-green')} primary onClick={() => handleAccept(order.id)}>
                                                                             <FontAwesomeIcon className={cx('actions-icon')} icon={faCheck} />
                                                                         </Button>
                                                                     </Tippy>
@@ -239,11 +226,11 @@ function OfficeOrderInManagement() {
                     </div>
                 </div>
     
-                {showModal && 
+                {/* {showModal && 
                     <Modal className={cx('modal')} onClose={handleCloseModal}>
-                        <OrderForm order={order} />
+                        <LocationChoiceForm order={order} handleCloseModal={handleCloseModal} />
                     </Modal>
-                }
+                } */}
             </div>
         </div>
     );

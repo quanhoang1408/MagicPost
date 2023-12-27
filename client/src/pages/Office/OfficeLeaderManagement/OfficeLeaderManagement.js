@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import styles from './OfficeLeaderManagement.module.scss';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,6 +11,7 @@ import 'tippy.js/dist/tippy.css';
 import Button from '~/components/Button';
 import Modal from '~/components/Modal';
 import EmployeeForm from '~/components/Modal/components/EmployeeForm';
+import { ToastContext } from '~/components/Toast/Toast';
 import * as officeLeadService from '~/services/officeLeadService';
 
 const cx = classNames.bind(styles);
@@ -37,12 +38,14 @@ function OfficeLeaderManagement() {
     const [showModal, setShowModal] = useState(false);
     const [employee, setEmployee] = useState();
 
+    const toast = useContext(ToastContext)
+
     useEffect(() => {
         officeLeadService.getAllOfficeLeads()
             .then(data => {
                 setOfficeLeads(data);
             })
-    }, []);
+    }, [officeLeads]);
 
     const handleEdit = (id) => {
         setShowModal(true);
@@ -53,11 +56,11 @@ function OfficeLeaderManagement() {
         officeLeadService.deleteOfficeLead(id)
             .then(data => {
                 if(data.success === true) {
-                    alert("Xóa trưởng điểm giao dịch thành công");
-                    window.location.reload();
+                    toast.showSuccessToast("Xóa trưởng điểm giao dịch thành công");
+                    // window.location.reload();
                 }
                 else {
-                    alert(data.message);
+                    toast.showErrorToast(data.message);
                 }
             })
     }
@@ -159,7 +162,7 @@ function OfficeLeaderManagement() {
     
                 {showModal && 
                     <Modal className={cx('modal')} onClose={handleCloseModal}>
-                        <EmployeeForm employee={employee} employeeRole='Trưởng điểm giao dịch' />
+                        <EmployeeForm employee={employee} employeeRole='Trưởng điểm giao dịch' handleCloseModal={handleCloseModal} />
                     </Modal>
                 }
             </div>

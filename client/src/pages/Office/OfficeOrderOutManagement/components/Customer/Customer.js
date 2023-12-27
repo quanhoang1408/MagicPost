@@ -193,7 +193,7 @@ function Customer() {
                                                         <td>{order.from.address}</td>
                                                         <td>{order.date.date}</td>
                                                         <td>{order.to.address}</td>
-                                                        <td>{new Intl.NumberFormat().format(parseInt(order.price.main) + parseInt(order.price.sub) + parseInt(order.price.GTGT))} VND</td>
+                                                        <td>{new Intl.NumberFormat().format(parseInt(order.price.main) + parseInt(order.price.sub) + parseInt(order.price.GTGT))} VNĐ</td>
                                                         <td className={cx('text-align-center')}>
                                                             <div className={cx('actions')}>
                                                                 <Tippy 
@@ -229,7 +229,7 @@ function Customer() {
     
                 {showModal && 
                     <Modal className={cx('modal')} onClose={handleCloseModal}>
-                        <OrderForm order={order} />
+                        <OrderForm order={order} handleCloseModal={handleCloseModal} />
                     </Modal>
                 }
             </div>

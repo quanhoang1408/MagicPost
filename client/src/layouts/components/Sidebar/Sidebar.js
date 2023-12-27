@@ -21,8 +21,8 @@ function Sidebar() {
     // Get role of user
     useEffect(() => {
         if (authUser && authUser.role) {
-            setRole(authUser.role);
-            // setRole('office_staff');
+            // setRole(authUser.role);
+            setRole('office_staff');
             // console.log('[sidebar]', authUser);
         }
     }, [authUser]);

@@ -34,7 +34,7 @@ function StationEmployeesManagement() {
             .then(data => {
                 setWorkplace(data.work_place);
             })
-    }, []);
+    }, [employees]);
 
     const handleEdit = (id) => {
         setShowModal(true);
@@ -45,7 +45,7 @@ function StationEmployeesManagement() {
         stationEmployeeService.deleteStationEmployee(id)
             .then(data => {
                 if(data.success === true) {
-                    window.location.reload();
+                    // window.location.reload();
                     toast.showSuccessToast("Xóa nhân viên thành công");
                 }
             }
@@ -147,7 +147,7 @@ function StationEmployeesManagement() {
     
                 {showModal && 
                     <Modal className={cx('modal')} onClose={handleCloseModal}>
-                        <EmployeeForm employee={employee} employeeRole='Nhân viên điểm tập kết' workplace={workplace}/>
+                        <EmployeeForm employee={employee} employeeRole='Nhân viên điểm tập kết' workplace={workplace} handleCloseModal={handleCloseModal} />
                     </Modal>
                 }
             </div>

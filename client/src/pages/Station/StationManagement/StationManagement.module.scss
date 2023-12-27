@@ -203,6 +203,11 @@
 .actions-btn {
     width: 32px;
     height: 32px;
+    border-radius: 50%;
+    
+    &.btn-green {
+        background-color: var(--green);
+    }
 }
 
 // Modal

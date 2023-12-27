@@ -4,7 +4,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse, faPenToSquare, faPlus, faPrint, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import config from '~/config';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
@@ -35,7 +35,7 @@ function OfficeManagement() {
                 console.log(data);
                 setOffices(data);
             })
-    }, []);
+    }, [offices]);
 
     const handleEdit = (id) => {
         setShowModal(true);
@@ -48,16 +48,12 @@ function OfficeManagement() {
                 console.log(data);
                 if (data.success === true) {
                     toast.showSuccessToast(data.message);
-                    window.location.reload();
+                    // window.location.reload();
                 }
                 else {
                     toast.showErrorToast(data.message);
                 }
         })
-    }
-
-    const handlePrint = () => {
-
     }
 
     const handleAdd = () => {
@@ -155,8 +151,8 @@ function OfficeManagement() {
                                                                     content='Sửa'
                                                                     placement='bottom'
                                                                 >
-                                                                    <Button className={cx('actions-btn')} outline onClick={() => handleEdit(office._id)}>
-                                                                        <FontAwesomeIcon className={cx('actions-icon')} icon={faPenToSquare} />
+                                                                    <Button className={cx('actions-btn', 'btn-green')} primary onClick={() => handleEdit(office._id)}>
+                                                                        <FontAwesomeIcon className={cx('actions-icon')} icon={faPen} />
                                                                     </Button>
                                                                 </Tippy>
                                                             </div>
@@ -165,7 +161,7 @@ function OfficeManagement() {
                                                                     content='Xóa'
                                                                     placement='bottom'
                                                                 >
-                                                                    <Button className={cx('actions-btn')} outline onClick={() => handleDelete(office._id)}>
+                                                                    <Button className={cx('actions-btn')} primary onClick={() => handleDelete(office._id)}>
                                                                         <FontAwesomeIcon className={cx('actions-icon')} icon={faTrash} />
                                                                     </Button>
                                                                 </Tippy>
@@ -186,7 +182,7 @@ function OfficeManagement() {
     
                 {showModal && 
                     <Modal className={cx('modal')} onClose={handleCloseModal}>
-                        <OfficeForm office={office} />
+                        <OfficeForm office={office} handleCloseModal={handleCloseModal} />
                     </Modal>
                 }
             </div>
