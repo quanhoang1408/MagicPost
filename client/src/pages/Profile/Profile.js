@@ -33,7 +33,7 @@ function Profile() {
             .then(data => {
                 setUser(data);
             })
-    }, []);
+    }, [user ]);
 
     console.log(user);
     const handleOpenModal = () => {
