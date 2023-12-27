@@ -7,6 +7,9 @@ const router = require('express').Router();
 router.route('/')
     .get(verifyToken, orderController.getOrders)
 
+router.route('/get')
+    .get(verifyToken, orderController.getAllOrders)
+
 router.route('/create')
     .post(verifyToken, authorize([constants.ROLES.OFFICE_STAFF]), orderController.create)
 
@@ -18,5 +21,8 @@ router.route('/confirmArrival/:id')
 
 router.route('/delivers/:id')
     .put(verifyToken, authorize([constants.ROLES.OFFICE_STAFF]), orderController.createDeliver)
+
+router.route('/logs/:code')
+    .get(orderController.getOrderLogsByCode)
 
 module.exports = router;

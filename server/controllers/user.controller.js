@@ -46,6 +46,16 @@ const getUserInfoById = async (req, res) => {
     if (!userid) return res.status(401).json({message: "Unauthorized"});
     try {
         const user = await User.findById(userid);
+        if(user.role == "station_lead"|| user.role == "station_staff"){
+            await Station.findById(user.work_place).then(data => {
+                user.work_place_name = data.name;
+            });
+        }
+        if(user.role == "office_lead"|| user.role == "office_staff"){
+            await Office.findById(user.work_place).then(data => {
+                user.work_place_name = data.name;
+            });
+        }
         res.status(200).json(user);
     } catch (err) {
         res.status(400).json(err);

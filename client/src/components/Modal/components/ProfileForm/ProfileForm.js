@@ -5,17 +5,40 @@ import styles from './ProfileForm.module.scss';
 import Button from '~/components/Button';
 import Input from '~/components/Input';
 import Image from '~/components/Image';
+import * as userService from '~/services/userService';
 
 const cx = classNames.bind(styles);
 
-function ProfileForm({ data, handleCloseModal }) {
+
+function ProfileForm({ data, handleCloseModal }) {\
     const [name, setName] = useState(data !== undefined ? data.name : '');
-    const [gender, setGender] = useState(data !== undefined ? data.gender : '');
+    const [sex, setSex] = useState(data !== undefined ? data.sex : '');
+    const [gender, setGender] = useState('');
     const [mobile, setMobile] = useState(data !== undefined ? data.phone_number : '');
     
+    useEffect(() => {
+        if(data !== undefined) {
+            if(data.sex === 'M') {
+                setGender('Nam');
+            } else {
+                setGender('Nữ');
+            }
+        }
+    }, [data]);
+      
     const handleSave = () => {
-        // If success -> close modal, else not
-        handleCloseModal();
+        if(gender === 'Nam') {
+            setSex('M');
+        }else {
+            setSex('F');
+        }
+        userService.updateUserById(data._id, name, sex, mobile)
+            .then(data => {
+                if(data.success === true) {
+                    alert ('Cập nhật thông tin thành công');
+                    window.location.reload();
+                }
+            })
     }
 
     return (
