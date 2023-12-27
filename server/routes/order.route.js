@@ -19,4 +19,7 @@ router.route('/confirmArrival/:id')
 router.route('/delivers/:id')
     .put(verifyToken, authorize([constants.ROLES.OFFICE_STAFF]), orderController.createDeliver)
 
+router.route('/logs/:code')
+    .get(orderController.getOrderLogsByCode)
+
 module.exports = router;
