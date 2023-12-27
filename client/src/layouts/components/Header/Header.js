@@ -15,6 +15,7 @@ import * as authService from '~/services/authService';
 const cx = classNames.bind(styles);
 
 function Header() {
+    const [role, setRole] = useState('');
     const authUser = useContext(authUserContext);
     
     const MENU_ITEMS = [
@@ -48,6 +49,22 @@ function Header() {
         }
     };
 
+    useEffect(() => {
+        if (authUser && authUser.role) {
+            if (authUser.role === 'boss') {
+                setRole('Lãnh đạo');
+            } else if (authUser.role === 'station_lead') {
+                setRole('Trưởng điểm tập kết');
+            } else if (authUser.role === 'office_lead') {
+                setRole('Trưởng điểm giao dịch');
+            } else if (authUser.role === 'station_staff') {
+                setRole('Nhân viên tập kết');
+            } else if (authUser.role === 'office_staff') {
+                setRole('Nhân viên giao dịch');
+            }
+        }
+    }, [role, authUser]);
+
     return (
         <header className={cx('wrapper')}>
             <div className={cx('container')}>
@@ -59,20 +76,26 @@ function Header() {
 
                 <div className={cx('action')}>
                     {authUser ? (
-                        <Menu
-                            className={cx('header-menu-list')}
-                            items={MENU_ITEMS}
-                            placement='bottom-end'
-                            offset={[12, 16]}
-                            onChange={handleMenuChange}
-                            menuPopper={cx('header-menu-popper')}
-                        >
-                            <Image 
-                                className={cx('user-avatar')} 
-                                src='' 
-                                alt='User' 
-                            />
-                        </Menu>
+                        <>
+                            <div className={cx('user-info')}>
+                                <p className={cx('user-name')}>{authUser.name}</p>
+                                <p className={cx('user-role')}>{role}</p>
+                            </div>
+                            <Menu
+                                className={cx('header-menu-list')}
+                                items={MENU_ITEMS}
+                                placement='bottom-end'
+                                offset={[12, 16]}
+                                onChange={handleMenuChange}
+                                menuPopper={cx('header-menu-popper')}
+                            >
+                                <Image 
+                                    className={cx('user-avatar')} 
+                                    src='' 
+                                    alt='User' 
+                                />
+                            </Menu>
+                        </>
                     ) : (
                         <Button 
                             className={cx('login-btn')}

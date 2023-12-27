@@ -38,8 +38,27 @@
 // }
 
 // Action
+.action {
+    display: flex;
+    align-items: center;
+}
+
+.user-info {
+    text-align: right;
+}
+
+.user-name {
+    font-weight: 700;
+}
+
+.user-role {
+    font-size: 1.2rem;
+    color: #919aa3;
+}
+
 .user-avatar {
-    margin-left: calc(118px - 32px);
+    // margin-left: calc(118px - 32px);
+    margin-left: 16px;
     width: 32px;
     height: 32px;
     object-fit: cover;

@@ -13,8 +13,8 @@
     grid-row-gap: 20px;
 }
 
-.text-align-left {
-    text-align: left;
+.text-align-center {
+    text-align: center;
 }
 
 // Wrapper
@@ -162,7 +162,7 @@
 
 .table {
     width: 100%;
-    text-align: center;
+    text-align: left;
     white-space: nowrap;
     cursor: default;
     

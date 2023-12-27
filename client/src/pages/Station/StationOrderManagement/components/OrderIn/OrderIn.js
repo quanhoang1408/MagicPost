@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import styles from './Station.module.scss';
+import styles from './OrderIn.module.scss';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -10,7 +10,7 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import Button from '~/components/Button';
 import Modal from '~/components/Modal';
-import OrderForm from '~/components/Modal/components/OrderForm';
+import LocationChoiceForm from '~/components/Modal/components/LocationChoiceForm';
 
 const cx = classNames.bind(styles);
 
@@ -99,7 +99,7 @@ const ORDERS = [
     },
 ]
 
-function Station() {
+function OrderIn() {
     const [orders, setOrders] = useState(ORDERS);
     const [showModal, setShowModal] = useState(false);
     const [order, setOrder] = useState();
@@ -160,16 +160,18 @@ function Station() {
                     <div className={cx('content-section')}>
                         <div className={cx('card', 'table-card')}>
                             <div className={cx('table-wrapper')}>
-                                <h3 className={cx('table-header')}>Đơn hàng nhận</h3>
+                                <h3 className={cx('table-header')}>Đơn hàng đến</h3>
                                 <table className={cx('table')} rules='rows'>
                                     <thead>
                                         <tr>
                                             <th className={cx('text-align-center')}>STT</th>
                                             <th>Tên</th>
+                                            <th>Code</th>
                                             <th>Trạng thái</th>
                                             <th>Từ</th>
                                             <th>Thời gian</th>
                                             <th>Đến</th>
+                                            <th>Cước</th>
                                             <th className={cx('text-align-center')}>Hành động</th>
                                         </tr>
                                     </thead>
@@ -177,9 +179,10 @@ function Station() {
                                         {
                                             orders.map((order, index) => {
                                                 return (
-                                                    <tr className={cx('data-row')} key={order.id}>
+                                                    <tr className={cx('data-row')} key={index}>
                                                         <td className={cx('text-align-center')}>{index + 1}</td>
                                                         <td>{order.name}</td>
+                                                        <td>{order.from.postalCode}</td>
                                                         <td className={cx('text-align-center')}>
                                                             <div className={cx('order-status', { 
                                                                 active: (order.status === 'Đã đến') ? 'active' : '', 
@@ -190,27 +193,20 @@ function Station() {
                                                         <td>{order.from.address}</td>
                                                         <td>{order.date.date}</td>
                                                         <td>{order.to.address}</td>
+                                                        <td>{new Intl.NumberFormat().format(parseInt(order.price.main) + parseInt(order.price.sub) + parseInt(order.price.GTGT))} VNĐ</td>
                                                         <td className={cx('text-align-center')}>
-                                                            <div className={cx('actions')}>
-                                                                <Tippy 
-                                                                    content='Xác nhận'
-                                                                    placement='bottom'
-                                                                >
-                                                                    <Button className={cx('actions-btn', 'btn-green')} primary onClick={() => handleEdit(order.id)}>
-                                                                        <FontAwesomeIcon className={cx('actions-icon')} icon={faCheck} />
-                                                                    </Button>
-                                                                </Tippy>
-                                                            </div>
-                                                            <div className={cx('actions')}>
-                                                                <Tippy 
-                                                                    content='Hủy'
-                                                                    placement='bottom'
-                                                                >
-                                                                    <Button className={cx('actions-btn')} primary onClick={handleDelete}>
-                                                                        <FontAwesomeIcon className={cx('actions-icon')} icon={faXmark} />
-                                                                    </Button>
-                                                                </Tippy>
-                                                            </div>
+                                                            {(order.status === 'Đã đến') &&
+                                                                <div className={cx('actions')}>
+                                                                    <Tippy 
+                                                                        content='Xác nhận'
+                                                                        placement='bottom'
+                                                                    >
+                                                                        <Button className={cx('actions-btn', 'btn-green')} primary onClick={() => handleEdit(order.id)}>
+                                                                            <FontAwesomeIcon className={cx('actions-icon')} icon={faCheck} />
+                                                                        </Button>
+                                                                    </Tippy>
+                                                                </div>
+                                                            }
                                                         </td>
                                                     </tr>
                                                 )
@@ -225,7 +221,7 @@ function Station() {
     
                 {showModal && 
                     <Modal className={cx('modal')} onClose={handleCloseModal}>
-                        <OrderForm order={order} handleCloseModal={handleCloseModal} />
+                        <LocationChoiceForm order={order} handleCloseModal={handleCloseModal} />
                     </Modal>
                 }
             </div>
@@ -233,4 +229,4 @@ function Station() {
     );
 }
 
-export default Station;
+export default OrderIn;

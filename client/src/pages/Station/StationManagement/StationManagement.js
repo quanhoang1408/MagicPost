@@ -136,14 +136,14 @@ function StationManagement() {
                                 <table className={cx('table')} rules='rows'>
                                     <thead>
                                         <tr>
-                                            <th>STT</th>
+                                            <th className={cx('text-align-center')}>STT</th>
                                             <th>Tên</th>
                                             <th>Quản lý</th>
                                             <th>Số điện thoại</th>
                                             {/* <th>Email</th> */}
                                             <th>Ngày tạo</th>
                                             <th>Địa chỉ</th>
-                                            <th>Hành động</th>
+                                            <th className={cx('text-align-center')}>Hành động</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -151,14 +151,14 @@ function StationManagement() {
                                             stations.map((station, index) => {
                                                 return (
                                                     <tr className={cx('data-row')} key={index}>
-                                                        <td>{index + 1}</td>
-                                                        <td className={cx('text-align-left')}>{station.name}</td>
-                                                        <td className={cx('text-align-left')}>{station.station_lead.name}</td>
+                                                        <td className={cx('text-align-center')}>{index + 1}</td>
+                                                        <td>{station.name}</td>
+                                                        <td>{station.station_lead.name}</td>
                                                         <td>{station.phone_number}</td> 
                                                         {/* <td>{station.email}</td> */}
                                                         <td>{station.create_date}</td>
-                                                        <td className={cx('text-align-left')}>{station.address}</td>
-                                                        <td>
+                                                        <td>{station.address}</td>
+                                                        <td className={cx('text-align-center')}>
                                                             <div className={cx('actions')}>
                                                                 <Tippy 
                                                                     content='Sửa'

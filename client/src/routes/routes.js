@@ -20,8 +20,7 @@ import OfficeEmployeeManagement from '~/pages/Office/OfficeEmployeeManagement';
 // Station
 import StationLeaderManagement from '~/pages/Station/StationLeaderManagement';
 import StationManagement from '~/pages/Station/StationManagement';
-import StationOrderInManagement from '~/pages/Station/StationOrderInManagement';
-import StationOrderOutManagement from '~/pages/Station/StationOrderOutManagement';
+import StationOrderManagement from '~/pages/Station/StationOrderManagement';
 import StationEmployeeManagement from '~/pages/Station/StationEmployeeManagement';
 
 import OrderInStatistic from '~/pages/OrderInStatistic';
@@ -46,8 +45,7 @@ const publicRoutes = [
     // Station
     { path: config.routes.stationLeaderManagement, component: StationLeaderManagement },
     { path: config.routes.stationManagement, component: StationManagement },
-    { path: config.routes.stationOrderInManagement, component: StationOrderInManagement },
-    { path: config.routes.stationOrderOutManagement, component: StationOrderOutManagement },
+    { path: config.routes.stationOrderManagement, component: StationOrderManagement },
     { path: config.routes.stationEmployeeManagement, component: StationEmployeeManagement },
 
     { path: config.routes.orderInStatistic, component: OrderInStatistic },

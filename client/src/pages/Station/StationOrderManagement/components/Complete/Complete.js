@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import styles from './Station.module.scss';
+import styles from './Complete.module.scss';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -99,7 +99,7 @@ const ORDERS = [
     },
 ]
 
-function Station() {
+function Complete() {
     const [orders, setOrders] = useState(ORDERS);
     const [showModal, setShowModal] = useState(false);
     const [order, setOrder] = useState();
@@ -160,7 +160,7 @@ function Station() {
                     <div className={cx('content-section')}>
                         <div className={cx('card', 'table-card')}>
                             <div className={cx('table-wrapper')}>
-                                <h3 className={cx('table-header')}>Đơn hàng nhận</h3>
+                                <h3 className={cx('table-header')}>Đơn hàng hoàn thành</h3>
                                 <table className={cx('table')} rules='rows'>
                                     <thead>
                                         <tr>
@@ -233,4 +233,4 @@ function Station() {
     );
 }
 
-export default Station;
+export default Complete;

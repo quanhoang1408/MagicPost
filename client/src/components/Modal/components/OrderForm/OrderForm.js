@@ -194,7 +194,7 @@ function OrderForm({ order, handleCloseModal }) {
                                 className={cx('input-wrapper')}
                                 type='text' 
                                 value={isNaN(parseInt(mainPrice)) || isNaN(parseInt(subPrice)) || isNaN(parseInt(GTGTPrice)) 
-                                    ? '0 VND' 
+                                    ? '0 VNĐ' 
                                     : `${new Intl.NumberFormat().format(parseInt(mainPrice) + parseInt(subPrice) + parseInt(GTGTPrice))} VNĐ`
                                 }
                                 readOnly

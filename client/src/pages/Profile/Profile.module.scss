@@ -1,3 +1,8 @@
+.grid-col-2-8 {
+    display: grid;
+    grid-template-columns: 20% auto;
+}
+
 // Wrapper
 .wrapper {
     width: 100%;
@@ -80,19 +85,15 @@
     margin-top: 20px;
 }
 
-.info-wrapper {
-    display: grid;
-    grid-template-columns: 20% auto;
-}
-
 .info-header {
+    margin-top: 20px;
     text-transform: uppercase;
     color: var(--primary);
     font-weight: 700;
 }
 
 .info-data {
-    margin: 16px 0;
+    margin: 10px 0;
 }
 
 // Modal

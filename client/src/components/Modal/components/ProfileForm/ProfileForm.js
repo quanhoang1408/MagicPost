@@ -13,27 +13,11 @@ const cx = classNames.bind(styles);
 function ProfileForm({ data, handleCloseModal }) {
     const [name, setName] = useState(data !== undefined ? data.name : '');
     const [sex, setSex] = useState(data !== undefined ? data.sex : '');
-    const [gender, setGender] = useState('');
     const [mobile, setMobile] = useState(data !== undefined ? data.phone_number : '');
 
     const toast = useContext(ToastContext);
     
-    useEffect(() => {
-        if(data !== undefined) {
-            if(data.sex === 'M') {
-                setGender('Nam');
-            } else {
-                setGender('Nữ');
-            }
-        }
-    }, [data]);
-    
     const handleSave = () => {
-        if(gender === 'Nam') {
-            setSex('M');
-        }else {
-            setSex('F');
-        }
         userService.updateUserById(data._id, name, sex, mobile)
             .then(data => {
                 if(data.success === true) {
@@ -72,9 +56,9 @@ function ProfileForm({ data, handleCloseModal }) {
                                 className={cx('input-radio')}
                                 id='profile-form-gender-male'
                                 type='radio' 
-                                checked={gender.toLowerCase() === 'nam'}
+                                checked={sex === 'M'}
                                 onChange={() => {
-                                    setGender('Nam')
+                                    setSex('M');
                                 }}
                             />
                             <label className={cx('label')} htmlFor='profile-form-gender-male'>
@@ -84,9 +68,9 @@ function ProfileForm({ data, handleCloseModal }) {
                                 className={cx('input-radio')}
                                 id='profile-form-gender-female'
                                 type='radio' 
-                                checked={gender.toLowerCase() === 'nữ'}
+                                checked={sex === 'F'}
                                 onChange={() => {
-                                    setGender('Nữ')
+                                    setSex('F');
                                 }}
                             />
                             <label className={cx('label')} htmlFor='profile-form-gender-female'>
