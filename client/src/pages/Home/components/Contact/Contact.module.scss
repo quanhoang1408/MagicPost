@@ -80,3 +80,15 @@
 .submit-btn {
     margin-top: 20px;
 }
+
+@media (max-width: 740px) {
+    .content {
+        display: block;
+    }
+
+    .content-section {
+        & + .content-section {
+            margin-top: 24px;
+        }
+    }
+}

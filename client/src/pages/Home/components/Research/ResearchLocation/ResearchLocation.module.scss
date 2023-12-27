@@ -79,3 +79,22 @@
     height: 14px;
     margin-right: 4px;
 }
+
+// Mobile
+@media (max-width: 740px) {
+    .content-section {
+        & + .content-section {
+            display: none;
+        }
+    }
+}
+
+// Tablet
+@media (min-width: 740px) and (max-width: 1023px) {
+    .content-section {
+        width: 100%;
+        & + .content-section {
+            display: none;
+        }
+    }
+}
