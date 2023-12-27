@@ -127,7 +127,8 @@ function Customer() {
                                                         <td>{order.sender.postal_code}</td>
                                                         <td className={cx('text-align-center')}>
                                                             <div className={cx('order-status', { 
-                                                                active: (order.success === true) ? 'active' : '', 
+                                                                success: (order.success === true), 
+                                                                fail: (order.success === false), 
                                                             })}>
                                                                 {(order.success === true) &&  'Thành công'}
                                                                 {(order.success === false) &&  'Thất bại'}
@@ -140,26 +141,29 @@ function Customer() {
                                                         <td>{new Intl.NumberFormat().format(parseInt(order.price.main) + parseInt(order.price.sub) + parseInt(order.price.GTGT))} VNĐ</td>
                                                         <td className={cx('text-align-center')}>    
                                                             {(order.success === null) && 
-                                                            <><div className={cx('actions')}>
-                                                                <Tippy 
-                                                                    content='Xác nhận'
-                                                                    placement='bottom'
-                                                                >
-                                                                    <Button className={cx('actions-btn', 'btn-green')} primary onClick={() => handleSuccess(order._id)}>
-                                                                        <FontAwesomeIcon className={cx('actions-icon')} icon={faCheck} />
-                                                                    </Button>
-                                                                </Tippy>
-                                                            </div>
-                                                            <div className={cx('actions')}>
-                                                                <Tippy 
-                                                                    content='Hủy'
-                                                                    placement='bottom'
-                                                                >
-                                                                    <Button className={cx('actions-btn')} primary onClick={() => handleFail(order._id)}>
-                                                                        <FontAwesomeIcon className={cx('actions-icon')} icon={faXmark} />
-                                                                    </Button>
-                                                                </Tippy>
-                                                            </div></>}
+                                                                <>
+                                                                    <div className={cx('actions')}>
+                                                                        <Tippy 
+                                                                            content='Xác nhận'
+                                                                            placement='bottom'
+                                                                        >
+                                                                            <Button className={cx('actions-btn', 'btn-green')} primary onClick={() => handleSuccess(order._id)}>
+                                                                                <FontAwesomeIcon className={cx('actions-icon')} icon={faCheck} />
+                                                                            </Button>
+                                                                        </Tippy>
+                                                                    </div>
+                                                                    <div className={cx('actions')}>
+                                                                        <Tippy 
+                                                                            content='Hủy'
+                                                                            placement='bottom'
+                                                                        >
+                                                                            <Button className={cx('actions-btn')} primary onClick={() => handleFail(order._id)}>
+                                                                                <FontAwesomeIcon className={cx('actions-icon')} icon={faXmark} />
+                                                                            </Button>
+                                                                        </Tippy>
+                                                                    </div>
+                                                                </>
+                                                            }
                                                         </td>
                                                     </tr>
                                                 )

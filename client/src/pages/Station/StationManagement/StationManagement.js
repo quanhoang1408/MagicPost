@@ -47,9 +47,10 @@ function StationManagement() {
                     data[i].create_date = new Date(data[i].create_date);
                     data[i].create_date = formatDate(data[i].create_date.toString());
                 }
+                console.log(data);
                 setStations(data);
             })
-    }, [stations]);
+    }, []);
 
     const handleEdit = (id) => {
         setShowModal(true);

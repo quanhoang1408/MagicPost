@@ -204,7 +204,8 @@ function Station() {
                                                         <td>{order.sender.postal_code}</td>
                                                         <td className={cx('text-align-center')}>
                                                             <div className={cx('order-status', { 
-                                                                active: (order.status === 'Đã đến') ? 'active' : '', 
+                                                                success: (order.success === true), 
+                                                                fail: (order.success === false), 
                                                             })}>
                                                                 {order.status}
                                                             </div>

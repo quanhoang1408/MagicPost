@@ -14,7 +14,7 @@ import * as stationService from '~/services/stationService';
 
 const cx = classNames.bind(styles);
 
-function OfficeForm({ office, handleCloseModal }) {
+function OfficeForm({ office, handleCloseModal, getAllOffice }) {
     const [name, setName] = useState(office !== undefined ? office.name : '');
     const [address, setAddress] = useState(office !== undefined ? office.address : '');
     const [mobile, setMobile] = useState(office !== undefined ? office.phone_number : '');
