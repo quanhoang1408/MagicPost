@@ -72,6 +72,15 @@ const getOrders= async (req, res) => {
     }
 }
 
+const getAllOrders = async (req, res) => {
+    try {
+        const orders = await Order.find();
+        res.status(200).json(orders);
+    } catch (error) {
+        res.status(400).json(error);
+    }
+}
+
 const forward = async (req, res) => {
     try {
         const { id } = req.params;
@@ -171,6 +180,7 @@ const getOrderLogsByCode = async (req, res) => {
 module.exports = {
     create,
     getOrders,
+    getAllOrders,
     forward,
     getDelivers,
     createDeliver,
