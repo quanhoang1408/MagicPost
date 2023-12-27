@@ -120,6 +120,30 @@ const generateOrderCode = async () => {
     return order.code;
 }
 
+const getOrderLogs = (order, stations, offices) => {
+    const res = []
+    // console.log(order)
+    console.log(order.stations)
+    console.log(stations)
+    
+    if (order.stations) {
+        order.stations.forEach(station => {
+            if (station.received_time) res.push(`Received at ${stations.get(station.station_id.toString())} on ${station.received_time}`)
+            else res.push(`Arriving to ${stations.get(station.station_id.toString())} station`)
+        })
+    }
+        // console.log(order.sta}tions)
+    if (order.end_office) {
+        if (order.end_office.received_time) {
+            res.push(`Received at ${offices[order.end_office.office_id]} on ${order.end_office.received_time}`)
+            if (order.success) res.push(`Order completed`)
+            else res.push(`Order failed`)
+        }
+        else res.push(`Arriving to ${order.end_office.office_id.name}`)
+    }
+    return res
+}
+
 module.exports = {
     getAllOrders,
     getAllOrdersByStationID,
@@ -127,5 +151,6 @@ module.exports = {
     getAllOrdersByStationStaffID,
     getAllOrdersByOfficeStaffID,
     generateOrderCode,
-    validateForwardStation
+    validateForwardStation,
+    getOrderLogs
 }

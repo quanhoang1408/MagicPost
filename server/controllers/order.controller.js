@@ -1,6 +1,7 @@
 const Order = require('../models/order.model');
 const User = require('../models/user.model');
 const Office = require('../models/office.model');
+const Station = require('../models/station.model');
 const orderService = require('../services/orderService');
 const constants = require("../utils/constants");
 
@@ -75,16 +76,21 @@ const forward = async (req, res) => {
         const order = await Order.findById(id);
         const staff = await User.findOne({ email: req.user.email });
         
+        console.log(order)
+        
         if (!order) return res.status(404).json({ message: "Order not found" });
         if (order.stations.length === 0)
             return res.status(400).json({ message: "Cannot forward order" });
+        console.log("hi")
         
         order.stations[order.stations.length - 1].received_time = new Date();
         order.stations[order.stations.length - 1].send_time = new Date();
         order.stations[order.stations.length - 1].staff_id = staff.id
         if (is_to_station) order.stations.push({station_id: dest_id})
         else order.end_office = { office_id: dest_id }
+        console.log("hi")
         await order.save();
+        console.log("hi")
         res.status(200).json({ message: "Order forwarded to station successfully" });
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -137,11 +143,34 @@ const createDeliver = async (req, res) => {
     }
 }
 
+const getOrderLogsByCode = async (req, res) => {
+    try {
+        const { code } = req.params;
+        const order = await Order.find({ code: code });
+        const stations_query = await Station.find({})
+        const offices_query = await Office.find({})
+        const stations = new Map(
+            stations_query.map(station => [station._id.toString(), station.name])
+        )
+        const offices = new Map(
+            offices_query.map(office => [office._id, office.name])
+        )
+        if (!order) return res.status(404).json({ message: "Order not found" });
+        if (order.length !== 1) return res.status(400).json({ message: "Invalid order" });
+        console.log(stations)
+        return res.status(200).json(orderService.getOrderLogs(order[0], stations, offices));
+        
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
 module.exports = {
     create,
     getOrders,
     forward,
     getDelivers,
     createDeliver,
-    confirmArrival
+    confirmArrival,
+    getOrderLogsByCode
 }
