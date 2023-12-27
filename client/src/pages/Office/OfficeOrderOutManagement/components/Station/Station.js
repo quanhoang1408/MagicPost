@@ -110,7 +110,7 @@ function Station() {
     const toast = useContext(ToastContext);
 
     useEffect(() => {
-        orderService.getOfficeOrderOutStation()
+        orderService.getOfficeOrder()
             .then((res) => {
                 console.log(res);
                 for(let i = 0; i < res.sending.length; i++) {
@@ -201,7 +201,7 @@ function Station() {
                                                     <tr className={cx('data-row')} key={index}>
                                                         <td className={cx('text-align-center')}>{index + 1}</td>
                                                         <td>{order.contents}</td>
-                                                        <td>{order.sender.postal_code}</td>
+                                                        <td>{order.code}</td>
                                                         <td className={cx('text-align-center')}>
                                                             <div className={cx('order-status', { 
                                                                 success: (order.success === true), 

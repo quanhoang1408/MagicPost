@@ -26,7 +26,7 @@ function Customer() {
     const toast = useContext(ToastContext);
 
     useEffect(() => {
-        orderService.getOfficeOrderOutCustomer().then((res) => {
+        orderService.getOfficeOrder().then((res) => {
             for(let i = 0; i < res.arrived.length; i++) {
                 res.arrived[i].start_office.send_time = new Date(res.arrived[i].start_office.send_time);
                 res.arrived[i].start_office.send_time = formatDate(res.arrived[i].start_office.send_time.toString());
@@ -124,7 +124,7 @@ function Customer() {
                                                     <tr className={cx('data-row')} key={index}>
                                                         <td className={cx('text-align-center')}>{index + 1}</td>
                                                         <td>{order.contents}</td>
-                                                        <td>{order.sender.postal_code}</td>
+                                                        <td>{order.code}</td>
                                                         <td className={cx('text-align-center')}>
                                                             <div className={cx('order-status', { 
                                                                 success: (order.success === true), 

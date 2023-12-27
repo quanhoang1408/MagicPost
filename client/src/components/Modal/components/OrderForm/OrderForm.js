@@ -1,10 +1,10 @@
 import classNames from 'classnames/bind';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import styles from './OrderForm.module.scss';
 
 import Button from '~/components/Button';
 import Input from '~/components/Input';
-
+import { ToastContext } from '~/components/Toast/Toast';
 import * as orderService from '~/services/orderService';
 
 const cx = classNames.bind(styles);
@@ -32,6 +32,7 @@ function OrderForm({ order, handleCloseModal }) {
     const [toPhoneNumber, setToPhoneNumber] = useState(order !== undefined ? order.to.phoneNumber : '');
     const [toPostalCode, setToPostalCode] = useState(order !== undefined ? order.to.postalCode : '');
 
+    const toast = useContext(ToastContext);
     const handleSave = () => {
         order = {
             contents: name,
@@ -59,7 +60,7 @@ function OrderForm({ order, handleCloseModal }) {
         orderService.createOrder(order)
             .then(data => {
                 console.log(data);
-                // if success
+                toast.showSuccessToast("Tạo đơn hàng thành công");
                 handleCloseModal();
             })
     }
