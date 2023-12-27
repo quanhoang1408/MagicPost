@@ -1,7 +1,8 @@
 import classNames from 'classnames/bind';
 import styles from './Station.module.scss';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { ToastContext } from '~/components/Toast/Toast';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faHouse, faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -11,6 +12,8 @@ import 'tippy.js/dist/tippy.css';
 import Button from '~/components/Button';
 import Modal from '~/components/Modal';
 import OrderForm from '~/components/Modal/components/OrderForm';
+import formatDate from '../../../../../utils/formatDate';
+import * as orderService from '~/services/orderService';
 
 const cx = classNames.bind(styles);
 
@@ -100,9 +103,26 @@ const ORDERS = [
 ]
 
 function Station() {
-    const [orders, setOrders] = useState(ORDERS);
+    const [orders, setOrders] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [order, setOrder] = useState();
+
+    const toast = useContext(ToastContext);
+
+    useEffect(() => {
+        orderService.getOfficeOrderOutStation()
+            .then((res) => {
+                console.log(res);
+                for(let i = 0; i < res.sending.length; i++) {
+                    res.sending[i].status = 'Đang chuyển';
+                }
+                for(let i = 0; i < res.sent.length; i++) {
+                    res.sent[i].status = 'Đã đến';
+                }
+                setOrders(res.sending.concat(res.sent));
+            })
+        }, [orders]);
+        
 
     const handleEdit = (id) => {
         setShowModal(true);
@@ -180,8 +200,8 @@ function Station() {
                                                 return (
                                                     <tr className={cx('data-row')} key={index}>
                                                         <td className={cx('text-align-center')}>{index + 1}</td>
-                                                        <td>{order.name}</td>
-                                                        <td>{order.from.postalCode}</td>
+                                                        <td>{order.contents}</td>
+                                                        <td>{order.sender.postal_code}</td>
                                                         <td className={cx('text-align-center')}>
                                                             <div className={cx('order-status', { 
                                                                 active: (order.status === 'Đã đến') ? 'active' : '', 
@@ -189,9 +209,9 @@ function Station() {
                                                                 {order.status}
                                                             </div>
                                                         </td>
-                                                        <td>{order.from.address}</td>
-                                                        <td>{order.date.date}</td>
-                                                        <td>{order.to.address}</td>
+                                                        <td>{order.sender.address}</td>
+                                                        <td>{order.start_office.send_time}</td>
+                                                        <td>{order.receiver.address}</td>
                                                         <td>{new Intl.NumberFormat().format(parseInt(order.price.main) + parseInt(order.price.sub) + parseInt(order.price.GTGT))} VNĐ</td>
                                                     </tr>
                                                 )

@@ -110,7 +110,6 @@ function EmployeeForm({ employee, employeeRole, workplace, handleCloseModal}) {
                         console.log(data);
                         if (data.success === true) {
                             toast.showSuccessToast("Thêm trưởng điểm tập kết thành công");
-                            // window.location.reload();
                             handleCloseModal();
                         }
                         else {

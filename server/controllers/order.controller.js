@@ -48,7 +48,7 @@ const getOrders= async (req, res) => {
     try {
         let orders;
         const user = await User.findOne({email: req.user.email})
-        console.log(user)
+        // console.log(user)
         
         if (req.user.role === constants.ROLES.BOSS) {
             orders = await orderService.getAllOrders();
@@ -65,7 +65,7 @@ const getOrders= async (req, res) => {
         else {
             orders = await orderService.getAllOrdersByOfficeStaffID(user.id);
         }
-        console.log(orders)
+        // console.log(orders)
         res.status(200).json(orders);
     } catch (error) {
         res.status(400).json(error);
@@ -81,6 +81,27 @@ const getAllOrders = async (req, res) => {
     }
 }
 
+// const getOfficeOrderOutCustomer = async (req, res) => {
+//     try {
+//         const user = await User.findOne({email: req.user.email})
+
+//         const orders = await Order.find({ "end_office.office_id": user.work_place });
+//         res.status(200).json(orders);
+//     } catch (error) {
+//         res.status(400).json(error);
+//     }
+// }
+
+// const getOfficeOrderOutStation = async (req, res) => {
+//     try {
+//         const user = await User.findOne({email: req.user.email});
+//         const orders = await Order.find({"start_office.office_id": user.work_place, "stations": {$exists: true, $size:1 }});
+//         res.status(200).json(orders);
+//     } catch (error) {
+//         res.status(400).json(error);
+//     }
+// }
+
 const forward = async (req, res) => {
     try {
         const { id } = req.params;
@@ -93,7 +114,6 @@ const forward = async (req, res) => {
         if (!order) return res.status(404).json({ message: "Order not found" });
         if (order.stations.length === 0)
             return res.status(400).json({ message: "Cannot forward order" });
-        console.log("hi")
         
         order.stations[order.stations.length - 1].received_time = new Date();
         order.stations[order.stations.length - 1].send_time = new Date();
@@ -149,7 +169,7 @@ const createDeliver = async (req, res) => {
         
         order.success = success;
         await order.save();
-        res.status(200).json({ message: "Deliver created successfully" });
+        res.status(200).json({success:true, message: "Deliver created successfully" });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -181,6 +201,8 @@ module.exports = {
     create,
     getOrders,
     getAllOrders,
+    // getOfficeOrderOutCustomer,
+    // getOfficeOrderOutStation,
     forward,
     getDelivers,
     createDeliver,

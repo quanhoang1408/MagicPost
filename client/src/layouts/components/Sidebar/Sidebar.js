@@ -21,8 +21,8 @@ function Sidebar() {
     // Get role of user
     useEffect(() => {
         if (authUser && authUser.role) {
-            // setRole(authUser.role);
-            setRole('station_lead');
+            setRole(authUser.role);
+            // setRole('station_lead');
             // console.log('[sidebar]', authUser);
         }
     }, [authUser]);
