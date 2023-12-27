@@ -170,7 +170,9 @@ function ResearchLocation() {
                     </div>
 
                     <div className={cx('content-section')}>
-
+                        <div className={cx('map')}>
+                            Map
+                        </div>
                     </div>
                 </div>
             </div>

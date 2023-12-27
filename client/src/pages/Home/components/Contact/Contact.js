@@ -58,8 +58,8 @@ function Contact() {
                         <h3 className={cx('content-header')}>Liên hệ ngay với Magic Post</h3>
                         <div className={cx('form')}>
                             <div className={cx('input-group')}>
-                                <Input placeholder='Tên của bạn' />
-                                <Input placeholder='Email của bạn' />
+                                <Input type='text' placeholder='Tên của bạn' />
+                                <Input type='text' placeholder='Email của bạn' />
                             </div>
                             <div className={cx('input-wrapper')}>
                                 <textarea className={cx('input', 'textarea')} placeholder='Tin nhắn' rows='5' />

@@ -7,8 +7,8 @@ import config from '~/config';
 import images from '~/assets/images';
 import Button from '~/components/Button';
 import { HeaderContext } from '../HeaderOnly';
-import Image from '~/components/Image';
-import Menu from '~/components/Menu';import { UserIcon, LogOutIcon } from "~/components/Icon";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(styles);
 
@@ -17,7 +17,6 @@ const cx = classNames.bind(styles);
 function Header() {
     const navRef = useRef();
     const context = useContext(HeaderContext);
-    const [isUser, setIsUser] = useState(false);
 
     const handleLogoClick = () => {
         window.scrollTo({
@@ -42,25 +41,40 @@ function Header() {
         });
     }, [context.navItemValue]);
 
+    const toggleNav = () => {
+        const nav = navRef.current;
+        if (nav.style.display === 'block') {
+            nav.style.display = 'none';
+        } else {
+            nav.style.display = 'block';
+        }
+    }
+
     return (
         <header className={cx('wrapper')}>
             <div className={cx('container')}>
-                <Link to={config.routes.home} className={cx('logo-link')} onClick={handleLogoClick}>
-                    <img src={images.logo} alt='Magic Post' />
-                </Link>
+                <div className={cx('logo')}>
+                    <div className={cx('menu-btn')} onClick={toggleNav}>
+                        <FontAwesomeIcon icon={faBars} />
+                    </div>
+    
+                    <Link to={config.routes.home} className={cx('logo-link')} onClick={handleLogoClick}>
+                        <img src={images.logo} alt='Magic Post' />
+                    </Link>
+                </div>
                 
                 <nav>
                     <ul ref={navRef} className={cx('nav-list')}>
-                        <li id='nav_home' className={cx('nav-item', 'active')}>
+                        <li id='nav_home' className={cx('nav-item', 'active')} onClick={toggleNav}>
                             <Button className={cx('nav-link')} href='#home'>Trang chủ</Button>
                         </li>
-                        <li id='nav_introduction' className={cx('nav-item')}>
+                        <li id='nav_introduction' className={cx('nav-item')} onClick={toggleNav}>
                             <Button className={cx('nav-link')} href='#introduction'>Giới thiệu</Button>
                         </li>
-                        <li id='nav_research' className={cx('nav-item')}>
+                        <li id='nav_research' className={cx('nav-item')} onClick={toggleNav}>
                             <Button className={cx('nav-link')} href='#research'>Tra cứu</Button>
                         </li>
-                        <li id='nav_contact' className={cx('nav-item')}>
+                        <li id='nav_contact' className={cx('nav-item')} onClick={toggleNav}>
                             <Button className={cx('nav-link')} href='#contact'>Liên hệ</Button>
                         </li>
                     </ul>

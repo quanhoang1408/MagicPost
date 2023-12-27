@@ -100,7 +100,7 @@ function ResearchOrder() {
                     <h3 className={cx('content-header')}>Mã bưu gửi</h3>
                     <div className={cx('grid-col-6-4')}>
                         <div className={cx('content-section')}>
-                            <Input className={cx('input')} placeholder='Nhập mã bưu gửi' />
+                            <Input className={cx('input')} type='text' placeholder='Nhập mã bưu gửi' />
                             <Button 
                                 className={cx('search-button')} 
                                 primary 
