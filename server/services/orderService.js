@@ -74,7 +74,7 @@ const getAllOrdersByStationStaffID = async(id) => {
 const getAllOrdersByOfficeStaffID = async(id) => {
     try {
         const user = await User.findById(id);
-        console.log(user.work_place);
+        // console.log(user.work_place);
         const result = {
             arriving: [],
             arrived: [],
@@ -85,7 +85,7 @@ const getAllOrdersByOfficeStaffID = async(id) => {
         // const orders = await Order.find({end_office: {office_id: user.work_place}})
         const orders = await Order.find({ $or:[ {"end_office.office_id": user.work_place},
                 {"start_office.staff_id": user._id}] } )
-        console.log(orders)
+        // console.log(orders)
         
         orders.forEach(order => {
             if (order.start_office.staff_id.toString() === user._id.toString()

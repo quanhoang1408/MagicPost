@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import styles from './Customer.module.scss';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,106 +11,48 @@ import 'tippy.js/dist/tippy.css';
 import Button from '~/components/Button';
 import Modal from '~/components/Modal';
 import OrderForm from '~/components/Modal/components/OrderForm';
+import { ToastContext } from '~/components/Toast/Toast';
+import * as orderService from '~/services/orderService';
+import formatDate from '../../../../../utils/formatDate';
 
 const cx = classNames.bind(styles);
 
-const ORDERS = [
-    {
-        id: 1,
-        name: 'Product 1',
-        from: {
-            name: 'Nguyen Van A',
-            address: 'Ho Chi Minh',
-            phoneNumber: '0123456789',
-            postalCode: '10179',
-        },
-        type: 'Tài liệu',
-        date: {
-            time: '07h52',
-            date: '18/10/2023',
-        },
-        to: {
-            name: 'Nguyen Van B',
-            address: 'Da Nang',
-            phoneNumber: '0987654321',
-            postalCode: '10179',
-        },
-        price: {
-            main: 9500,
-            sub: 1900,
-            GTGT: 0,
-        },
-        weight: 30,
-        status: 'Đã đến',
-    },{
-        id: 2,
-        name: 'Product 2',
-        from: {
-            name: 'Nguyen Van C',
-            address: 'Ho Chi Minh',
-            phoneNumber: '0123456789',
-            postalCode: '10179',
-        },
-        type: 'Hàng hóa',
-        date: {
-            time: '07h52',
-            date: '18/10/2023',
-        },
-        to: {
-            name: 'Nguyen Van D',
-            address: 'Da Nang',
-            phoneNumber: '0987654321',
-            postalCode: '10179',
-        },
-        price: {
-            main: 9500,
-            sub: 1900,
-            GTGT: 0,
-        },
-        weight: 30,
-        status: 'Đang chuyển',
-    },{
-        id: 3,
-        name: 'Product 3',
-        from: {
-            name: 'Nguyen Van E',
-            address: 'Ho Chi Minh',
-            phoneNumber: '0123456789',
-            postalCode: '10179',
-        },
-        type: 'Tài liệu',
-        date: {
-            time: '07h52',
-            date: '18/10/2023',
-        },
-        to: {
-            name: 'Nguyen Van F',
-            address: 'Da Nang',
-            phoneNumber: '0987654321',
-            postalCode: '10179',
-        },
-        price: {
-            main: 9500,
-            sub: 1900,
-            GTGT: 0,
-        },
-        weight: 30,
-        status: 'Đã đến',
-    },
-]
 
 function Customer() {
-    const [orders, setOrders] = useState(ORDERS);
+    const [orders, setOrders] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [order, setOrder] = useState();
+    
+    const toast = useContext(ToastContext);
 
-    const handleEdit = (id) => {
-        setShowModal(true);
-        setOrder(orders.find((order) => order.id === parseInt(id)));
+    useEffect(() => {
+        orderService.getOfficeOrderOutCustomer().then((res) => {
+            for(let i = 0; i < res.arrived.length; i++) {
+                res.arrived[i].start_office.send_time = new Date(res.arrived[i].start_office.send_time);
+                res.arrived[i].start_office.send_time = formatDate(res.arrived[i].start_office.send_time.toString());
+            }
+            for(let i = 0; i < res.finished.length; i++) {
+                res.finished[i].start_office.send_time = new Date(res.finished[i].start_office.send_time);
+                res.finished[i].start_office.send_time = formatDate(res.finished[i].start_office.send_time.toString());
+            }
+            setOrders(res.arrived.concat(res.finished));
+        })
+    }, [orders]);
+
+    const handleSuccess = (id) => {
+        orderService.deliver(id, true).then((res) => {
+            if(res.success === true) {
+                toast.showSuccessToast("Gửi hàng thành công");
+            }
+        })
     }
 
-    const handleDelete = () => {
-
+    const handleFail= (id) => {
+        orderService.deliver(id, false).then((res) => {
+            if(res.success === true) {
+                toast.showErrorToast("Gửi hàng thất bại");
+            }
+        })
     }
 
     const handlePrint = () => {
@@ -181,26 +123,29 @@ function Customer() {
                                                 return (
                                                     <tr className={cx('data-row')} key={index}>
                                                         <td className={cx('text-align-center')}>{index + 1}</td>
-                                                        <td>{order.name}</td>
-                                                        <td>{order.from.postalCode}</td>
+                                                        <td>{order.contents}</td>
+                                                        <td>{order.sender.postal_code}</td>
                                                         <td className={cx('text-align-center')}>
                                                             <div className={cx('order-status', { 
-                                                                active: (order.status === 'Đã đến') ? 'active' : '', 
+                                                                active: (order.success === true) ? 'active' : '', 
                                                             })}>
-                                                                {order.status}
+                                                                {(order.success === true) &&  'Thành công'}
+                                                                {(order.success === false) &&  'Thất bại'}
+                                                                {(order.success === null) &&  'Đang giao'}
                                                             </div>
                                                         </td>
-                                                        <td>{order.from.address}</td>
-                                                        <td>{order.date.date}</td>
-                                                        <td>{order.to.address}</td>
+                                                        <td>{order.sender.address}</td>
+                                                        <td>{order.start_office.send_time}</td>
+                                                        <td>{order.receiver.address}</td>
                                                         <td>{new Intl.NumberFormat().format(parseInt(order.price.main) + parseInt(order.price.sub) + parseInt(order.price.GTGT))} VNĐ</td>
-                                                        <td className={cx('text-align-center')}>
-                                                            <div className={cx('actions')}>
+                                                        <td className={cx('text-align-center')}>    
+                                                            {(order.success === null) && 
+                                                            <><div className={cx('actions')}>
                                                                 <Tippy 
                                                                     content='Xác nhận'
                                                                     placement='bottom'
                                                                 >
-                                                                    <Button className={cx('actions-btn', 'btn-green')} primary onClick={() => handleEdit(order.id)}>
+                                                                    <Button className={cx('actions-btn', 'btn-green')} primary onClick={() => handleSuccess(order._id)}>
                                                                         <FontAwesomeIcon className={cx('actions-icon')} icon={faCheck} />
                                                                     </Button>
                                                                 </Tippy>
@@ -210,11 +155,11 @@ function Customer() {
                                                                     content='Hủy'
                                                                     placement='bottom'
                                                                 >
-                                                                    <Button className={cx('actions-btn')} primary onClick={handleDelete}>
+                                                                    <Button className={cx('actions-btn')} primary onClick={() => handleFail(order._id)}>
                                                                         <FontAwesomeIcon className={cx('actions-icon')} icon={faXmark} />
                                                                     </Button>
                                                                 </Tippy>
-                                                            </div>
+                                                            </div></>}
                                                         </td>
                                                     </tr>
                                                 )
