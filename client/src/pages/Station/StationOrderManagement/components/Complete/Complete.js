@@ -12,6 +12,8 @@ import Button from '~/components/Button';
 import Modal from '~/components/Modal';
 import OrderForm from '~/components/Modal/components/OrderForm';
 
+import * as orderService from '~/services/orderService';
+
 const cx = classNames.bind(styles);
 
 const ORDERS = [
@@ -100,9 +102,15 @@ const ORDERS = [
 ]
 
 function Complete() {
-    const [orders, setOrders] = useState(ORDERS);
+    const [orders, setOrders] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [order, setOrder] = useState();
+
+    useEffect(() => {
+        orderService.getStationOrder().then((res) => {
+            setOrders(res.finished);
+        })
+    }, [orders])
 
     const handleEdit = (id) => {
         setShowModal(true);
@@ -166,31 +174,36 @@ function Complete() {
                                         <tr>
                                             <th className={cx('text-align-center')}>STT</th>
                                             <th>Tên</th>
-                                            <th>Trạng thái</th>
+                                            <th>Code</th>
+                                            {/* <th>Trạng thái</th> */}
                                             <th>Từ</th>
                                             <th>Thời gian</th>
                                             <th>Đến</th>
-                                            <th className={cx('text-align-center')}>Hành động</th>
+                                            <th>Cước</th>
+                                            {/* <th className={cx('text-align-center')}>Hành động</th> */}
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {
                                             orders.map((order, index) => {
                                                 return (
-                                                    <tr className={cx('data-row')} key={order.id}>
+                                                    <tr className={cx('data-row')} key={index}>
                                                         <td className={cx('text-align-center')}>{index + 1}</td>
-                                                        <td>{order.name}</td>
-                                                        <td className={cx('text-align-center')}>
+                                                        <td>{order.contents}</td>
+                                                        <td>{order.code}</td>
+                                                        {/* <td className={cx('text-align-center')}>
                                                             <div className={cx('order-status', { 
                                                                 active: (order.status === 'Đã đến') ? 'active' : '', 
                                                             })}>
                                                                 {order.status}
                                                             </div>
-                                                        </td>
-                                                        <td>{order.from.address}</td>
-                                                        <td>{order.date.date}</td>
-                                                        <td>{order.to.address}</td>
-                                                        <td className={cx('text-align-center')}>
+                                                        </td> */}
+                                                        <td>{order.sender.address}</td>
+                                                        <td>{order.start_office.send_time}</td>
+                                                        <td>{order.receiver.address}</td>
+                                                        <td>{new Intl.NumberFormat().format(parseInt(order.price.main) + parseInt(order.price.sub) + parseInt(order.price.GTGT))} VNĐ</td>
+
+                                                        {/* <td className={cx('text-align-center')}>
                                                             <div className={cx('actions')}>
                                                                 <Tippy 
                                                                     content='Xác nhận'
@@ -211,7 +224,7 @@ function Complete() {
                                                                     </Button>
                                                                 </Tippy>
                                                             </div>
-                                                        </td>
+                                                        </td> */}
                                                     </tr>
                                                 )
                                             })

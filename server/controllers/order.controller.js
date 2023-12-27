@@ -81,26 +81,15 @@ const getAllOrders = async (req, res) => {
     }
 }
 
-// const getOfficeOrderOutCustomer = async (req, res) => {
-//     try {
-//         const user = await User.findOne({email: req.user.email})
-
-//         const orders = await Order.find({ "end_office.office_id": user.work_place });
-//         res.status(200).json(orders);
-//     } catch (error) {
-//         res.status(400).json(error);
-//     }
-// }
-
-// const getOfficeOrderOutStation = async (req, res) => {
-//     try {
-//         const user = await User.findOne({email: req.user.email});
-//         const orders = await Order.find({"start_office.office_id": user.work_place, "stations": {$exists: true, $size:1 }});
-//         res.status(200).json(orders);
-//     } catch (error) {
-//         res.status(400).json(error);
-//     }
-// }
+const getOrdersCreated = async (req, res) => {
+    try {
+        const user = await User.findOne({email: req.user.email})
+        const orders = await Order.find({"start_office.office_id": user.work_place});
+        res.status(200).json(orders);
+    } catch (error) {
+        res.status(400).json(error);
+    }
+}
 
 const forward = async (req, res) => {
     try {
@@ -201,8 +190,7 @@ module.exports = {
     create,
     getOrders,
     getAllOrders,
-    // getOfficeOrderOutCustomer,
-    // getOfficeOrderOutStation,
+    getOrdersCreated,
     forward,
     getDelivers,
     createDeliver,

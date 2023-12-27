@@ -10,11 +10,8 @@ router.route('/')
 router.route('/get')
     .get(verifyToken, orderController.getAllOrders)
 
-// router.route('/get/office/out/customer')
-//     .get(verifyToken, orderController.getOfficeOrderOutCustomer)
-
-// router.route('/get/office/out/station')
-//     .get(verifyToken, orderController.getOfficeOrderOutStation)
+router.route('/get/created')
+    .get(verifyToken, orderController.getOrdersCreated)
 
 router.route('/create')
     .post(verifyToken, authorize([constants.ROLES.OFFICE_STAFF]), orderController.create)
