@@ -78,14 +78,26 @@ const getAllOrdersByOfficeStaffID = async(id) => {
         const result = {
             arriving: [],
             arrived: [],
-            finished: []
+            finished: [],
+            sending: [],
+            sent: []
         }
         // const orders = await Order.find({end_office: {office_id: user.work_place}})
-        const orders = await Order.find({"end_office.office_id": user.work_place})
+        const orders = await Order.find({ $or:[ {"end_office.office_id": user.work_place},
+                {"start_office.staff_id": user._id}] } )
         console.log(orders)
         
         orders.forEach(order => {
-            if (order.end_office.staff_id === null || order.end_office.staff_id === undefined) {
+            if (order.start_office.staff_id.toString() === user._id.toString()
+                && (order.end_office === null || order.end_office === undefined || order.end_office.office_id.toString() !== user.work_place.toString())) {
+                if (order.stations[0].staff_id === null || order.stations[0].staff_id === undefined) {
+                    result.sending.push(order);
+                }
+                else {
+                    result.sent.push(order);
+                }
+            }
+            else if (order.end_office.staff_id === null || order.end_office.staff_id === undefined) {
                 result.arriving.push(order);
             }
             else if (order.success === null) {
