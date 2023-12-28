@@ -19,7 +19,7 @@ function OrderForm({ order, handleCloseModal }) {
 
     const [type, setType] = useState(order !== undefined ? order.category : '')
     const [weight, setWeight] = useState(order !== undefined ? order.weight : undefined);
-    const [forward, setForward] = useState(order !== undefined ? order.forward : false);
+    const [forward, setForward] = useState((order !== undefined && order.stations.length >= 2) ? true : false);
 
     const [mainPrice, setMainPrice] = useState(order !== undefined ? order.price.main : undefined);
     const [subPrice, setSubPrice] = useState(order !== undefined ? order.price.sub : undefined);
@@ -127,7 +127,7 @@ function OrderForm({ order, handleCloseModal }) {
                                     className={cx('input-radio')}
                                     value={forward}
                                     type='checkbox'
-                                    // checked={true}
+                                    checked={forward}
                                     onChange={(e) => {setForward(e.target.checked)}}
                                 />
                             </div>

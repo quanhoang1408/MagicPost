@@ -16,6 +16,7 @@ const cx = classNames.bind(styles);
 
 function Header() {
     const [role, setRole] = useState('');
+    const [link, setLink] = useState('');
     const authUser = useContext(authUserContext);
     
     const MENU_ITEMS = [
@@ -53,14 +54,19 @@ function Header() {
         if (authUser && authUser.role) {
             if (authUser.role === 'boss') {
                 setRole('Lãnh đạo');
+                setLink(config.routes.boss);
             } else if (authUser.role === 'station_lead') {
                 setRole('Trưởng điểm tập kết');
+                setLink(config.routes.leader);
             } else if (authUser.role === 'office_lead') {
                 setRole('Trưởng điểm giao dịch');
+                setLink(config.routes.leader);
             } else if (authUser.role === 'station_staff') {
                 setRole('Nhân viên tập kết');
+                setLink(config.routes.employee);
             } else if (authUser.role === 'office_staff') {
                 setRole('Nhân viên giao dịch');
+                setLink(config.routes.employee);
             }
         }
     }, [role, authUser]);
@@ -70,7 +76,7 @@ function Header() {
             <div className={cx('container')}>
                 {/* <div className={cx('logo-wrapper')}>
                 </div> */}
-                <Link to={config.routes.manage} className={cx('logo-link')}>
+                <Link to={link} className={cx('logo-link')}>
                     <img src={images.logo} alt='Magic Post' />
                 </Link>
 

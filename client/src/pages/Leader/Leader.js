@@ -35,14 +35,6 @@ function Home() {
         }
     }, [authUser]);
 
-    const handleSuccess = () => {
-        toast.showSuccessToast('Đăng nhập thành công')
-    }
-
-    const handleError = () => {
-        toast.showErrorToast('Đăng nhập thất bại')
-    }
-
     return (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
