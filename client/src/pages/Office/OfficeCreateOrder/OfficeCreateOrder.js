@@ -23,7 +23,7 @@ function OfficeCreateOrder() {
 
     useEffect(() => {
         orderService.getOrdersCreated().then((res) => {
-            // console.log(res);
+            console.log(res);
             setOrders(res);
         })
     }, [orders]);
@@ -32,10 +32,6 @@ function OfficeCreateOrder() {
         setShowModal(true);
         console.log(orders.find((order) => (order._id === id)));
         setOrder(orders.find((order) => (order._id === id)));
-    }
-
-    const handlePrint = () => {
-
     }
 
     const handleAdd = () => {
@@ -109,12 +105,12 @@ function OfficeCreateOrder() {
                                                                 </Tippy>
                                                             </div>
                                                             <div className={cx('actions')}>
-                                                                <Link to={config.routes.print}>
+                                                                <Link to={config.routes.print} state={order}>
                                                                     <Tippy 
                                                                         content='In'
                                                                         placement='bottom'
                                                                     >
-                                                                        <Button className={cx('actions-btn', 'btn-yellow')} primary onClick={handlePrint}>
+                                                                        <Button className={cx('actions-btn', 'btn-yellow')} primary>
                                                                             <FontAwesomeIcon className={cx('actions-icon')} icon={faPrint} />
                                                                         </Button>
                                                                     </Tippy>

@@ -1,4 +1,6 @@
 import classNames from "classnames/bind";
+import { useEffect, useState } from "react";
+import { useLocation } from 'react-router-dom'
 import styles from './Print.module.scss';
 
 import Button from '~/components/Button';
@@ -7,10 +9,23 @@ import { faPrint } from "@fortawesome/free-solid-svg-icons";
 
 const cx = classNames.bind(styles);
 
-function Print() {
+function Print({ props }) {
+    const location = useLocation();
+    const data = location.state;
+    
+    const [time, setTime] = useState();
+
     const handlePrint = () => {
         window.print();
     }
+
+    useEffect(() => {
+        if (data) {
+            let time = data.start_office.send_time.split('.')[0];
+            time = time.split('T').join(' / ');
+            setTime(time);
+        }
+    }, [data]);
 
     return (
         <div className={cx('wrapper')}>
@@ -35,10 +50,10 @@ function Print() {
                                                 <strong>1. Họ tên địa chỉ người gửi:</strong>
                                             </div>
                                             <div className={cx('info-detail')}>
-                                                Nguyễn Văn A
+                                                {data.sender.name}
                                             </div>
                                             <div className={cx('info-detail', 'add-space')}>
-                                                234 Phạm Văn Đồng, Bắc Từ Liêm, Hà Nội
+                                                {data.sender.address}
                                             </div>
                                             <div className={cx('flex-col', 'space-between')}>
                                                 <div className={cx('flex-col')}>
@@ -46,7 +61,7 @@ function Print() {
                                                         <strong>Điện thoại:</strong>
                                                     </div>
                                                     <div className={cx('info-detail')}>
-                                                        0987654321
+                                                        {data.sender.phone}
                                                     </div>
                                                 </div>
                                                 <div className={cx('flex-col')}>
@@ -54,7 +69,7 @@ function Print() {
                                                         <strong>Mã bưu chính:</strong>
                                                     </div>
                                                     <div className={cx('info-detail')}>
-                                                        10179
+                                                        {data.sender.postal_code}
                                                     </div>
                                                 </div>
                                             </div>
@@ -64,10 +79,10 @@ function Print() {
                                                 <strong>2. Họ tên địa chỉ người nhận:</strong>
                                             </div>
                                             <div className={cx('info-detail')}>
-                                                Nguyễn Văn B
+                                                {data.receiver.name}
                                             </div>
                                             <div className={cx('info-detail', 'add-space')}>
-                                                144 Xuân Thủy, Cầu Giấy, Hà Nội
+                                                {data.receiver.address}
                                             </div>
                                             <div className={cx('flex-col', 'space-between')}>
                                                 <div className={cx('flex-col')}>
@@ -75,7 +90,7 @@ function Print() {
                                                         <strong>Điện thoại:</strong>
                                                     </div>
                                                     <div className={cx('info-detail')}>
-                                                        0987643553
+                                                        {data.receiver.phone}
                                                     </div>
                                                 </div>
                                                 <div className={cx('flex-col')}>
@@ -83,7 +98,7 @@ function Print() {
                                                         <strong>Mã bưu chính:</strong>
                                                     </div>
                                                     <div className={cx('info-detail')}>
-                                                        01089
+                                                        {data.receiver.postal_code}
                                                     </div>
                                                 </div>
                                             </div>
@@ -98,11 +113,11 @@ function Print() {
                                                 <div className={cx('info-detail')}>
                                                     <div className={cx('flex-col', 'space-around')}>
                                                         <div className={cx('flex-col')}>
-                                                            <div className={cx('check-box', 'active')}></div>
+                                                            <div className={cx('check-box', { active: (data.category === 'Tài liệu') })}></div>
                                                             <div className={cx('info-detail')}>Tài liệu</div>
                                                         </div>
                                                         <div className={cx('flex-col')}>
-                                                            <div className={cx('check-box')}></div>
+                                                            <div className={cx('check-box', { active: (data.category === 'Hàng hóa') })}></div>
                                                             <div className={cx('info-detail')}>Hàng hóa</div>
                                                         </div>
                                                     </div>
@@ -189,7 +204,7 @@ function Print() {
                                                             <strong>8. Ngày giờ gửi:</strong>
                                                         </div>
                                                         <div className={cx('info-detail')}>
-                                                            07h52-18/10/2023
+                                                            {time}
                                                         </div>
                                                     </div>
                                                     <div className={cx('info-label')}>
@@ -222,16 +237,16 @@ function Print() {
                                                             </div>
                                                             <div className={cx('text-align-right')}>
                                                                 <div className={cx('info-detail')}>
-                                                                    9.500
+                                                                    {`${new Intl.NumberFormat().format(parseInt(data.price.main))} VNĐ`}
                                                                 </div>
                                                                 <div className={cx('info-detail')}>
-                                                                    1.900
+                                                                    {`${new Intl.NumberFormat().format(parseInt(data.price.sub))} VNĐ`}
                                                                 </div>
                                                                 <div className={cx('info-detail')}>
-                                                                    0
+                                                                    {`${new Intl.NumberFormat().format(parseInt(data.price.GTGT))} VNĐ`}
                                                                 </div>
                                                                 <div className={cx('info-detail')}>
-                                                                    <strong>12.312</strong>
+                                                                    <strong>{`${new Intl.NumberFormat().format(parseInt(data.price.main) + parseInt(data.price.sub) + parseInt(data.price.GTGT))} VNĐ`}</strong>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -274,7 +289,7 @@ function Print() {
                                                         </div>
                                                         <div className={cx('flex-1')}></div>
                                                         <div className={cx('info-detail', 'text-align-center')}>
-                                                            GDV: Nguyễn Văn C
+                                                            {`GDV: ${data.staff_name}`}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -294,7 +309,7 @@ function Print() {
                                                             </div>
                                                             <div className={cx('text-align-right')}>
                                                                 <div className={cx('info-detail')}>
-                                                                    30
+                                                                    {data.weight}
                                                                 </div>
                                                                 <div className={cx('info-detail')}>
                                                                     0
