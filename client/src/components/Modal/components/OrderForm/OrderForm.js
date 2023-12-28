@@ -10,16 +10,14 @@ import * as orderService from '~/services/orderService';
 const cx = classNames.bind(styles);
 
 function OrderForm({ order, handleCloseModal }) {
-    const [name, setName] = useState(order !== undefined ? order.name : '');
+    const [name, setName] = useState(order !== undefined ? order.contents : '');
 
-    const [fromName, setFromName] = useState(order !== undefined ? order.from.name : '');
-    const [fromAddress, setFromAddress] = useState(order !== undefined ? order.from.address : '');
-    const [fromPhoneNumber, setFromPhoneNumber] = useState(order !== undefined ? order.from.phoneNumber : '');
-    const [fromPostalCode, setFromPostalCode] = useState(order !== undefined ? order.from.postalCode : '');
+    const [fromName, setFromName] = useState(order !== undefined ? order.sender.name : '');
+    const [fromAddress, setFromAddress] = useState(order !== undefined ? order.sender.address : '');
+    const [fromPhoneNumber, setFromPhoneNumber] = useState(order !== undefined ? order.sender.phone : '');
+    const [fromPostalCode, setFromPostalCode] = useState(order !== undefined ? order.sender.postal_code : '');
 
-    const [type, setType] = useState(order !== undefined ? order.type : '')
-    const [time, setTime] = useState(order !== undefined ? order.date.time.split('h').join(':') : '');
-    const [date, setDate] = useState(order !== undefined ? order.date.date.split('/').reverse().join('-') : '');
+    const [type, setType] = useState(order !== undefined ? order.category : '')
     const [weight, setWeight] = useState(order !== undefined ? order.weight : undefined);
     const [forward, setForward] = useState(order !== undefined ? order.forward : false);
 
@@ -27,10 +25,10 @@ function OrderForm({ order, handleCloseModal }) {
     const [subPrice, setSubPrice] = useState(order !== undefined ? order.price.sub : undefined);
     const [GTGTPrice, setGTGTPrice] = useState(order !== undefined ? order.price.GTGT : undefined);
 
-    const [toName, setToName] = useState(order !== undefined ? order.to.name : '');
-    const [toAddress, setToAddress] = useState(order !== undefined ? order.to.address : '');
-    const [toPhoneNumber, setToPhoneNumber] = useState(order !== undefined ? order.to.phoneNumber : '');
-    const [toPostalCode, setToPostalCode] = useState(order !== undefined ? order.to.postalCode : '');
+    const [toName, setToName] = useState(order !== undefined ? order.receiver.name : '');
+    const [toAddress, setToAddress] = useState(order !== undefined ? order.receiver.address : '');
+    const [toPhoneNumber, setToPhoneNumber] = useState(order !== undefined ? order.receiver.phone : '');
+    const [toPostalCode, setToPostalCode] = useState(order !== undefined ? order.receiver.postal_code : '');
 
     const toast = useContext(ToastContext);
     const handleSave = () => {
@@ -77,12 +75,6 @@ function OrderForm({ order, handleCloseModal }) {
                             <div className={cx('label')}>
                                 Tên đơn hàng:
                             </div>
-                            {/*<div className={cx('label')}>*/}
-                            {/*    Thời gian:*/}
-                            {/*</div>*/}
-                            {/*<div className={cx('label')}>*/}
-                            {/*    Ngày:*/}
-                            {/*</div>*/}
                             <div className={cx('label')}>
                                 Trọng lượng (kg):
                             </div>
@@ -101,18 +93,6 @@ function OrderForm({ order, handleCloseModal }) {
                                 placeholder='Tên đơn hàng' 
                                 onChange={(e) => setName(e.target.value)}
                             />
-                            {/*<Input */}
-                            {/*    className={cx('input-wrapper')}*/}
-                            {/*    type='time' */}
-                            {/*    value={time}*/}
-                            {/*    onChange={(e) => {setTime(e.target.value)}}*/}
-                            {/*/>*/}
-                            {/*<Input */}
-                            {/*    className={cx('input-wrapper')}*/}
-                            {/*    type='date' */}
-                            {/*    value={date}*/}
-                            {/*    onChange={(e) => {setDate(e.target.value)}}*/}
-                            {/*/>*/}
                             <Input 
                                 className={cx('input-wrapper')}
                                 type='number' 
@@ -142,13 +122,15 @@ function OrderForm({ order, handleCloseModal }) {
                                     Hàng hóa
                                 </label>
                             </div>
-                            <input
-                                className={cx('input-checkbox')}
-                                value={forward}
-                                type='checkbox'
-                                // checked={true}
-                                onChange={(e) => {setForward(e.target.checked)}}
-                            />
+                            <div className={cx('radio-wrapper')}>
+                                <input
+                                    className={cx('input-radio')}
+                                    value={forward}
+                                    type='checkbox'
+                                    // checked={true}
+                                    onChange={(e) => {setForward(e.target.checked)}}
+                                />
+                            </div>
                         </div>
                     </div>
                     <div className={cx('grid-col-2-8')}>

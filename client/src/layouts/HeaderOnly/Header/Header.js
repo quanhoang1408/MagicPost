@@ -43,10 +43,12 @@ function Header() {
 
     const toggleNav = () => {
         const nav = navRef.current;
-        if (nav.style.display === 'block') {
-            nav.style.display = 'none';
-        } else {
-            nav.style.display = 'block';
+        if (window.innerWidth < 1023) {
+            if (nav.style.display === 'block') {
+                nav.style.display = 'none';
+            } else {
+                nav.style.display = 'block';
+            }
         }
     }
 

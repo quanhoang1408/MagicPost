@@ -6,6 +6,13 @@
     grid-row-gap: 20px;
 }
 
+.grid-col-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(calc(33.33333% - 20px), 1fr));
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+}
+
 .grid-col-4 {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(calc(25% - 20px), 1fr));
@@ -30,87 +37,10 @@
     grid-template-rows: repeat(auto-fill, minmax(calc(50% - 20px), 1fr));
 }
 
-.text-align-center {
-    text-align: center;
-}
-
-// Color
-.bg-purple {
-    background: linear-gradient(135deg,#8e4cf1 0,#d877d0 100%);
-}
-
-.bg-orange {
-    background: linear-gradient(135deg,#f48665 0,#d6b341 100%)
-}
-
-.bg-blue {
-    background: linear-gradient(135deg,#289cf5 0,#80e0e6 100%)
-}
-
-.bg-green {
-    background: linear-gradient(135deg,#34be73 0,#c2e495 100%)
-}
-
 // Wrapper
 .wrapper {
     width: 100%;
     height: 100%;
-}
-
-.container {
-    width: 100%;
-    height: 100%;
-    padding: 28px 40px;
-}
-
-// Header
-.header-wrapper {
-    margin-bottom: 20px;
-    width: 100%;
-}
-
-.breadcrumb {
-    display: flex;
-    align-items: baseline;
-}
-
-.breadcrumb-item {
-    list-style-type: none;
-    font-size: 1.6rem;
-    color: var(--black);
-    cursor: default;
-
-    & ~ .breadcrumb-item::before {
-        content: '\00BB';
-        position: relative;
-        top: -1px;
-        font-weight: 700;
-        padding: 0 6px;
-    }
-
-    &:nth-child(2)::before {
-        left: 40px;
-    }
-}
-
-.breadcrumb-icon {
-    margin-bottom: 2px;
-    margin-right: 20px;
-}
-
-.header {
-    margin-right: -10px;
-    padding-right: 10px;
-    font-size: 2rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: var(--black);
-    border-right: 2px solid #bdbcbc;
-}
-
-// Content
-.content {
-    width: 100%;
 }
 
 .content-section {
@@ -171,19 +101,4 @@
     justify-content: center;
     width: 100%;
     // height: 400px;
-}
-
-.bar-chart-wrapper {
-    overflow-x: scroll;
-    overflow-y: hidden;
-
-    &::-webkit-scrollbar {
-        display: block;
-        height: 10px;
-    }
-}
-
-.income {
-    font-size: 3rem;
-    font-weight: 700;
 }

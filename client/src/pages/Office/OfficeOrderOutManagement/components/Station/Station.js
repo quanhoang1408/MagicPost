@@ -112,7 +112,7 @@ function Station() {
     useEffect(() => {
         orderService.getOfficeOrder()
             .then((res) => {
-                console.log(res);
+                // console.log(res);
                 for(let i = 0; i < res.sending.length; i++) {
                     res.sending[i].status = 'Đang chuyển';
                 }
@@ -150,33 +150,6 @@ function Station() {
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
                 <div className={cx('content')}>
-                    <div className={cx('content-section', 'grid-col-4')}>
-                        <div className={cx('card', 'info-card', 'bg-purple')}>
-                            <div className={cx('info-wrapper')}>
-                                <h3 className={cx('info-header')}>Đơn trong ngày</h3>
-                                <h2 className={cx('info-number')}>0</h2>
-                            </div>
-                        </div>
-                        <div className={cx('card', 'info-card', 'bg-blue')}>
-                            <div className={cx('info-wrapper')}>
-                                <h3 className={cx('info-header')}>Đơn trong tháng</h3>
-                                <h2 className={cx('info-number')}>0</h2>
-                            </div>
-                        </div>
-                        <div className={cx('card', 'info-card', 'bg-green')}>
-                            <div className={cx('info-wrapper')}>
-                                <h3 className={cx('info-header')}>Đơn trong năm</h3>
-                                <h2 className={cx('info-number')}>3</h2>
-                            </div>
-                        </div>
-                        <div className={cx('card', 'info-card', 'bg-orange')}>
-                            <div className={cx('info-wrapper')}>
-                                <h3 className={cx('info-header')}>Tổng số đơn hàng</h3>
-                                <h2 className={cx('info-number')}>3</h2>
-                            </div>
-                        </div>
-                    </div>
-                    
                     <div className={cx('content-section')}>
                         <div className={cx('card', 'table-card')}>
                             <div className={cx('table-wrapper')}>
@@ -204,8 +177,9 @@ function Station() {
                                                         <td>{order.code}</td>
                                                         <td className={cx('text-align-center')}>
                                                             <div className={cx('order-status', { 
-                                                                success: (order.success === true), 
-                                                                fail: (order.success === false), 
+                                                                // success: (order.success === true), 
+                                                                // fail: (order.success === false), 
+                                                                success: (order.status === 'Đã đến'), 
                                                             })}>
                                                                 {order.status}
                                                             </div>

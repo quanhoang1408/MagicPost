@@ -117,7 +117,7 @@ function Login() {
                         {showPassword ? <EyeOpen /> : <EyeClose />}
                     </button>
                 </Input>
-                <a className={cx('link', 'footer-link')} href='/login/phone-or-email/forget-password'>Quên mật khẩu?</a>
+                {/* <a className={cx('link', 'footer-link')} href='/login/phone-or-email/forget-password'>Quên mật khẩu?</a> */}
                 <Button 
                     className={cx('submit-btn')} 
                     primary
@@ -128,7 +128,7 @@ function Login() {
                 
             </div>
             
-            <footer className={cx('footer-wrapper')}>
+            {/* <footer className={cx('footer-wrapper')}>
                 <div className={cx('footer')}>
                     Chưa có tài khoản? 
                     <a 
@@ -139,7 +139,7 @@ function Login() {
                         Đăng ký
                     </a>
                 </div>
-            </footer>
+            </footer> */}
         </div>
     );
 }

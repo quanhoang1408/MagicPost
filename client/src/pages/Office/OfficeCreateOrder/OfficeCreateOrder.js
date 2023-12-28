@@ -23,14 +23,15 @@ function OfficeCreateOrder() {
 
     useEffect(() => {
         orderService.getOrdersCreated().then((res) => {
-            console.log(res);
+            // console.log(res);
             setOrders(res);
         })
     }, [orders]);
 
     const handleEdit = (id) => {
         setShowModal(true);
-        setOrder(orders.find((order) => order._id === id));
+        console.log(orders.find((order) => (order._id === id)));
+        setOrder(orders.find((order) => (order._id === id)));
     }
 
     const handlePrint = () => {
@@ -67,33 +68,6 @@ function OfficeCreateOrder() {
                 </div>
                 
                 <div className={cx('content')}>
-                    <div className={cx('content-section', 'grid-col-4')}>
-                        <div className={cx('card', 'info-card', 'bg-purple')}>
-                            <div className={cx('info-wrapper')}>
-                                <h3 className={cx('info-header')}>Đơn trong ngày</h3>
-                                <h2 className={cx('info-number')}>0</h2>
-                            </div>
-                        </div>
-                        <div className={cx('card', 'info-card', 'bg-blue')}>
-                            <div className={cx('info-wrapper')}>
-                                <h3 className={cx('info-header')}>Đơn trong tháng</h3>
-                                <h2 className={cx('info-number')}>0</h2>
-                            </div>
-                        </div>
-                        <div className={cx('card', 'info-card', 'bg-green')}>
-                            <div className={cx('info-wrapper')}>
-                                <h3 className={cx('info-header')}>Đơn trong năm</h3>
-                                <h2 className={cx('info-number')}>3</h2>
-                            </div>
-                        </div>
-                        <div className={cx('card', 'info-card', 'bg-orange')}>
-                            <div className={cx('info-wrapper')}>
-                                <h3 className={cx('info-header')}>Tổng số đơn hàng</h3>
-                                <h2 className={cx('info-number')}>3</h2>
-                            </div>
-                        </div>
-                    </div>
-                    
                     <div className={cx('content-section')}>
                         <div className={cx('card', 'table-card')}>
                             <div className={cx('table-wrapper')}>
@@ -115,7 +89,7 @@ function OfficeCreateOrder() {
                                         {
                                             orders.map((order, index) => {
                                                 return (
-                                                    <tr className={cx('data-row')} key={order.id}>
+                                                    <tr className={cx('data-row')} key={index}>
                                                         <td className={cx('text-align-center')}>{index + 1}</td>
                                                         <td>{order.contents}</td>
                                                         <td>{order.sender.address}</td>
@@ -129,7 +103,7 @@ function OfficeCreateOrder() {
                                                                     content='Sửa'
                                                                     placement='bottom'
                                                                 >
-                                                                    <Button className={cx('actions-btn', 'btn-green')} primary onClick={() => handleEdit(order.id)}>
+                                                                    <Button className={cx('actions-btn', 'btn-green')} primary onClick={() => handleEdit(order._id)}>
                                                                         <FontAwesomeIcon className={cx('actions-icon')} icon={faPen} />
                                                                     </Button>
                                                                 </Tippy>

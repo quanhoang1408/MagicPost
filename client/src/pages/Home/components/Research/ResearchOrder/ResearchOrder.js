@@ -90,9 +90,12 @@ function ResearchOrder() {
                                 <div className={cx('grid-col-2-8')}>
                                     <div className={cx('label')}>Trạng thái:</div>
                                     <div className={cx('status', { 
-                                        active: (status === 'Đã đến') ? 'active' : '', 
+                                        success: (result.order.success === true), 
+                                        fail: (result.order.success === false), 
                                     })}>
-                                        {result.order.success ? "Thành công" : (result.order.success === false ? "Thất bại" : "Đang giao")}
+                                        {(result.order.success === true) &&  'Thành công'}
+                                        {(result.order.success === false) &&  'Thất bại'}
+                                        {(result.order.success === null) &&  'Đang giao'}
                                     </div>
                                 </div>
                             </div>
@@ -125,10 +128,10 @@ function ResearchOrder() {
                     <div className={cx('grid-col-6-4')}>
                         <div className={cx('content-section')}>
                             <Input className={cx('input')}
-                                   type='text'
-                                   placeholder='Nhập mã bưu gửi'
-                                   value={searchTerm}
-                                   onChange={handleChange}/>
+                                type='text'
+                                placeholder='Nhập mã bưu gửi'
+                                value={searchTerm}
+                                onChange={handleChange}/>
                             <Button 
                                 className={cx('search-button')} 
                                 primary 

@@ -292,7 +292,7 @@ function Boss() {
                         </div>
                         <div className={cx('content-section')}>
                             <div className={cx('card', 'chart-card')}>
-                                <h3 className={cx('chart-header')}>Tổng doanh thu</h3>
+                                <h3 className={cx('chart-header')}>Thống kê doanh thu</h3>
                                 <div className={cx('line-chart-wrapper')}>
                                     <LineChart width={500} height={300} data={income}
                                         margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>

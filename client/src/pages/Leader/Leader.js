@@ -1,9 +1,20 @@
-import { useContext, useEffect } from "react";
+import classNames from "classnames/bind";
+import { useContext, useEffect, useState } from "react";
+import styles from './Leader.module.scss';
 
+import Station from './Station';
+import Office from './Office';
 import { ToastContext } from "~/components/Toast/Toast";
-import Button from '~/components/Button';
+import { authUserContext } from "~/App";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHouse } from "@fortawesome/free-solid-svg-icons";
+
+const cx = classNames.bind(styles);
 
 function Home() {
+    const [role, setRole] = useState();
+
+    const authUser = useContext(authUserContext);
     const toast = useContext(ToastContext);
 
     useEffect(() => {
@@ -18,6 +29,12 @@ function Home() {
         // console.log('[boss]', url);
     }, []);
 
+    useEffect(() => {
+        if (authUser && authUser.role) {
+            setRole(authUser.role);
+        }
+    }, [authUser]);
+
     const handleSuccess = () => {
         toast.showSuccessToast('Đăng nhập thành công')
     }
@@ -27,10 +44,27 @@ function Home() {
     }
 
     return (
-        <div>
-            <h2>Home page</h2>
-            <Button primary onClick={handleSuccess}>success</Button>
-            <Button primary onClick={handleError}>error</Button>
+        <div className={cx('wrapper')}>
+            <div className={cx('container')}>
+                <div className={cx('header-wrapper')}>
+                    <ul className={cx('breadcrumb')}>
+                        <li className={cx('breadcrumb-item')}>
+                            <h3 className={cx('header')}>Trang chủ</h3>
+                        </li>
+                        <li className={cx('breadcrumb-item')}>
+                            <FontAwesomeIcon className={cx('breadcrumb-icon')} icon={faHouse} />
+                            Trang chủ
+                        </li>
+                    </ul>
+                </div>
+                <div className={cx('content')}>
+                    {(role === 'station_lead') ? (
+                        <Station />
+                    ) : (
+                        <Office />
+                    )}
+                </div>
+            </div>
         </div>
     );
 }
