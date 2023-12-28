@@ -22,11 +22,13 @@ function Sidebar() {
     useEffect(() => {
         if (authUser && authUser.role) {
             setRole(authUser.role);
-            // setRole('station_lead');
+            // 
             // console.log('[sidebar]', authUser);
         }
     }, [authUser]);
     
+    // useEffect(() => {setRole('boss');}, [])
+
     // Show menu item base on role
     const handleSetMenuItem = (role) => {
         switch(role) {
@@ -56,7 +58,7 @@ function Sidebar() {
                                 <MenuItem className={cx('sub-menu-item')} title='Trưởng điểm giao dịch' to={config.routes.officeLeaderManagement} />
                             </Menu>
                         </MenuItem>
-                        <MenuItem 
+                        {/* <MenuItem 
                             className={cx('menu-item', 'has-sub-menu')} 
                             title='Thống kê hàng' 
                             icon={<FontAwesomeIcon icon={faBox} />} 
@@ -66,7 +68,7 @@ function Sidebar() {
                                 <MenuItem className={cx('sub-menu-item')} title='Hàng nhận' to={config.routes.orderInStatistic} />
                                 <MenuItem className={cx('sub-menu-item')} title='Hàng gửi' to={config.routes.orderOutStatistic} />
                             </Menu>
-                        </MenuItem>
+                        </MenuItem> */}
                     </>
                 );
                 break;
