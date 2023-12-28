@@ -4,7 +4,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse, faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faKey, faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import config from '~/config';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
@@ -12,6 +12,7 @@ import Button from '~/components/Button';
 import { ToastContext } from '~/components/Toast/Toast';
 import Modal from '~/components/Modal';
 import EmployeeForm from '~/components/Modal/components/EmployeeForm';
+import PasswordForm from '~/components/Modal/components/PasswordForm';
 
 import * as officeEmployeeService from '~/services/officeEmployeeService';
 import * as userService from '~/services/userService';
@@ -23,6 +24,7 @@ function OfficeEmployeesManagement() {
     const [showModal, setShowModal] = useState(false);
     const [employee, setEmployee] = useState();
     const [workplace, setWorkplace] = useState();
+    const [showPassModal, setShowPassModal] = useState(false);
 
     const toast = useContext(ToastContext);
 
@@ -42,6 +44,7 @@ function OfficeEmployeesManagement() {
 
     const handleEdit = (id) => {
         setShowModal(true);
+        setShowPassModal(false);
         setEmployee(employees.find((employee) => employee._id === id));
     }
 
@@ -56,13 +59,21 @@ function OfficeEmployeesManagement() {
         )
     }
 
+    const handleChangePassword = (id) => {
+        setShowModal(false);
+        setShowPassModal(true);
+        setEmployee(employees.find((employee) => employee._id === id));
+    }
+
     const handleAdd = () => {
         setShowModal(true);
+        setShowPassModal(false);
         setEmployee();
     }
 
     const handleCloseModal = () => {
         setShowModal(false);
+        setShowPassModal(false);
     }
     
     return (
@@ -135,6 +146,16 @@ function OfficeEmployeesManagement() {
                                                                 </Button>
                                                             </Tippy>
                                                         </div>
+                                                        <div className={cx('actions')}>
+                                                            <Tippy 
+                                                                content='Đổi mật khẩu'
+                                                                placement='bottom'
+                                                            >
+                                                                <Button className={cx('actions-btn', 'btn-yellow')} primary onClick={()=> handleChangePassword(employee._id)}>
+                                                                    <FontAwesomeIcon className={cx('actions-icon')} icon={faKey} />
+                                                                </Button>
+                                                            </Tippy>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             )
@@ -151,6 +172,11 @@ function OfficeEmployeesManagement() {
                 {showModal && 
                     <Modal className={cx('modal')} onClose={handleCloseModal}>
                         <EmployeeForm employee={employee} employeeRole='Nhân viên điểm giao dịch' workplace={workplace} handleCloseModal={handleCloseModal} />
+                    </Modal>
+                }
+                {showPassModal &&
+                    <Modal className={cx('password-modal')} onClose={handleCloseModal}>
+                        <PasswordForm employee={employee} handleCloseModal={handleCloseModal} />
                     </Modal>
                 }
             </div>

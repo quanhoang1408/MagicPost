@@ -141,11 +141,21 @@
     &.btn-green {
         background-color: var(--green);
     }
+
+    &.btn-yellow {
+        background-color: var(--orange);
+    }
 }
 
 // Modal
 .modal {
     width: 90%;
     height: 95%;
+    overflow-y: overlay;
+}
+
+.password-modal {
+    width: 428px;
+    height: 62%;
     overflow-y: overlay;
 }
