@@ -1,5 +1,6 @@
 const Order = require('../models/order.model');
 const User = require('../models/user.model');
+const dateUtil = require('../utils/dateUtil')
 
 const getAllOrders = async() => {
     try {
@@ -139,23 +140,24 @@ const generateOrderCode = async () => {
 const getOrderLogs = (order, stations, offices) => {
     const res = []
     // console.log(order)
-    console.log(order.stations)
-    console.log(stations)
+    // console.log(order.stations)
+    // console.log(stations)
+    console.log(offices)
     
     if (order.stations) {
         order.stations.forEach(station => {
-            if (station.received_time) res.push(`Received at ${stations.get(station.station_id.toString())} on ${station.received_time}`)
-            else res.push(`Arriving to ${stations.get(station.station_id.toString())} station`)
+            if (station.received_time) res.push(`Đã đến điểm tập kết ${stations.get(station.station_id.toString())} lúc ${dateUtil.formatDateTime(station.received_time)}`)
+            else res.push(`Đang vận chuyển tới điểm tập kết ${stations.get(station.station_id.toString())}`)
         })
     }
         // console.log(order.sta}tions)
     if (order.end_office) {
         if (order.end_office.received_time) {
-            res.push(`Received at ${offices[order.end_office.office_id]} on ${order.end_office.received_time}`)
-            if (order.success) res.push(`Order completed`)
-            else res.push(`Order failed`)
+            res.push(`Đã đến điểm giao dịch ${offices.get(order.end_office.office_id.toString())} lúc ${dateUtil.formatDateTime(order.end_office.received_time)}`)
+            if (order.success) res.push(`Đơn hàng gửi thành công`)
+            else res.push(`Đơn hàng gửi thất bại`)
         }
-        else res.push(`Arriving to ${order.end_office.office_id.name}`)
+        else res.push(`Đang vận chuyển tới điểm giao dịch ${offices.get(order.end_office.office_id.toString())}`)
     }
     return res
 }

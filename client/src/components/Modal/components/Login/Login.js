@@ -42,6 +42,10 @@ function Login() {
         authService
             .login(email, password)
             .then(data => {
+                if (!data) {
+                    toast.showErrorToast("Đăng nhập thất bại");
+                    return;
+                }
                 console.log(data);
                 if (data.success === true) {
                     // toast.showSuccessToast(data.message);

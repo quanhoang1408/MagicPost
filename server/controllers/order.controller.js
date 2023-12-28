@@ -180,19 +180,22 @@ const createDeliver = async (req, res) => {
 const getOrderLogsByCode = async (req, res) => {
     try {
         const { code } = req.params;
-        const order = await Order.find({ code: code });
+        const order = await Order.findOne({ code: code });
         const stations_query = await Station.find({})
         const offices_query = await Office.find({})
         const stations = new Map(
             stations_query.map(station => [station._id.toString(), station.name])
         )
         const offices = new Map(
-            offices_query.map(office => [office._id, office.name])
+            offices_query.map(office => [office._id.toString(), office.name])
         )
         if (!order) return res.status(404).json({ message: "Order not found" });
-        if (order.length !== 1) return res.status(400).json({ message: "Invalid order" });
-        console.log(stations)
-        return res.status(200).json(orderService.getOrderLogs(order[0], stations, offices));
+        // if (order.length !== 1) return res.status(400).json({ message: "Invalid order" });
+        // console.log(stations)
+        return res.status(200).json({
+            order: order,
+            log: orderService.getOrderLogs(order, stations, offices)
+        })
         
     } catch (error) {
         res.status(500).json({ message: error.message });

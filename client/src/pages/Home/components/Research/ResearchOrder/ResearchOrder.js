@@ -1,5 +1,5 @@
 import classNames from "classnames/bind";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import styles from './ResearchOrder.module.scss';
 
 import Button from '~/components/Button';
@@ -8,6 +8,9 @@ import { SearchIcon } from '~/components/Icon';
 import images from "~/assets/images";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { ToastContext } from '~/components/Toast/Toast';
+
+import * as orderService from '~/services/orderService';
 
 const cx = classNames.bind(styles);
 
@@ -15,9 +18,29 @@ function ResearchOrder() {
     const [result, setResult] = useState();
     const [showResult, setShowResult] = useState(false);
     const [status, setStatus] = useState('Đã đến')
+    const [searchTerm, setSearchTerm] = useState('');
+    
+    const toast = useContext(ToastContext);
 
     const handleSearch = () => {
-        setResult('data');
+        orderService.getLogs(searchTerm).then(res => {
+            if (!res) {
+                toast.showErrorToast("Không tìm thấy đơn hàng")
+                console.log("No order found")
+                return
+            }
+            // console.log(res)
+            // console.log(err)
+            // if (res.status === 404) {
+            //     console.log(res)
+            //     return
+            // }
+            // console.log(res)
+            res.log = res.log.reverse()
+            res.total_price = res.order.price.main + res.order.price.sub + res.order.price.GTGT
+            setResult(res)
+            // console.log(result)
+        })
     }
 
     useEffect(() => {
@@ -30,6 +53,10 @@ function ResearchOrder() {
         setShowResult(false);
         setResult();
     }
+    
+    const handleChange = (event) => {
+        setSearchTerm(event.target.value);
+    };
 
     return (
         <div className={cx('wrapper')}>
@@ -48,16 +75,13 @@ function ResearchOrder() {
                     <div className={cx('grid-col-6-4')}>
                         <div className={cx('content-section')}>
                             <ul className={cx('status-list')}>
-                                <li className={cx('status-item')}>01/07/2020 17:13 Người nhận: Nguyễn Văn A</li>
-                                <li className={cx('status-item')}>01/07/2020 17:13 Giao hàng thành công: HUB Linh Trung - Võ Thanh Chí</li>
-                                <li className={cx('status-item')}>01/07/2020 07:28 Giao bưu tá đi phát: HUB Linh Trung - Hồ Chí Minh</li>
-                                <li className={cx('status-item')}>01/07/2020 06:58 Đã đến bưu cục: HUB Linh Trung - Hồ Chí Minh</li>
-                                <li className={cx('status-item')}>30/06/2020 23:24 Đi khỏi bưu cục: Trung tâm HCM - Hồ Chí Minh</li>
-                                <li className={cx('status-item')}>30/06/2020 23:24 Đã đến bưu cục: Trung tâm HCM - Hồ Chí Minh</li>
-                                <li className={cx('status-item')}>30/06/2020 18:29 Đi khỏi bưu cục: Quận 12 - Hồ Chí Minh</li>
-                                <li className={cx('status-item')}>30/06/2020 10:00 Chấp nhận gửi: Quận 12 - Hồ Chí Minh</li>
-                                <li className={cx('status-item')}>29/06/2020 20:04 Đơn hàng chờ xử lý: Quận 12 - Hồ Chí Minh</li>
-                                <li className={cx('status-item')}>28/06/2020 09/39 Giao bưu cục đi nhận: Quận 12 - Hồ Chí Minh</li>
+                                {
+                                    result.log.map((msg, index) => {
+                                        return (
+                                            <li className={cx('status-item')}>{msg}</li>
+                                        )
+                                    })
+                                }
                             </ul>
                         </div>
                         <div className={cx('content-section', 'separate')}>
@@ -68,7 +92,7 @@ function ResearchOrder() {
                                     <div className={cx('status', { 
                                         active: (status === 'Đã đến') ? 'active' : '', 
                                     })}>
-                                        {status}
+                                        {result.order.success ? "Thành công" : (result.order.success === false ? "Thất bại" : "Đang giao")}
                                     </div>
                                 </div>
                             </div>
@@ -77,19 +101,19 @@ function ResearchOrder() {
                             <div className={cx('customer-info')}>
                                 <div className={cx('grid-col-2-8')}>
                                     <div className={cx('label')}>Tên:</div>
-                                    <div className={cx('info')}>Nguyễn Văn A</div>
+                                    <div className={cx('info')}>{result.order.receiver.name}</div>
                                 </div>
                                 <div className={cx('grid-col-2-8')}>
                                     <div className={cx('label')}>SĐT:</div>
-                                    <div className={cx('info')}>0987654321</div>
+                                    <div className={cx('info')}>{result.order.receiver.phone}</div>
                                 </div>
                                 <div className={cx('grid-col-2-8')}>
                                     <div className={cx('label')}>Địa chỉ:</div>
-                                    <div className={cx('info')}>Võ Thanh Chí, Hồ Chí Minh</div>
+                                    <div className={cx('info')}>{result.order.receiver.address}</div>
                                 </div>
                                 <div className={cx('grid-col-2-8')}>
                                     <div className={cx('label')}>Cước:</div>
-                                    <div className={cx('info')}>{new Intl.NumberFormat().format(100000)} VNĐ</div>
+                                    <div className={cx('info')}>{new Intl.NumberFormat().format(result.total_price)} VNĐ</div>
                                 </div>
                             </div>
                         </div>
@@ -100,7 +124,11 @@ function ResearchOrder() {
                     <h3 className={cx('content-header')}>Mã bưu gửi</h3>
                     <div className={cx('grid-col-6-4')}>
                         <div className={cx('content-section')}>
-                            <Input className={cx('input')} type='text' placeholder='Nhập mã bưu gửi' />
+                            <Input className={cx('input')}
+                                   type='text'
+                                   placeholder='Nhập mã bưu gửi'
+                                   value={searchTerm}
+                                   onChange={handleChange}/>
                             <Button 
                                 className={cx('search-button')} 
                                 primary 

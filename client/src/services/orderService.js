@@ -65,3 +65,13 @@ export const confirmArrival = async (id) => {
         console.log(error)
     }
 }
+
+export const getLogs = async (id) => {
+    try {
+        const res = await httpRequest.get(`orders/logs/${id}`)
+        return res
+    }
+    catch (error) {
+        console.log(error)
+    }
+}
