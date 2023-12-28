@@ -37,12 +37,13 @@ const getAllOrdersByStationStaffID = async(id) => {
             finished: []
         }
         const orders = await Order.find({stations: {$elemMatch: {station_id: user.work_place}}});
+        // console.log(orders)
         
         orders.forEach(order => {
             if (order.stations[order.stations.length - 1].station_id.toString() === user.work_place.toString()) {
-                console.log("haha")
+                // console.log("haha")
                 if (order.end_office === null) {
-                    console.log("hahaha")
+                    // console.log("hahaha")
                     result.arriving.push(order);
                 }
                 else if (order.end_office.staff_id === null || order.end_office.staff_id === undefined) {
@@ -56,9 +57,12 @@ const getAllOrdersByStationStaffID = async(id) => {
             }
             else {
                 for (let i = 0; i < order.stations.length - 1; i++) {
-                    if (order.stations[i].station_id === user.work_place) {
+                    if (order.stations[i].station_id.toString() === user.work_place.toString()) {
                         order.destination = order.stations[i + 1].station_id;
-                        result.forwarding.push(order);
+                        if (order.stations[i + 1].staff_id === null || order.stations[i + 1].staff_id === undefined)
+                            result.forwarding.push(order);
+                        else
+                            result.finished.push(order);
                         break;
                     }
                 }
