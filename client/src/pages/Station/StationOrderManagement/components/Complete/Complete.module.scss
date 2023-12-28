@@ -176,13 +176,13 @@
         padding: 12px;
     }
     
-    & tr th:last-child,
-    & tr td:last-child {
-        position: sticky;
-        right: 0;
-        min-width: 120px;
-        background-color: var(--white);
-    }
+    // & tr th:last-child,
+    // & tr td:last-child {
+    //     position: sticky;
+    //     right: 0;
+    //     min-width: 120px;
+    //     background-color: var(--white);
+    // }
 
     & .data-row:hover,
     & .data-row:hover th:last-child,
