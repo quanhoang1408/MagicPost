@@ -12,6 +12,7 @@ import Button from '~/components/Button';
 import Modal from '~/components/Modal';
 import OrderForm from '~/components/Modal/components/OrderForm';
 import * as orderService from '~/services/orderService';
+import formatDate from '~/utils/formatDate';
 
 const cx = classNames.bind(styles);
 
@@ -119,9 +120,9 @@ function OfficeCreateOrder() {
                                                         <td>{order.contents}</td>
                                                         <td>{order.sender.address}</td>
                                                         <td>{order.category}</td>
-                                                        <td>{order.start_office.send_time}</td>
+                                                        <td>{formatDate(order.start_office.send_time)}</td>
                                                         <td>{order.receiver.address}</td>
-                                                        <td>{order.start_office.staff_id}</td>
+                                                        <td>{order.staff_name}</td>
                                                         <td className={cx('text-align-center')}>
                                                             <div className={cx('actions')}>
                                                                 <Tippy 

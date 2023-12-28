@@ -13,6 +13,7 @@ import Modal from '~/components/Modal';
 import OrderForm from '~/components/Modal/components/OrderForm';
 
 import * as orderService from '~/services/orderService';
+import formatDate from '~/utils/formatDate';
 
 const cx = classNames.bind(styles);
 
@@ -198,7 +199,7 @@ function OrderOut() {
                                                             </div>
                                                         </td> */}
                                                         <td>{order.sender.address}</td>
-                                                        <td>{order.start_office.send_time}</td>
+                                                        <td>{formatDate(order.start_office.send_time)}</td>
                                                         <td>{order.receiver.address}</td>
                                                         <td>{new Intl.NumberFormat().format(parseInt(order.price.main) + parseInt(order.price.sub) + parseInt(order.price.GTGT))} VNĐ</td>
                                                     </tr>

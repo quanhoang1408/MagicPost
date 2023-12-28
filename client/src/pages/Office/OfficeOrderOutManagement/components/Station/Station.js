@@ -12,8 +12,8 @@ import 'tippy.js/dist/tippy.css';
 import Button from '~/components/Button';
 import Modal from '~/components/Modal';
 import OrderForm from '~/components/Modal/components/OrderForm';
-import formatDate from '../../../../../utils/formatDate';
 import * as orderService from '~/services/orderService';
+import formatDate from '~/utils/formatDate';
 
 const cx = classNames.bind(styles);
 
@@ -211,7 +211,7 @@ function Station() {
                                                             </div>
                                                         </td>
                                                         <td>{order.sender.address}</td>
-                                                        <td>{order.start_office.send_time}</td>
+                                                        <td>{formatDate(order.start_office.send_time)}</td>
                                                         <td>{order.receiver.address}</td>
                                                         <td>{new Intl.NumberFormat().format(parseInt(order.price.main) + parseInt(order.price.sub) + parseInt(order.price.GTGT))} VNĐ</td>
                                                     </tr>

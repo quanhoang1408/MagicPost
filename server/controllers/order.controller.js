@@ -83,13 +83,26 @@ const getAllOrders = async (req, res) => {
 
 const getOrdersCreated = async (req, res) => {
     try {
-        const user = await User.findOne({email: req.user.email})
-        const orders = await Order.find({"start_office.office_id": user.work_place});
-        res.status(200).json(orders);
+        const user = await User.findOne({ email: req.user.email });
+        const users_query = await User.find({});
+        const users = new Map(
+            users_query.map((user) => [user._id.toString(), user.name])
+        );
+        
+        const orders = await Order.find({ "start_office.office_id": user.work_place });
+        
+        const ordersWithStaffNames = orders.map((order) => {
+            const staffName = users.get(order.start_office.staff_id.toString());
+            return { ...order.toObject(), staff_name: staffName };
+        });
+        
+        // console.log(ordersWithStaffNames);
+        
+        res.status(200).json(ordersWithStaffNames);
     } catch (error) {
         res.status(400).json(error);
     }
-}
+};
 
 const forward = async (req, res) => {
     try {
