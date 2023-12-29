@@ -49,6 +49,8 @@ function Header() {
             } else {
                 nav.style.display = 'block';
             }
+        } else {
+            nav.style.display = 'flex';
         }
     }
 
