@@ -53,13 +53,13 @@ const getOrders= async (req, res) => {
         if (req.user.role === constants.ROLES.BOSS) {
             orders = await orderService.getAllOrders();
         }
-        else if (req.user.role === constants.ROLES.STATION_LEAD) {
-            orders = await orderService.getAllOrdersByStationID(user.work_place);
-        }
-        else if (req.user.role === constants.ROLES.OFFICE_LEAD) {
-            orders = await orderService.getAllOrdersByOfficeID(user.work_place);
-        }
-        else if (req.user.role === constants.ROLES.STATION_STAFF) {
+        // else if (req.user.role === constants.ROLES.STATION_LEAD) {
+        //     orders = await orderService.getAllOrdersByStationID(user.work_place);
+        // }
+        // else if (req.user.role === constants.ROLES.OFFICE_LEAD) {
+        //     orders = await orderService.getAllOrdersByOfficeID(user.work_place);
+        // }
+        else if (req.user.role === constants.ROLES.STATION_STAFF || req.user.role === constants.ROLES.STATION_LEAD) {
             orders = await orderService.getAllOrdersByStationStaffID(user.id);
         }
         else {
@@ -67,6 +67,26 @@ const getOrders= async (req, res) => {
         }
         // console.log(orders)
         res.status(200).json(orders);
+    } catch (error) {
+        res.status(400).json(error);
+    }
+}
+
+const stats = async (req, res) => {
+    try {
+        const user = await User.findOne({email: req.user.email})
+        if (req.user.role === constants.ROLES.BOSS) {
+            const stats = await orderService.getBossStats();
+            res.status(200).json(stats);
+        }
+        else if (req.user.role === constants.ROLES.STATION_LEAD) {
+            const stats = await orderService.getStationLeadStats(user.work_place);
+            res.status(200).json(stats);
+        }
+        else if (req.user.role === constants.ROLES.OFFICE_LEAD) {
+            const stats = await orderService.getOfficeLeadStats(user.work_place);
+            res.status(200).json(stats);
+        }
     } catch (error) {
         res.status(400).json(error);
     }
@@ -202,8 +222,27 @@ const getOrderLogsByCode = async (req, res) => {
     }
 }
 
+const updateOrder = (req, res) => {
+    try {
+        const id = req.params.id;
+        const order = Order.findById(id);
+        if (!order) return res.status(404).json({ message: "Order not found" });
+        order.weight = req.body.weight;
+        order.price = req.body.price;
+        order.contents = req.body.contents;
+        order.sender = req.body.sender;
+        order.receiver = req.body.receiver;
+        order.category = req.body.category;
+        order.save();
+        res.status(200).json({ message: "Order updated successfully" });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
 module.exports = {
     create,
+    stats,
     getOrders,
     getAllOrders,
     getOrdersCreated,
@@ -211,5 +250,6 @@ module.exports = {
     getDelivers,
     createDeliver,
     confirmArrival,
-    getOrderLogsByCode
+    getOrderLogsByCode,
+    updateOrder
 }

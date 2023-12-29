@@ -7,6 +7,9 @@ const router = require('express').Router();
 router.route('/')
     .get(verifyToken, orderController.getOrders)
 
+router.route('/stats')
+    .get(verifyToken, authorize([constants.ROLES.BOSS, constants.ROLES.OFFICE_LEAD, constants.ROLES.STATION_LEAD]), orderController.stats)
+
 router.route('/get')
     .get(verifyToken, orderController.getAllOrders)
 
@@ -27,5 +30,8 @@ router.route('/delivers/:id')
 
 router.route('/logs/:code')
     .get(orderController.getOrderLogsByCode)
+
+router.route(':id')
+    .put(verifyToken, authorize([constants.ROLES.OFFICE_STAFF]), orderController.updateOrder)
 
 module.exports = router;
