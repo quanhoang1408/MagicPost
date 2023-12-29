@@ -7,6 +7,8 @@ import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid } from 'recharts'
 import { LineChart, Line } from 'recharts';
 
 import * as stationEmployeeService from '~/services/stationEmployeeService';
+import * as orderService from '~/services/orderService';
+import formatDate from '~/utils/formatDate';
 
 const cx = classNames.bind(styles);
 
@@ -79,27 +81,79 @@ function Station() {
     const [orderPie, setOrderPie] = useState([]);
     const [orderLine, setOrderLine] = useState([]);
     const [employees, setEmployees] = useState([]);
+    const [orders, setOrders] = useState({});
+    
+    useEffect(() => {
+        orderService.getStationOrder()
+            .then(data => {
+                setOrders(data);
+            })
+    }, [])
 
     // For line chart
     useEffect(() => {
-        setOrderLine(ORDER);
-    }, []);
+        const line = Array(5);
+        for (let i = 0; i < 5; i++) {
+            line[i] = {
+                name: `${formatDate(new Date(Date.now() - 86400000 * (4 - i)))}`,
+                orderIn: 0,
+                orderOut: 0,
+            }
+        }
+        if (orders.finished !== undefined) {
+            orders.finished.forEach(order => {
+                let date
+                order.stations.forEach(station => {
+                    // console.log(station)
+                    if (station.station_id === orders.station_id) {
+                        date = station.send_time;
+                        // console.log("hi")
+                        // console.log(station)
+                    }
+                })
+                // console.log(Date.now() - date)
+                // console.log(Date.now())
+                const index = parseInt(4 - (Date.now() - new Date(date)) / 86400000);
+                // console.log(index)
+                if (index >= 0) {
+                    line[index].orderIn++;
+                }
+            })
+            orders.forwarding.forEach(order => {
+                let date
+                order.stations.forEach(station => {
+                    // console.log(station)
+                    if (station.station_id === orders.station_id) {
+                        date = station.send_time;
+                        // console.log("hi")
+                        // console.log(station)
+                    }
+                })
+                // console.log(Date.now() - date)
+                // console.log(Date.now())
+                const index = parseInt(4 - (Date.now() - new Date(date)) / 86400000);
+                // console.log(index)
+                if (index >= 0) {
+                    line[index].orderIn++;
+                }
+            })
+        }
+        
+        setOrderLine(line)
+        // setOrderLine(ORDER)
+    }, [orders]);
 
     // For pie chart
     useEffect(() => {
-        if (orderLine.length > 0) {
+        if (orders.finished !== undefined) {
             setOrderPie([
                 {
-                    name: 'Tổng đơn hàng gửi',
-                    value: orderLine.reduce((total, order) => {
-                        return total + order.orderOut;
-                    }, 0),
+                    name: 'Tổng đơn hàng đang đến',
+                    value: orders.arriving.length,
                 },
                 {
-                    name: 'Tổng đơn hàng nhận',
-                    value: orderLine.reduce((total, order) => {
-                        return total + order.orderIn;
-                    }, 0),
+                    name: 'Tổng đơn hàng gửi',
+                    value: orders.forwarding.length + orders.finished.length,
                 },
             ]);
         }
@@ -124,13 +178,13 @@ function Station() {
                 </div>
                 <div className={cx('card', 'info-card')}>
                     <div className={cx('info-wrapper')}>
-                        <h3 className={cx('info-header')}>Đơn hàng gửi</h3>
+                        <h3 className={cx('info-header')}>Đơn hàng đang đến</h3>
                         <h2 className={cx('info-number')}>{new Intl.NumberFormat().format(parseInt((orderPie.length > 0) ? orderPie[0].value : 0))}</h2>
                     </div>
                 </div>
                 <div className={cx('card', 'info-card')}>
                     <div className={cx('info-wrapper')}>
-                        <h3 className={cx('info-header')}>Đơn hàng nhận</h3>
+                        <h3 className={cx('info-header')}>Đơn hàng gửi</h3>
                         <h2 className={cx('info-number')}>{new Intl.NumberFormat().format(parseInt((orderPie.length > 0) ? orderPie[1].value : 0))}</h2>
                     </div>
                 </div>

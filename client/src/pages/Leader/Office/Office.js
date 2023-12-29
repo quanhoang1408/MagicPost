@@ -7,6 +7,8 @@ import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid } from 'recharts'
 import { LineChart, Line } from 'recharts';
 
 import * as officeEmployeeService from '~/services/officeEmployeeService';
+import * as orderService from '~/services/orderService';
+import formatDate from '~/utils/formatDate';
 
 const cx = classNames.bind(styles);
 
@@ -79,27 +81,98 @@ function Office() {
     const [orderPie, setOrderPie] = useState([]);
     const [orderLine, setOrderLine] = useState([]);
     const [employees, setEmployees] = useState([]);
-
+    const [orders, setOrders] = useState({});
+    const [total, setTotal] = useState({
+        totalSuccess: 0,
+        totalFail: 0,
+        totalCreate: 0
+    });
+    
+    useEffect(() => {
+        orderService.getStationOrder()
+            .then(data => {
+                setOrders(data);
+                // console.log(data);
+                // console.log(orders);
+            })
+    }, [])
+    
     // For line chart
     useEffect(() => {
-        setOrderLine(ORDER);
-    }, []);
-
+        const line = Array(5);
+        let { totalSuccess, totalFail, totalCreate } = total;
+        for (let i = 0; i < 5; i++) {
+            line[i] = {
+                name: `${formatDate(new Date(Date.now() - 86400000 * (4 - i)))}`,
+                orderIn: 0,
+                orderOut: 0,
+                create: 0
+            }
+        }
+        if (orders.finished !== undefined) {
+            // console.log(orders)
+            orders.finished.forEach(order => {
+                console.log(order.end_office.received_time)
+                const date = order.end_office.received_time;
+                const index = parseInt(5 - ((new Date()).setHours(23, 59, 59) - new Date(date)) / 86400000);
+                console.log(index)
+                if (index >= 0) {
+                    if (order.success === true)
+                        line[index].orderIn++;
+                    else
+                        line[index].orderOut++;
+                    // if (order.start_office === orders.office_id)
+                    //     line[index].create++;
+                }
+                if (order.success === true)
+                    totalSuccess++;
+                else
+                    totalFail++;
+            })
+            const dum = orders.finished.concat(
+                orders.sending,
+                orders.sent,
+                orders.arrived
+            )
+            console.log(orders.office_id)
+            console.log(dum)
+            dum.forEach(order => {
+                if (order.start_office.office_id === orders.office_id) {
+                    console.log(order.start_office)
+                    const date = order.start_office.send_time;
+                    const index = parseInt(5 - ((new Date()).setHours(23, 59, 59) - new Date(date)) / 86400000);
+                    console.log(index)
+                    if (index >= 0) {
+                        line[index].create++;
+                    }
+                    totalCreate++;
+                }
+            })
+            console.log(line)
+            // orders.sending.f
+        }
+        setTotal({
+            totalSuccess,
+            totalFail,
+            totalCreate
+        })
+        console.log(total)
+        
+        setOrderLine(line)
+        // setOrderLine(ORDER)
+    }, [orders]);
+    
     // For pie chart
     useEffect(() => {
-        if (orderLine.length > 0) {
+        if (orders.finished !== undefined) {
             setOrderPie([
                 {
-                    name: 'Tổng đơn hàng gửi',
-                    value: orderLine.reduce((total, order) => {
-                        return total + order.orderOut;
-                    }, 0),
+                    name: 'Tổng đơn hàng đang đến',
+                    value: 10,
                 },
                 {
-                    name: 'Tổng đơn hàng nhận',
-                    value: orderLine.reduce((total, order) => {
-                        return total + order.orderIn;
-                    }, 0),
+                    name: 'Tổng đơn hàng gửi',
+                    value: 10,
                 },
             ]);
         }

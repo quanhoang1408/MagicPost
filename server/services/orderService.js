@@ -42,7 +42,8 @@ const getAllOrdersByStationStaffID = async(id) => {
         const result = {
             arriving: [],
             forwarding: [],
-            finished: []
+            finished: [],
+            station_id: user.work_place.toString()
         }
         const orders = await Order.find({stations: {$elemMatch: {station_id: user.work_place}}});
         // console.log(orders)
@@ -89,7 +90,7 @@ const getAllOrdersByStationStaffID = async(id) => {
                 }
             }
         });
-        
+        // console.log(result)
         return result
     } catch (error) {
         return error;
@@ -109,7 +110,8 @@ const getAllOrdersByOfficeStaffID = async(id) => {
             arrived: [],
             finished: [],
             sending: [],
-            sent: []
+            sent: [],
+            office_id: user.work_place.toString()
         }
         // const orders = await Order.find({end_office: {office_id: user.work_place}})
         const orders = await Order.find({ $or:[ {"end_office.office_id": user.work_place},
@@ -139,7 +141,7 @@ const getAllOrdersByOfficeStaffID = async(id) => {
             
             // else if (order.end_office.staff_id.toString() === user.id.toString() || user.role === constants.ROLES.OFFICE_LEAD) {
             else {
-                if (order.success === true) {
+                if (order.success !== null) {
                     const staff_name = users.get(order.end_office.staff_id.toString())
                     result.finished.push({
                         ...order.toObject(),
