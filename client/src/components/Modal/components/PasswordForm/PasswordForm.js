@@ -9,12 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { ToastContext } from '~/components/Toast/Toast';
 
-import * as stationLeadService from '~/services/stationLeadService';
-import * as officeLeadService from '~/services/officeLeadService';
-import * as stationService from '~/services/stationService';
-import * as officeService from '~/services/officeService';
-import * as stationEmployeeService from '~/services/stationEmployeeService';
-import * as officeEmployeeService from '~/services/officeEmployeeService';
+import * as userService from '~/services/userService';
 
 const cx = classNames.bind(styles);
 
@@ -25,6 +20,13 @@ function PasswordForm({ employee, handleCloseModal}) {
     const toast = useContext(ToastContext);
 
     const handleSave = () => {
+        userService.changePassword(employee._id, password)
+            .then(data => {
+                if(data.success === true) {
+                    toast.showSuccessToast("Đổi mật khẩu nhân viên thành công");
+                }
+            }
+        )
         handleCloseModal();
     }
 
@@ -57,7 +59,6 @@ function PasswordForm({ employee, handleCloseModal}) {
                 >
                     Save
                 </Button>
-                
             </div>
         </div>
     );

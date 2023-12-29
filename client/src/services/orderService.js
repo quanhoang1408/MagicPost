@@ -9,6 +9,15 @@ export const createOrder = async (order) => {
     }
 }
 
+export const updateOrder = async (id, order) => {
+    try {
+        const res = await httpRequest.put(`orders/update/${id}`, order);
+        return res;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export const getStationOrder = async () => {
     try {
         const res = await httpRequest.get('orders/');
@@ -72,6 +81,15 @@ export const getLogs = async (id) => {
         return res
     }
     catch (error) {
+        console.log(error)
+    }
+}
+
+export const getAllOrders = async () => {
+    try {
+        const res = await httpRequest.get('orders/get/');
+        return res;
+    } catch (error) {
         console.log(error)
     }
 }

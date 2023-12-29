@@ -1,6 +1,7 @@
 const User = require('../models/user.model');
 const Station = require('../models/station.model');
 const Office = require('../models/office.model');
+const bcrypt = require('bcryptjs');
 
 const addUser = async (req, res) => {
     try {
@@ -155,6 +156,29 @@ const deleteUser = async (req, res) => {
     }
 }
 
+const changePassword = async (req, res) => {
+    try {
+        const { password } = req.body;
+        const user = await User.findById(req.params.id);
+        if (!user) return res.status(404).json({ message: "User not found" });
+        bcrypt.hash(password, 14)
+            .then((hash) => {
+                User.updateOne({ "_id": req.params.id }, { $set: { password: hash } })
+                    .then(() => {
+                        res.status(200).json({ success: true, message: "Password updated successfully" });
+                    })
+                    .catch((err) => {
+                        res.status(500).json({ success: false, message: err.message });
+                    });
+            })
+            .catch((err) => {
+                res.status(500).json({ success: false, message: err.message });
+            });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+}
+
 module.exports = {
     addUser,
     getUserInfoById,
@@ -164,5 +188,6 @@ module.exports = {
     getAllStaffAtStation,
     getAllStaffAtOffice,
     updateUser,
-    deleteUser
+    deleteUser,
+    changePassword
 }

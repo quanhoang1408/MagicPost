@@ -13,20 +13,10 @@ import * as stationLeadService from '~/services/stationLeadService';
 import * as officeLeadService from '~/services/officeLeadService';
 import * as stationService from '~/services/stationService';
 import * as officeService from '~/services/officeService';
+import * as orderService from '~/services/orderService';
 import formatDate from '~/utils/formatDate';
 
 const cx = classNames.bind(styles);
-
-const ORDERS = [
-    {
-        name: 'Tổng số hàng gửi',
-        value: 400,
-    },
-    {
-        name: 'Tổng số hàng nhận',
-        value: 600,
-    },
-];
 
 const OFFICE_ORDERS = [
     {
@@ -145,7 +135,7 @@ const INCOME = [
     },
 ];
 
-const COLORS = ['#289cf5', '#FFBB28', '#0088FE', '#00C49F', '#FF8042'];
+const COLORS = ['#32CD32','#fe2c55', '#FFBB28', '#0088FE', '#00C49F', '#FF8042'];
 
 function Boss() {
     const [stationLeads, setStationLeads] = useState([]);
@@ -158,6 +148,9 @@ function Boss() {
     const [officeOrder, setOfficeOrder] = useState([]);
     const [stationOrder, setStationOrder] = useState([]);
     const [income, setIncome] = useState([]);
+    const [successOrder, setSuccessOrder] = useState(0);
+    const [failOrder, setFailOrder] = useState(0);
+    const [deliveryOrder, setDeliveryOrder] = useState(0);
 
     const toast = useContext(ToastContext);
 
@@ -173,6 +166,32 @@ function Boss() {
         // console.log('[boss]', url);
     }, []);
 
+    useEffect(() => {
+        let success = 0, fail = 0, delivery = 0;
+        orderService.getAllOrders().then(data => {
+            console.log(data[0]);
+            for(let i = 0; i < data.length; i++) {
+                console.log("i", i, data[i].success);
+                if(data[i].success === true) {
+                    success++;
+                }else if(data[i].success === false) {
+                    fail++;
+                }else if(data[i].success === null) {
+                    delivery++;
+                }
+            }
+            setSuccessOrder(success);
+            setFailOrder(fail);
+            setDeliveryOrder(delivery);
+        })
+        setOrders([
+            { name: 'Thành công', value: successOrder },
+            { name: 'Thất bại', value: failOrder },
+            { name: 'Đang giao', value: deliveryOrder },
+        ])
+    }, []);
+
+    // console.log(successOrder, failOrder, deliveryOrder);
     // Station leads
     useEffect(() => {
         stationLeadService.getAllStationLeads()
@@ -216,11 +235,11 @@ function Boss() {
     }, []);
 
     useEffect(() => {
-        setOrders(ORDERS);
+        
         setOfficeOrder(OFFICE_ORDERS);
         setStationOrder(STATION_ORDERS);
         setIncome(INCOME);
-    }, []);
+    }, [successOrder, failOrder, deliveryOrder]);
     
     return (
         <div className={cx('wrapper')}>

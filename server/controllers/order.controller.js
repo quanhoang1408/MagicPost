@@ -225,16 +225,28 @@ const getOrderLogsByCode = async (req, res) => {
 const updateOrder = (req, res) => {
     try {
         const id = req.params.id;
-        const order = Order.findById(id);
-        if (!order) return res.status(404).json({ message: "Order not found" });
-        order.weight = req.body.weight;
-        order.price = req.body.price;
-        order.contents = req.body.contents;
-        order.sender = req.body.sender;
-        order.receiver = req.body.receiver;
-        order.category = req.body.category;
-        order.save();
-        res.status(200).json({ message: "Order updated successfully" });
+        Order.findById(id).then((order) => {
+            if (!order) return res.status(404).json({ message: "Order not found" });
+            order.weight = req.body.weight;
+            order.price = req.body.price;
+            order.contents = req.body.contents;
+            order.sender = req.body.sender;
+            order.receiver = req.body.receiver;
+            order.category = req.body.category;
+            order.save();
+            res.status(200).json({ message: "Order updated successfully" });
+        })
+        // console.log(order_id);
+        // if (!order_id) return res.status(404).json({ message: "Order not found" });
+        // console.log(req.body);
+        // order.weight = req.body.weight;
+        // order.price = req.body.price;
+        // order.contents = req.body.contents;
+        // order.sender = req.body.sender;
+        // order.receiver = req.body.receiver;
+        // order.category = req.body.category;
+        // order.save();
+        // res.status(200).json({ message: "Order updated successfully" });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
