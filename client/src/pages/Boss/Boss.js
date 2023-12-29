@@ -20,118 +20,106 @@ const cx = classNames.bind(styles);
 
 const OFFICE_ORDERS = [
     {
-        name: 'Điểm giao dịch 1',
-        orderIn: 100,
-        orderOut: 200,
+        name: 'Bưu cục Bách Khoa',
+        orderIn: 10,
+        orderOut: 2,
     },
     {
-        name: 'Điểm giao dịch 2',
-        orderIn: 300,
-        orderOut: 200,
+        name: 'Bưu cục Ba Vì',
+        orderIn: 20,
+        orderOut: 15,
     },
     {
-        name: 'Điểm giao dịch 3',
-        orderIn: 500,
-        orderOut: 300,
+        name: 'Bưu cục Ninh Bình',
+        orderIn: 8,
+        orderOut: 5,
     },
     {
-        name: 'Điểm giao dịch 4',
-        orderIn: 200,
-        orderOut: 700,
+        name: 'Bưu cục Trần Phú',
+        orderIn: 5,
+        orderOut: 7,
     },
     {
-        name: 'Điểm giao dịch 5',
-        orderIn: 300,
-        orderOut: 500,
+        name: 'Bưu cục Lâm Đồng',
+        orderIn: 6,
+        orderOut: 1,
     },
     {
-        name: 'Điểm giao dịch 6',
-        orderIn: 500,
-        orderOut: 600,
+        name: 'Bưu cục Đường Đệ',
+        orderIn: 12,
+        orderOut: 9,
+    },
+    {
+        name: 'Bưu cục Thanh Xuân',
+        orderIn: 3,
+        orderOut: 4,
+    },
+    {
+        name: 'Bưu cục Quang Trung',
+        orderIn: 8,
+        orderOut: 8,
     },
 ];
 
 const STATION_ORDERS = [
     {
-        name: 'Điểm tập kết 1',
-        orderIn: 100,
-        orderOut: 200,
+        name: 'Hà Nội',
+        orderIn: 20,
+        orderOut: 25,
     },
     {
-        name: 'Điểm tập kết 2',
-        orderIn: 300,
-        orderOut: 200,
+        name: 'Đà Nẵng',
+        orderIn: 30,
+        orderOut: 20,
     },
     {
-        name: 'Điểm tập kết 3',
-        orderIn: 500,
-        orderOut: 300,
+        name: 'Thanh Hóa',
+        orderIn: 15,
+        orderOut: 12,
     },
     {
-        name: 'Điểm tập kết 4',
-        orderIn: 200,
-        orderOut: 700,
+        name: 'Bắc Giang',
+        orderIn: 10,
+        orderOut: 7,
     },
     {
-        name: 'Điểm tập kết 5',
-        orderIn: 300,
-        orderOut: 500,
+        name: 'Ninh Bình',
+        orderIn: 30,
+        orderOut: 35,
     },
     {
-        name: 'Điểm tập kết 6',
-        orderIn: 500,
-        orderOut: 600,
+        name: 'Quãng Ngãi',
+        orderIn: 25,
+        orderOut: 23,
+    },
+    {
+        name: 'Bến Tre',
+        orderIn: 20,
+        orderOut: 22,
+    },
+    {
+        name: 'Đà Lạt',
+        orderIn: 40,
+        orderOut: 35,
     },
 ];
 
 const INCOME = [
     {
-        name: 'Jan',
+        name: '26/12/2023',
+        value: 152,
+    },
+    {
+        name: '27/12/2023',
         value: 100,
     },
     {
-        name: 'Feb',
-        value: 200,
+        name: '28/12/2023',
+        value: 89,
     },
     {
-        name: 'Mar',
-        value: 100,
-    },
-    {
-        name: 'Apr',
-        value: 400,
-    },
-    {
-        name: 'May',
-        value: 500,
-    },
-    {
-        name: 'Jun',
-        value: 200,
-    },
-    {
-        name: 'Jul',
-        value: 700,
-    },
-    {
-        name: 'Aug',
-        value: 300,
-    },
-    {
-        name: 'Sep',
-        value: 500,
-    },
-    {
-        name: 'Oct',
-        value: 300,
-    },
-    {
-        name: 'Nov',
-        value: 1000,
-    },
-    {
-        name: 'Dec',
-        value: 800,
+        name: '29/12/2023',
+        value: 203,
     },
 ];
 
@@ -184,13 +172,15 @@ function Boss() {
             setFailOrder(fail);
             setDeliveryOrder(delivery);
         })
+    }, []);
+
+    useEffect(() => {
         setOrders([
             { name: 'Thành công', value: successOrder },
             { name: 'Thất bại', value: failOrder },
             { name: 'Đang giao', value: deliveryOrder },
         ])
-    }, []);
-
+    }, [successOrder, failOrder, deliveryOrder]);
     // console.log(successOrder, failOrder, deliveryOrder);
     // Station leads
     useEffect(() => {
