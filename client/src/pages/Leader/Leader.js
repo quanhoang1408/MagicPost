@@ -50,11 +50,12 @@ function Home() {
                     </ul>
                 </div>
                 <div className={cx('content')}>
-                    {(role === 'station_lead') ? (
+                    {(role === 'station_lead') &&
                         <Station />
-                    ) : (
+                    }
+                    {(role === 'office_lead') &&
                         <Office />
-                    )}
+                    }
                 </div>
             </div>
         </div>

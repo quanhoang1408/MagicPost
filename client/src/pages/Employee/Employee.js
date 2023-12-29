@@ -50,11 +50,12 @@ function Employee() {
                     </ul>
                 </div>
                 <div className={cx('content')}>
-                    {(role === 'station_lead') ? (
+                    {(role === 'station_staff') &&
                         <Station />
-                    ) : (
+                    }
+                    {(role === 'office_staff') &&
                         <Office />
-                    )}
+                    }
                 </div>
             </div>
         </div>

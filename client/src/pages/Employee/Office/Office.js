@@ -1,10 +1,12 @@
 import classNames from "classnames/bind";
 import { useContext, useEffect, useState } from "react";
 import styles from './Office.module.scss';
+
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-
 import images from '~/assets/images';
+
+import * as orderService from '~/services/orderService';
 
 const cx = classNames.bind(styles);
 
@@ -12,6 +14,9 @@ function Office() {
     const [time, setTime] = useState('');
     const [date, setDate] = useState('');
     const [calendarDate, setCalendarDate] = useState(new Date());
+    const [fail, setFail] = useState(0);
+    const [success, setSuccess] = useState(0);
+    const [sending, setSending] = useState();
 
     const formatTime = (val) => {
         if (val < 10) {
@@ -20,6 +25,22 @@ function Office() {
             return '';
         }
     }
+
+    useEffect(() => {
+        orderService.getOfficeOrder().then((res) => {
+            let fail_num =0, success_num = 0;
+            setSending(res.arrived.length);
+            for(let i = 0; i < res.finished.length; i++) {
+                if(res.finished[i].success === false) {
+                    fail_num++;
+                } else {
+                    success_num++;
+                }
+            }
+            setFail(fail_num);
+            setSuccess(success_num);
+        })
+    }, []);
 
     useEffect(() => {
         const timerId = setInterval(() => tick(), 1000);
@@ -82,13 +103,13 @@ function Office() {
                 <div className={cx('card', 'info-card')}>
                     <div className={cx('info-wrapper')}>
                         <h3 className={cx('info-header')}>Đơn hàng gửi thành công</h3>
-                        <h2 className={cx('info-number')}>{new Intl.NumberFormat().format(parseInt(1))}</h2>
+                        <h2 className={cx('info-number')}>{new Intl.NumberFormat().format(parseInt(success))}</h2>
                     </div>
                 </div>
                 <div className={cx('card', 'info-card')}>
                     <div className={cx('info-wrapper')}>
                         <h3 className={cx('info-header')}>Đơn hàng gửi thất bại</h3>
-                        <h2 className={cx('info-number')}>{new Intl.NumberFormat().format(parseInt(1))}</h2>
+                        <h2 className={cx('info-number')}>{new Intl.NumberFormat().format(parseInt(fail))}</h2>
                     </div>
                 </div>
             </div>

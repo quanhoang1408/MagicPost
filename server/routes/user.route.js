@@ -29,4 +29,7 @@ router.route('/office-leads')
 router.route('/delete/:id')
     .delete(userController.deleteUser)
 
+router.route('/change-password/:id')
+    .put(userController.changePassword)
+
 module.exports = router;
