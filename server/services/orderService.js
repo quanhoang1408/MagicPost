@@ -37,7 +37,7 @@ const getAllOrdersByStationStaffID = async(id) => {
         const users = new Map(
             users_query.map((user) => [user._id.toString(), user.name])
         );
-        console.log(users)
+        // console.log(users)
         
         const result = {
             arriving: [],
@@ -185,7 +185,7 @@ const getOrderLogs = (order, stations, offices) => {
     // console.log(order)
     // console.log(order.stations)
     // console.log(stations)
-    console.log(offices)
+    // console.log(offices)
     
     if (order.stations) {
         order.stations.forEach(station => {
