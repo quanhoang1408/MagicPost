@@ -27,10 +27,15 @@
 
 // Logo
 .logo-link {
+    margin-left: 20px;
     height: 100%;
     display: flex;
     justify-content: start;
     align-items: center;
+}
+
+.logo {
+    scale: 1.2;
 }
 
 // Nav
@@ -80,6 +85,7 @@
 
     // Menu btn
     .menu-btn {
+        margin: 0 10px;
         display: block;
         font-size: 4.2rem;
     }
@@ -131,6 +137,7 @@
 
     // Menu btn
     .menu-btn {
+        margin: 0 20px;
         display: block;
         font-size: 4.2rem;
     }

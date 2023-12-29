@@ -1,16 +1,22 @@
 import classNames from "classnames/bind";
 import { useContext, useEffect, useState } from "react";
 import styles from './Office.module.scss';
+
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+import images from '~/assets/images';
+
 import * as orderService from '~/services/orderService';
+
 const cx = classNames.bind(styles);
 
 function Office() {
     const [time, setTime] = useState('');
     const [date, setDate] = useState('');
+    const [calendarDate, setCalendarDate] = useState(new Date());
     const [fail, setFail] = useState(0);
     const [success, setSuccess] = useState(0);
     const [sending, setSending] = useState();
-
 
     const formatTime = (val) => {
         if (val < 10) {
@@ -59,6 +65,10 @@ function Office() {
         setDate(`Thứ ${date}, ${formatTime(day)}${day} - ${formatTime(month)}${month} - ${year}`);
     }
 
+    const changeDate = (myDate) => {
+        setCalendarDate(myDate);
+    }
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('grid-col-6-4')}>
@@ -71,6 +81,7 @@ function Office() {
                             Đừng bỏ cuộc nhé. Giông bão sẽ sớm qua đi và trời sẽ tiếp tục tươi xanh. 
                             Hãy là cái đầu lạnh với tinh thần thép và mọi chuyện rồi sẽ ổn.
                         </p>
+                        <img className={cx('content-image')} src={images.workingImage} alt="working_image" />
                     </div>
                 </div>
                 <div className={cx('content-section')}>
@@ -82,6 +93,7 @@ function Office() {
                             <div className={cx('date')}>
                                 {date}
                             </div>
+                            <Calendar className={cx('calendar')} onChange={changeDate} value={calendarDate} />
                         </div>
                     </div>
                 </div>

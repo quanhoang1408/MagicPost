@@ -349,40 +349,44 @@ function EmployeeForm({ employee, employeeRole, workplace, handleCloseModal}) {
                                 placeholder='Địa chỉ' 
                                 onChange={(e) => setAddress(e.target.value)}
                             /> */}
-                            {/* <Input 
-                                className={cx('input-wrapper')}
-                                type='text' 
-                                value={workPlace}
-                                placeholder='Nơi làm việc' 
-                                onChange={(e) => setWorkPlace(e.target.value)}
-                            /> */}
-                            <div 
-                                className={cx('input-wrapper', 'select-wrapper')}
-                                onClick={() => setIsActive(!isActive)}
-                            >
-                                <div className={cx('select-input')}>{workPlace}</div>
-                                <FontAwesomeIcon 
-                                    className={cx('select-icon')} 
-                                    icon={isActive ? faChevronUp : faChevronDown} 
-                                />
-                                <Popper 
-                                    className={cx('select-popper', 
-                                        { active: isActive ? 'active' : '', })
-                                    }
+                            {(workPlace === undefined) &&
+                                <div 
+                                    className={cx('input-wrapper', 'select-wrapper')}
+                                    onClick={() => setIsActive(!isActive)}
                                 >
-                                    <ul>
-                                        {workPlaces.map((item, index) => (
-                                            <li 
-                                                className={cx('select-item')}
-                                                key={index}
-                                                onClick={() => handleSelectItem(item._id)} 
-                                            >
-                                                {item.name}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </Popper>
-                            </div>
+                                    <div className={cx('select-input')}>{workPlace}</div>
+                                    <FontAwesomeIcon 
+                                        className={cx('select-icon')} 
+                                        icon={isActive ? faChevronUp : faChevronDown} 
+                                    />
+                                    <Popper 
+                                        className={cx('select-popper', 
+                                            { active: isActive ? 'active' : '', })
+                                        }
+                                    >
+                                        <ul>
+                                            {workPlaces.map((item, index) => (
+                                                <li 
+                                                    className={cx('select-item')}
+                                                    key={index}
+                                                    onClick={() => handleSelectItem(item._id)} 
+                                                >
+                                                    {item.name}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </Popper>
+                                </div>
+                            }
+                            {(workPlace !== undefined) &&
+                                <Input 
+                                    className={cx('input-wrapper')}
+                                    type='text' 
+                                    value={workPlace}
+                                    placeholder='Nơi làm việc' 
+                                    readOnly
+                                />
+                            }
                         </div>
                     </div>
                 </div>

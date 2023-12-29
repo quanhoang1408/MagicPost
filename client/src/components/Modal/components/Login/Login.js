@@ -43,7 +43,7 @@ function Login() {
             .login(email, password)
             .then(data => {
                 if (!data) {
-                    toast.showErrorToast("Đăng nhập thất bại");
+                    toast.showErrorToast("Đăng nhập thất bại! Vui lòng kiểm tra tài khoản, mật khẩu");
                     return;
                 }
                 console.log(data);
@@ -72,7 +72,9 @@ function Login() {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        userLogin();
+        if (validate()) {
+            userLogin();
+        }
     }
 
     // Handle modal

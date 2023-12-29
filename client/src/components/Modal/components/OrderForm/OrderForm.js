@@ -98,9 +98,11 @@ function OrderForm({ order, handleCloseModal }) {
                             <div className={cx('label')}>
                                 Loại:
                             </div>
-                            <div className={cx('label')}>
-                                Chuyển tiếp:
-                            </div>
+                            {(order === undefined) &&
+                                <div className={cx('label')}>
+                                    Chuyển tiếp:
+                                </div>
+                            }
                         </div>
                         <div className={cx('info-detail')}>
                             <Input 
@@ -139,15 +141,17 @@ function OrderForm({ order, handleCloseModal }) {
                                     Hàng hóa
                                 </label>
                             </div>
-                            <div className={cx('radio-wrapper')}>
-                                <input
-                                    className={cx('input-radio')}
-                                    value={forward}
-                                    type='checkbox'
-                                    checked={forward}
-                                    onChange={(e) => {setForward(e.target.checked)}}
-                                />
-                            </div>
+                            {(order === undefined) &&
+                                <div className={cx('radio-wrapper')}>
+                                    <input
+                                        className={cx('input-radio')}
+                                        value={forward}
+                                        type='checkbox'
+                                        checked={forward}
+                                        onChange={(e) => {setForward(e.target.checked)}}
+                                    />
+                                </div>
+                            }
                         </div>
                     </div>
                     <div className={cx('grid-col-2-8')}>
