@@ -6,50 +6,59 @@ import styles from './Authentication.module.scss';
 import Modal from "~/components/Modal";
 import Login from "~/components/Modal/components/Login";
 import Signup from "~/components/Modal/components/Signup";
+import images from '~/assets/images';
 
 const cx = classNames.bind(styles);
 
 export const ModalContext = createContext();
 
 function Authentication() {
-    // Modal
-    const [modalValue, setModalValue] = useState('login');
-    const [children, setChildren] = useState(<Login />)
+    // // Modal
+    // const [modalValue, setModalValue] = useState('login');
+    // const [children, setChildren] = useState(<Login />)
 
-    // Handle modal
-    const handleModalValue = (value) => {
-        setModalValue(value || 'login');
-    }
+    // // Handle modal
+    // const handleModalValue = (value) => {
+    //     setModalValue(value || 'login');
+    // }
 
-    const value = {
-        modalValue,
-        handleModalValue,
-    };
+    // const value = {
+    //     modalValue,
+    //     handleModalValue,
+    // };
 
-    useEffect(() => {
-        switch(modalValue) {
-            case 'login':
-                setChildren(<Login />);
-                break;
-            case 'signup':
-                setChildren(<Signup />);
-                break;
-            default:
-                setChildren(<Login />)
-                break;
-        }
-        // console.log(modalValue);
-    }, [modalValue]);
+    // useEffect(() => {
+    //     switch(modalValue) {
+    //         case 'login':
+    //             setChildren(<Login />);
+    //             break;
+    //         case 'signup':
+    //             setChildren(<Signup />);
+    //             break;
+    //         default:
+    //             setChildren(<Login />)
+    //             break;
+    //     }
+    //     // console.log(modalValue);
+    // }, [modalValue]);
 
     return (
         <div className={cx('wrapper')}>
-            <ModalContext.Provider value={value}>
-                {
-                    <Modal>
-                        {children}
-                    </Modal>
-                }
-            </ModalContext.Provider>
+            <div className={cx('container')}>
+                {/* <ModalContext.Provider value={value}>
+                    {
+                        <Modal>
+                            {children}
+                        </Modal>
+                    }
+                </ModalContext.Provider> */}
+                <div className={cx('image-wrapper')}>
+                    <img className={cx('image')} src={images.loginImage} alt='Login_image' />
+                </div>
+                <div className={cx('login')}>
+                    <Login />
+                </div>
+            </div>
         </div>
     );
 }

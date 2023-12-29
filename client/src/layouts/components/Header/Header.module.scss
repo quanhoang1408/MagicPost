@@ -22,10 +22,15 @@
 
 // Logo
 .logo-link {
+    margin-left: 20px;
     height: 100%;
     display: flex;
     justify-content: start;
     align-items: center;
+}
+
+.logo {
+    scale: 1.2;
 }
 
 // .logo-wrapper {

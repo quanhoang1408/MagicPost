@@ -22,13 +22,13 @@
 
 .grid-col-4-6 {
     display: grid;
-    grid-template-columns: calc(40% - 20px) auto;
+    grid-template-columns: calc(40% - 20px) 60%;
     grid-column-gap: 20px;
 }
 
 .grid-col-6-4 {
     display: grid;
-    grid-template-columns: calc(60%) auto;
+    grid-template-columns: calc(60% - 20px) 40%;
     grid-column-gap: 20px;
 }
 
@@ -82,9 +82,13 @@
 
 // Content card
 .content-card {
+    position: relative;
     background-color: var(--white);
     border: 1px solid var(--separate-color);
-    // height: 400px;
+    
+    &:has(.content-image) {
+        height: 100%;
+    }
 }
 
 .content-header {
@@ -100,6 +104,21 @@
     line-height: 4rem;
 }
 
+.content-quote {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.content-image {
+    position: absolute;
+    left: 50%;
+    bottom: 0px;
+    transform: translateX(-50%);
+    width: 350px;
+    aspect-ratio: 1 / 1;
+}
+
 .time-wrapper {
     padding-bottom: 13px;
 }
@@ -110,4 +129,15 @@
 
 .date {
     font-size: 2rem;
+}
+
+.calendar {
+    margin-top: 8px;
+    padding: 8px;
+    width: 100%;
+    border-radius: 8px;
+    
+    & * {
+        border-radius: 8px;
+    }
 }

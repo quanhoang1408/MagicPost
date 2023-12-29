@@ -63,7 +63,7 @@ function Header() {
                     </div>
     
                     <Link to={config.routes.home} className={cx('logo-link')} onClick={handleLogoClick}>
-                        <img src={images.logo} alt='Magic Post' />
+                        <img className={cx('logo')} src={images.logo} alt='Magic Post' />
                     </Link>
                 </div>
                 

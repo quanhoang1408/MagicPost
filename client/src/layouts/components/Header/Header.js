@@ -77,7 +77,7 @@ function Header() {
                 {/* <div className={cx('logo-wrapper')}>
                 </div> */}
                 <Link to={link} className={cx('logo-link')}>
-                    <img src={images.logo} alt='Magic Post' />
+                    <img className={cx('logo')} src={images.logo} alt='Magic Post' />
                 </Link>
 
                 <div className={cx('action')}>
