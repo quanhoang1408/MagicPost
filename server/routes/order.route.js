@@ -31,7 +31,7 @@ router.route('/delivers/:id')
 router.route('/logs/:code')
     .get(orderController.getOrderLogsByCode)
 
-router.route(':id')
+router.route('/update/:id')
     .put(verifyToken, authorize([constants.ROLES.OFFICE_STAFF]), orderController.updateOrder)
 
 module.exports = router;

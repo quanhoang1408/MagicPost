@@ -139,7 +139,7 @@ const getAllOrdersByOfficeStaffID = async(id) => {
             
             // else if (order.end_office.staff_id.toString() === user.id.toString() || user.role === constants.ROLES.OFFICE_LEAD) {
             else {
-                if (order.success === true) {
+                if (order.success !== null) {
                     const staff_name = users.get(order.end_office.staff_id.toString())
                     result.finished.push({
                         ...order.toObject(),

@@ -17,3 +17,12 @@ export const updateUserById = async (id, name, sex, phone_number) => {
         console.log(error)
     }
 }
+
+export const changePassword = async (id, password) => {
+    try {
+        const res = await httpRequest.put(`users/change-password/${id}`, {password});
+        return res;
+    } catch(error) {
+        console.log(error)
+    }
+}

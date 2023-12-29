@@ -32,7 +32,7 @@ function OrderForm({ order, handleCloseModal }) {
 
     const toast = useContext(ToastContext);
     const handleSave = () => {
-        order = {
+        let orderCreate = {
             contents: name,
             weight: weight,
             price: {
@@ -53,14 +53,31 @@ function OrderForm({ order, handleCloseModal }) {
                 postal_code: toPostalCode
             },
             category: type,
-            forward: forward
+            // forward: forward
         }
-        orderService.createOrder(order)
-            .then(data => {
-                console.log(data);
-                toast.showSuccessToast("Tạo đơn hàng thành công");
-                handleCloseModal();
-            })
+        if(order === undefined) {
+            orderCreate.forward = forward;
+            orderService.createOrder(orderCreate)
+                .then(data => {
+                    toast.showSuccessToast("Tạo đơn hàng thành công");
+                    handleCloseModal();
+                })
+                .catch(err => {
+                    console.log(err);
+                    toast.showErrorToast("Tạo đơn hàng thất bại");
+                })
+        }else {
+            orderService.updateOrder(order._id, orderCreate)
+                .then(data => {
+                    console.log("update order", data);
+                    toast.showSuccessToast("Cập nhật đơn hàng thành công");
+                    handleCloseModal();
+                })
+                .catch(err => {
+                    console.log(err);
+                    toast.showErrorToast("Cập nhật đơn hàng thất bại");
+                })
+        }    
     }
 
     return (
