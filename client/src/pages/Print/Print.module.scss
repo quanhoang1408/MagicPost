@@ -76,12 +76,16 @@
 .content-header {
     display: flex;
     justify-content: space-around;
-    margin-bottom: 10px;
+    // margin-bottom: 10px;
     width: 100%;
 }
 
 .content-logo {
 
+}
+
+.logo {
+    scale: 1.2;
 }
 
 .content-qr {

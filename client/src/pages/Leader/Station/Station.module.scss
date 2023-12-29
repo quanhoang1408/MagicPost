@@ -22,7 +22,7 @@
 
 .grid-col-4-6 {
     display: grid;
-    grid-template-columns: calc(40% - 20px) 60%;
+    grid-template-columns: calc(30% - 10px) calc(70% - 10px);
     grid-column-gap: 20px;
 }
 

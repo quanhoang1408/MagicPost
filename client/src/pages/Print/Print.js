@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from 'react-router-dom'
 import styles from './Print.module.scss';
 
+import images from '~/assets/images';
 import Button from '~/components/Button';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPrint } from "@fortawesome/free-solid-svg-icons";
@@ -35,7 +36,7 @@ function Print({ props }) {
                         <div id={cx('content-print')}>
                             <div className={cx('content-header')}>
                                 <div className={cx('content-logo')}>
-                                    Magic Post Logo
+                                    <img className={cx('logo')} src={images.logo} alt='Magic Post' />
                                 </div>
                                 <div className={cx('content-qr')}>
                                     QR

@@ -13,4 +13,10 @@
 .image {
     width: 100%;
     aspect-ratio: 5 / 2;
+    animation: fadeInTop 2s ease;
+}
+
+@keyframes fadeInTop {
+    0%   { opacity: 0; transform: translateY(-50px); }
+    100% { opacity: 1; transform: translateY(0); }
 }
