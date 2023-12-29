@@ -54,7 +54,8 @@ const getAllOrdersByStationStaffID = async(id) => {
                     // console.log("hahaha")
                     result.arriving.push(order);
                 }
-                else if (user.role === constants.ROLES.STATION_LEAD || user.id.toString() === order.stations[order.stations.length - 1].staff_id.toString()) {
+                // else if (user.role === constants.ROLES.STATION_LEAD || user.id.toString() === order.stations[order.stations.length - 1].staff_id.toString()) {
+                else {
                     order.destination = order.end_office.office_id;
                     const staff_name = users.get(order.stations[order.stations.length - 1].staff_id.toString())
                     const dum = {
@@ -70,19 +71,19 @@ const getAllOrdersByStationStaffID = async(id) => {
             else {
                 for (let i = 0; i < order.stations.length - 1; i++) {
                     if (order.stations[i].station_id.toString() === user.work_place.toString()) {
-                        if (user.role === constants.ROLES.STATION_LEAD || user.id.toString() === order.stations[i].staff_id.toString()) {
-                            // order.destination = order.stations[i + 1].station_id;
-                            const staff_name = users.get(order.stations[i].staff_id.toString())
-                            if (order.stations[i + 1].staff_id === null || order.stations[i + 1].staff_id === undefined)
-                                result.forwarding.push({
-                                    ...order.toObject(),
-                                    staff_name});
-                            else
-                                result.finished.push({
-                                    ...order.toObject(),
-                                    staff_name
-                                });
-                        }
+                        // if (user.role === constants.ROLES.STATION_LEAD || user.id.toString() === order.stations[i].staff_id.toString()) {
+                        // order.destination = order.stations[i + 1].station_id;
+                        const staff_name = users.get(order.stations[i].staff_id.toString())
+                        if (order.stations[i + 1].staff_id === null || order.stations[i + 1].staff_id === undefined)
+                            result.forwarding.push({
+                                ...order.toObject(),
+                                staff_name});
+                        else
+                            result.finished.push({
+                                ...order.toObject(),
+                                staff_name
+                            });
+                        // }
                         break
                     }
                 }
@@ -118,25 +119,26 @@ const getAllOrdersByOfficeStaffID = async(id) => {
         orders.forEach(order => {
             if (order.start_office.office_id.toString() === user.work_place.toString()
                 && (order.end_office === null || order.end_office === undefined || order.end_office.office_id.toString() !== user.work_place.toString())) {
-                if (user.role === constants.ROLES.OFFICE_LEAD || user.id.toString() === order.start_office.staff_id.toString()) {
-                    const staff_name = users.get(order.start_office.staff_id.toString())
-                    if (order.stations[0].staff_id === null || order.stations[0].staff_id === undefined)
-                        result.sending.push({
-                            ...order.toObject(),
-                            staff_name
-                        })
-                    else
-                        result.sent.push({
-                            ...order.toObject(),
-                            staff_name
-                        })
-                }
+                // if (user.role === constants.ROLES.OFFICE_LEAD || user.id.toString() === order.start_office.staff_id.toString()) {
+                const staff_name = users.get(order.start_office.staff_id.toString())
+                if (order.stations[0].staff_id === null || order.stations[0].staff_id === undefined)
+                    result.sending.push({
+                        ...order.toObject(),
+                        staff_name
+                    })
+                else
+                    result.sent.push({
+                        ...order.toObject(),
+                        staff_name
+                    })
+                // }
             }
             else if (order.end_office.staff_id === null || order.end_office.staff_id === undefined) {
                 result.arriving.push(order);
             }
             
-            else if (order.end_office.staff_id.toString() === user.id.toString() || user.role === constants.ROLES.OFFICE_LEAD) {
+            // else if (order.end_office.staff_id.toString() === user.id.toString() || user.role === constants.ROLES.OFFICE_LEAD) {
+            else {
                 if (order.success === true) {
                     const staff_name = users.get(order.end_office.staff_id.toString())
                     result.finished.push({
@@ -191,7 +193,7 @@ const getOrderLogs = (order, stations, offices) => {
             else res.push(`Đang vận chuyển tới điểm tập kết ${stations.get(station.station_id.toString())}`)
         })
     }
-        // console.log(order.sta}tions)
+    // console.log(order.sta}tions)
     if (order.end_office) {
         if (order.end_office.received_time) {
             res.push(`Đã đến điểm giao dịch ${offices.get(order.end_office.office_id.toString())} lúc ${dateUtil.formatDateTime(order.end_office.received_time)}`)
@@ -236,7 +238,7 @@ const getStationLeadStats = async (station_id) => {
     } catch (error) {
         return error;
     }
-
+    
 }
 
 module.exports = {
