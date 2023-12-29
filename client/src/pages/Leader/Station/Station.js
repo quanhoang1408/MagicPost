@@ -12,70 +12,7 @@ import formatDate from '~/utils/formatDate';
 
 const cx = classNames.bind(styles);
 
-const ORDER = [
-    {
-        name: 'Jan',
-        orderIn: 100,
-        orderOut: 200,
-    },
-    {
-        name: 'Feb',
-        orderIn: 200,
-        orderOut: 300,
-    },
-    {
-        name: 'Mar',
-        orderIn: 100,
-        orderOut: 600,
-    },
-    {
-        name: 'Apr',
-        orderIn: 400,
-        orderOut: 200,
-    },
-    {
-        name: 'May',
-        orderIn: 500,
-        orderOut: 300,
-    },
-    {
-        name: 'Jun',
-        orderIn: 200,
-        orderOut: 600,
-    },
-    {
-        name: 'Jul',
-        orderIn: 700,
-        orderOut: 200,
-    },
-    {
-        name: 'Aug',
-        orderIn: 300,
-        orderOut: 400,
-    },
-    {
-        name: 'Sep',
-        orderIn: 500,
-        orderOut: 300,
-    },
-    {
-        name: 'Oct',
-        orderIn: 300,
-        orderOut: 400,
-    },
-    {
-        name: 'Nov',
-        orderIn: 1000,
-        orderOut: 300,
-    },
-    {
-        name: 'Dec',
-        orderIn: 800,
-        orderOut: 500,
-    },
-]
-
-const COLORS = ['#289cf5', '#FFBB28', '#0088FE', '#00C49F', '#FF8042'];
+const COLORS = ['#FFBB28','#fe2c55', '#FFBB28'];
 
 function Station() {
     const [orderPie, setOrderPie] = useState([]);
@@ -96,8 +33,7 @@ function Station() {
         for (let i = 0; i < 5; i++) {
             line[i] = {
                 name: `${formatDate(new Date(Date.now() - 86400000 * (4 - i)))}`,
-                orderIn: 0,
-                orderOut: 0,
+                total: 0,
             }
         }
         if (orders.finished !== undefined) {
@@ -116,7 +52,7 @@ function Station() {
                 const index = parseInt(4 - (Date.now() - new Date(date)) / 86400000);
                 // console.log(index)
                 if (index >= 0) {
-                    line[index].orderIn++;
+                    line[index].total++;
                 }
             })
             orders.forwarding.forEach(order => {
@@ -134,7 +70,7 @@ function Station() {
                 const index = parseInt(4 - (Date.now() - new Date(date)) / 86400000);
                 // console.log(index)
                 if (index >= 0) {
-                    line[index].orderIn++;
+                    line[index].total++;
                 }
             })
         }
@@ -201,7 +137,7 @@ function Station() {
                                     data={orderPie}
                                     cx="50%"
                                     cy="50%"
-                                    outerRadius={80}
+                                    outerRadius={110}
                                     fill="#fe2c55"
                                     label
                                     startAngle={90}
@@ -218,17 +154,17 @@ function Station() {
                 </div>
                 <div className={cx('content-section')}>
                     <div className={cx('card', 'chart-card')}>
-                        <h3 className={cx('chart-header')}>Thống kê hàng chi tiết</h3>
+                        <h3 className={cx('chart-header')}>Thống kê tổng đơn hàng xử lý theo ngày</h3>
                         <div className={cx('line-chart-wrapper')}>
-                            <LineChart width={500} height={300} data={orderLine}
+                            <LineChart width={570} height={300} data={orderLine}
                                 margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis dataKey="name" />
                                 <YAxis />
                                 <Tooltip />
                                 <Legend />
-                                <Line type="monotone" dataKey="orderOut" stroke="#289cf5" />
-                                <Line type="monotone" dataKey="orderIn" stroke="#FFBB28" />
+                                {/* <Line type="monotone" dataKey="orderOut" stroke="#289cf5" /> */}
+                                <Line type="monotone" dataKey="total" stroke="#FFBB28" />
                             </LineChart>
                         </div>
                     </div>

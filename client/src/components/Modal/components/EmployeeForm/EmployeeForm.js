@@ -349,7 +349,7 @@ function EmployeeForm({ employee, employeeRole, workplace, handleCloseModal}) {
                                 placeholder='Địa chỉ' 
                                 onChange={(e) => setAddress(e.target.value)}
                             /> */}
-                            {(workPlace === undefined) &&
+                            {(workplace === undefined) &&
                                 <div 
                                     className={cx('input-wrapper', 'select-wrapper')}
                                     onClick={() => setIsActive(!isActive)}
@@ -378,7 +378,7 @@ function EmployeeForm({ employee, employeeRole, workplace, handleCloseModal}) {
                                     </Popper>
                                 </div>
                             }
-                            {(workPlace !== undefined) &&
+                            {(workplace !== undefined) &&
                                 <Input 
                                     className={cx('input-wrapper')}
                                     type='text' 

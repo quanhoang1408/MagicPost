@@ -12,70 +12,7 @@ import formatDate from '~/utils/formatDate';
 
 const cx = classNames.bind(styles);
 
-const ORDER = [
-    {
-        name: 'Jan',
-        orderIn: 100,
-        orderOut: 200,
-    },
-    {
-        name: 'Feb',
-        orderIn: 200,
-        orderOut: 300,
-    },
-    {
-        name: 'Mar',
-        orderIn: 100,
-        orderOut: 600,
-    },
-    {
-        name: 'Apr',
-        orderIn: 400,
-        orderOut: 200,
-    },
-    {
-        name: 'May',
-        orderIn: 500,
-        orderOut: 300,
-    },
-    {
-        name: 'Jun',
-        orderIn: 200,
-        orderOut: 600,
-    },
-    {
-        name: 'Jul',
-        orderIn: 700,
-        orderOut: 200,
-    },
-    {
-        name: 'Aug',
-        orderIn: 300,
-        orderOut: 400,
-    },
-    {
-        name: 'Sep',
-        orderIn: 500,
-        orderOut: 300,
-    },
-    {
-        name: 'Oct',
-        orderIn: 300,
-        orderOut: 400,
-    },
-    {
-        name: 'Nov',
-        orderIn: 1000,
-        orderOut: 300,
-    },
-    {
-        name: 'Dec',
-        orderIn: 800,
-        orderOut: 500,
-    },
-]
-
-const COLORS = ['#289cf5', '#FFBB28', '#0088FE', '#00C49F', '#FF8042'];
+const COLORS = ['#5ad529','#fe2c55', '#FFBB28'];
 
 function Office() {
     const [orderPie, setOrderPie] = useState([]);
@@ -104,8 +41,8 @@ function Office() {
         for (let i = 0; i < 5; i++) {
             line[i] = {
                 name: `${formatDate(new Date(Date.now() - 86400000 * (4 - i)))}`,
-                orderIn: 0,
-                orderOut: 0,
+                success: 0,
+                fail: 0,
                 create: 0
             }
         }
@@ -118,9 +55,9 @@ function Office() {
                 console.log(index)
                 if (index >= 0) {
                     if (order.success === true)
-                        line[index].orderIn++;
+                        line[index].success++;
                     else
-                        line[index].orderOut++;
+                        line[index].fail++;
                     // if (order.start_office === orders.office_id)
                     //     line[index].create++;
                 }
@@ -167,12 +104,12 @@ function Office() {
         if (orders.finished !== undefined) {
             setOrderPie([
                 {
-                    name: 'Tổng đơn hàng đang đến',
-                    value: 10,
+                    name: 'Tổng đơn hàng gửi thành công',
+                    value: total.totalSuccess,
                 },
                 {
-                    name: 'Tổng đơn hàng gửi',
-                    value: 10,
+                    name: 'Tổng đơn hàng gửi thất bại',
+                    value: total.totalFail,
                 },
             ]);
         }
@@ -211,7 +148,7 @@ function Office() {
             <div className={cx('grid-col-4-6')}>
                 <div className={cx('content-section')}>
                     <div className={cx('card', 'chart-card')}>
-                        <h3 className={cx('chart-header')}>Thống kê  hàng</h3>
+                        <h3 className={cx('chart-header')}>Thống kê hàng gửi</h3>
                         <div className={cx('pie-chart-wrapper')}>
                             <PieChart width={290} height={290}>
                                 <Pie 
@@ -220,7 +157,7 @@ function Office() {
                                     data={orderPie}
                                     cx="50%"
                                     cy="50%"
-                                    outerRadius={80}
+                                    outerRadius={100}
                                     fill="#fe2c55"
                                     label
                                     startAngle={90}
@@ -239,15 +176,16 @@ function Office() {
                     <div className={cx('card', 'chart-card')}>
                         <h3 className={cx('chart-header')}>Thống kê hàng chi tiết</h3>
                         <div className={cx('line-chart-wrapper')}>
-                            <LineChart width={500} height={300} data={orderLine}
+                            <LineChart width={570} height={300} data={orderLine}
                                 margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis dataKey="name" />
                                 <YAxis />
                                 <Tooltip />
                                 <Legend />
-                                <Line type="monotone" dataKey="orderOut" stroke="#289cf5" />
-                                <Line type="monotone" dataKey="orderIn" stroke="#FFBB28" />
+                                <Line type="monotone" dataKey="success" stroke="#5ad529" />
+                                <Line type="monotone" dataKey="fail" stroke="#fe2c55" />
+                                <Line type="monotone" dataKey="create" stroke="#FFBB28" />
                             </LineChart>
                         </div>
                     </div>
