@@ -1,0 +1,25 @@
+version: 'version 1.0.0'
+
+services:
+  server:
+    build: ./server
+    ports:
+      - "8081:8081"
+    volumes:
+      - logs:/app/logs
+      - ./server:/app
+      - /app/node_modules
+  client:
+    build: ./client
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client/src:/app/src
+    stdin_open: true
+    tty: true
+    depends_on:
+      - server
+
+volumes:
+  logs:
+  data:
